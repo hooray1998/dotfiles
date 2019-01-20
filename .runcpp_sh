@@ -1,0 +1,41 @@
+#!/bin/bash
+
+jj()
+{
+if [ $# -eq 1 ]
+then
+	run=$1;
+	name=${run%.*};
+	echo `pwd`> ~/.local/.path
+	echo $run > ~/.local/.save_last_cpp
+	g++ -o ./run$name $run;
+	if [ $? -eq 0 ]
+	then
+		echo "$name.cpp编译完成";
+		echo "正在运行……"
+		./run$name
+	else
+		echo "有bug, 加油！！！"
+	fi
+else 
+	run=`cat ~/.local/.save_last_cpp`
+	if [ -z $run ]
+	then
+		echo "缺少cpp文件名"
+	elif [ ! -e $run ];
+	then
+		echo "需要先执行 j "
+	else 
+		name=${run%.*};
+		g++ -o ./run$name $run;
+		if [ $? -eq 0 ]
+		then
+			echo "$name.cpp编译完成";
+			echo "正在运行……"
+			./run$name
+		else
+			echo "有bug, 加油！！！"
+		fi
+	fi
+fi
+}
