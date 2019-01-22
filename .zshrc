@@ -1,6 +1,9 @@
 source /etc/profile
 #2. 替换 Homebrew Bottles源
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+
+# 可以使用conda命令
+. /Users/iff/anaconda3/etc/profile.d/conda.sh
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -196,5 +199,34 @@ alias jv='f=`cat .local/.last_vim `; cd ${f%/*}'
 alias fin='find ./ -name '
 alias vi='vv'
 alias tt='taskbook'
-alias aa='brew install'
 alias fsize='du -h -d 1'
+
+
+# install app
+alias ba='brew install'
+alias na='npm install'
+alias pa='pip install'
+
+
+
+
+#
+alias s='tl'
+alias helpbash='vim ~/.local/config/bash-handbook.md'
+alias h='tldr'
+#
+# tl
+# tldr
+# toilet
+# cheat
+# thefuck
+# lolcat
+# bash-handbook
+# tmux
+# FileFormat
+# jp2a
+#
+#
+#
+
+
