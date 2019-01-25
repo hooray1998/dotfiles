@@ -1,6 +1,9 @@
 source /etc/profile
 #2. 替换 Homebrew Bottles源
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+
+# 可以使用conda命令
+. /Users/iff/anaconda3/etc/profile.d/conda.sh
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -127,28 +130,45 @@ alias c-='shutdown -r $1 '
 alias qx='shutdown -c'
 
 
-# proxy
-export http_proxy=http://127.0.0.1:1087
-export https_proxy=$http_proxy
+# proxy 终端下翻墙
+fanqiang(){
+	export http_proxy=http://127.0.0.1:1087
+	export https_proxy=$http_proxy
+}
 
 # 编译运行C++, shell文件
 last2="init"
-source ~/.runcpp_sh					#运行cpp
-source ~/.runsh_sh					#运行cpp
-source ~/.record_last_vimfile_sh	#记录上一个编辑的文件
+source ~/.local/config/.runcpp_sh					#运行cpp
+source ~/.local/config/.runsh_sh					#运行cpp
+source ~/.local/config/.record_last_vimfile_sh	#记录上一个编辑的文件
+#快速压缩解压
+source ~/.local/config/.fast_tar_untar_sh
 #qt快速打包
 #source /home/itt/Coding/QtCoding/.auto_package/autoPackage.sh
-#快速压缩解压
-source ~/.fast_tar_untar.sh
 
 
-#git 
-alias gall='git add *'
-alias gci='git commit -m \"$*\"'
+# git 
+# gaa
+# cm
+# ggpush
+# ggpull
 alias glg='git lg'
-alias rlg='git reflog'
-alias rst='git reset --hard '
-alias cm='gaa ; gci'
+alias grlg='git reflog'
+alias grst='git reset --hard '
+alias ignore='vim .gitignore'
+#alias cm='gaa ; git commit -m \"$*\"'
+cm(){
+	if [ `pwd` = "/Users/iff/.local/config" ]
+	then
+		cp ~/.zshrc ./zshrc
+		cp ~/.vimrc ./vimrc
+	fi
+	gaa
+	git commit -m "$*"
+}
+gmerge_dev(){
+	git merge  --no-ff -m "$*" develop
+}
 
 #chmod +x 
 alias xx='chmod +x $1'
@@ -171,21 +191,49 @@ alias gh='vim ~/.vim/gitStudy.txt'
 
 
 # fzf 快速查找文件
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
  #fzf 使用别名
-#ff() {
-#fzf --preview '[[ $(file --mime {}) =~ binary  ]] && echo {} is a binary file || (rougify {}  || highlight -O ansi -l {} || coderay {} || cat {}) 2> /dev/null | head -500'
-#}
+ff() {
+out=`fzf --preview '[[ $(file --mime {}) =~ binary  ]] && echo {} is a binary file || (rougify {}  || highlight -O ansi -l {} || coderay {} || cat {}) 2> /dev/null | head -500'`
+vim $out
+}
 
 
 alias study='vim ~/study.sh'
 alias study2='vim ~/.local/config/bash.sh'
 alias e='cd /media/Document'
-alias jpt='jupyter notebook > $HOME/.nohup_out 2>&1 &'
-alias j='cd `cat ~/.local/.path`'
+alias jpt='jupyter notebook'
+#alias j='cd `cat $HOME/.local/.path`'
 alias jv='f=`cat .local/.last_vim `; cd ${f%/*}'
 alias fin='find ./ -name '
 alias vi='vv'
 alias tt='taskbook'
-alias aa='brew install'
 alias fsize='du -h -d 1'
+
+
+# install app
+alias ba='brew install'
+alias na='npm install'
+alias pa='pip install'
+
+
+
+
+#
+alias s='tl'
+alias helpbash='vim ~/.local/config/bash-handbook.md'
+alias h='tldr'
+#
+# tl
+# tldr
+# toilet
+# cheat
+# thefuck
+# lolcat
+# bash-handbook
+# tmux
+# FileFormat
+# jp2a
+#
+#
+alias j='cd /Users/iff/qqRecv/facepp'
