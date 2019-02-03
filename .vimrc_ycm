@@ -20,7 +20,7 @@ Plug 'tell-k/vim-autopep8'
 " 快速代码注释
 Plug 'scrooloose/nerdcommenter'
 " tagbar, 显示函数 以及 变量情况
-"Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 " 美化状态栏和标签页 "
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -31,7 +31,7 @@ Plug 'mattn/emmet-vim'
 " Pending tasks list
 Plug 'fisadev/FixedTaskList.vim'
 " Python and other languages code checker
-"Plug 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic'
 
 " Markdown syntastic highlight
 "Plug 'godlygeek/tabular'
@@ -52,7 +52,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 
 "超强的自动补全
-"Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 "打字机音效
 "~~~~~~~~"Plug 'skywind3000/vim-keysound'
 
