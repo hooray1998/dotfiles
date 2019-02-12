@@ -4,11 +4,13 @@
 # Version: 44, Last Modified: 2018/10/17 03:15 qiang
 # https://github.com/skywind3000/awesome-cheatsheets
 ##############################################################################
- ~/Downloads  echo !$  上条命令的最后一个参数
- ~/Downloads  echo !^   第一个参数
- ~/Downloads  echo !!    命令的全部
- ~/Downloads  echo !#   命令的脚本名称
- ~/Downloads  echo !*    同上
+echo !$  上条命令的最后一个参数
+echo !^   第一个参数
+echo !!    命令的全部
+echo !#   命令的脚本名称
+echo !*    同上
+
+read命令 -p(提示语句) -n(字符个数) -t(等待时间) -s(不回显)
 
 ##############################################################################
 # 常用快捷键（默认使用 Emacs 键位）

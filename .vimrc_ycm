@@ -34,12 +34,12 @@ Plug 'fisadev/FixedTaskList.vim'
 Plug 'vim-syntastic/syntastic'
 
 " Markdown syntastic highlight
-"Plug 'godlygeek/tabular'
-"Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " Markdown realtime preview
 " Before you want to use it, please run
 " `sudo npm -g install instant-markdown-d`
-Plug 'suan/vim-instant-markdown'
+"Plug 'suan/vim-instant-markdown'
 
 "Plug 'airblade/vim-gitgutter'
 "Plug 'tpope/vim-fugitive'
@@ -111,11 +111,8 @@ func Settitle()
         call append(line(".")+7, "  ")
     endif
     if &filetype == 'python'
-        "call append(line(".")+6, "# -*- coding:utf-8 -*-")
-        "call setline(1,"\#!/bin/bash") 
-        "call append(line(".")+7, "")
 		call setline(1,"# -*- coding:utf-8 -*-") 
-		call append(line("."), " ".expand("")) 
+		call append(line("."), "".expand("")) 
 		. normal G
     endif
     "新建文件后，自动定位到文件末尾
@@ -208,6 +205,8 @@ set nobackup
 set noswapfile
 "搜索忽略大小写
 set ignorecase
+" 如果有一个大写字母，则切换到大小写敏感查找
+set smartcase
 "搜索逐字符高亮
 set hlsearch
 set incsearch
@@ -289,15 +288,16 @@ let g:miniBufExplModSelTarget = 1
 "键盘命令
 "=================================================================
 
+"设置<leader>为空格键
+let mapleader="\<Space>"
+
 "重映射"
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
 "快速遍历缓冲区"
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :bfirst<CR>
-nnoremap <silent> ]B :blast<CR>
+nnoremap <silent> <Tab> :bnext<CR>
+nnoremap <silent> <S-Tab> :bprevious<CR>
 
 "映射显示当前文件目录的快捷键"
 cnoremap <expr> %% getcmdtype( ) == ':' ? expand('%:h').'/' : '%%'
@@ -313,13 +313,10 @@ map L $
 "可视模式下移动到行尾
 vnoremap L $h
 
-"设置<leader>为空格键
-let mapleader="\<Space>"
-
 "保存文件
 nnoremap <leader>w :w<CR>
 nnoremap <leader>W :w !sudo tee % > /dev/null <CR>
-nnoremap <leader>x :bd %<CR><CR>
+nnoremap <leader>i :bd %<CR><CR>
 nnoremap <leader>e :exit<CR>
 "快捷复制粘贴至系统
 nnoremap <C-A> ggVG"+y<CR>
@@ -329,15 +326,9 @@ nnoremap <C-A> ggVG"+y<CR>
 nnoremap <C-t> :tabnew .<CR>5j
 nnoremap <leader>, gT
 nnoremap <leader>. gt
-nnoremap <leader><tab> :bn<CR>
-nnoremap <leader>q :bp<CR>
 nnoremap <leader>f :Files ~<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>l :Lines<CR>
-
-"追加该行到文件study
-nnoremap <leader>j :.w >> ~/study<CR>
-vnoremap <leader>j :w >> ~/study<CR>
 
 "运行cpp  和 python, 先清屏
 
@@ -345,11 +336,15 @@ nnoremap <leader>r :call RunCoding()<CR>
 func! RunCoding()
     if &filetype == 'cpp'
 		exec "!clear; ~/.local/config/.runcpp.sh %"
-    endif
-    if &filetype == 'python'
+	elseif &filetype == 'python'
 		" 分行写会输入多次确认 "
 		exec "!clear; echo '========================Runing==================';python %"
+	elseif &filetype == 'sh'
+		exec "!./%"
+	elseif &filetype == 'html'
+		exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
     endif
+
 endfunc 
 
 "比较文件  
@@ -579,7 +574,7 @@ let g:lightline = { 'colorscheme': 'monokai_tasty', }
 let g:airline_theme='monokai_tasty'
 
 " tasklist.vim  任务列表插件 <leader>t
-let g:tlTokenList = ["FIXME",  "TODO", "QSTN", "HACK", "NOTE", "WARN", "MODIFY", "TITLE"]
+let g:tlTokenList = ["FIXME",  "TODO", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
 "如果设置为1，则任务插件下次打开时会恢复到上次关闭时的位置. 默认是找到离光标当前行最近的标示符，可以如下更改:
 let g:tlRememberPosition = 1
 
@@ -624,7 +619,6 @@ let g:pymode_breakpoint = 0
 let g:pymode_lint = 1
 "修改后保存时进行检查
 let g:pymode_lint_on_write = 1
-"编辑时进行检查
 let g:pymode_lint_on_fly = 0
 let g:pymode_lint_checkers = ['pyflakes', 'pep8']
 "发现错误时不自动打开QuickFix窗口
@@ -683,14 +677,12 @@ highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
 " FileFormat ================================= "
+command! Format :call FileFormat()
 func FileFormat() 
 	if &filetype == 'python' 
 		exec "!python ~/.local/config/FormatPython.py %"
 	endif
 endfunc 
-"=================================================================
-"	other
-"=================================================================
 
 " 可是模式下f键翻译选中区域
 vnoremap f y:!clear; tl "
@@ -701,4 +693,11 @@ inoremap <C-f> yaw:!clear; tl "
 let g:table_mode_corner="|"
 
 nnoremap <leader>m :update<Bar>silent!start %:p<CR>
+"=================================================================
+"	other
+"=================================================================
+
+"追加该行到文件study
+nnoremap <leader>j :.w >> ~/study<CR>
+vnoremap <leader>j :w >> ~/study<CR>
 
