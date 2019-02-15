@@ -685,6 +685,16 @@ func FileFormat()
 	endif
 endfunc 
 
+" Highlight ================================= "
+command! HighLight :call HighLight()
+nnoremap <C-H> :call HighLight()<CR>
+func  HighLight() 
+	if &filetype == 'python' 
+		exec "!pygmentize -f html -o % %"
+	endif
+	. normal ggdstVGd
+endfunc 
+
 " 可是模式下f键翻译选中区域
 vnoremap f y:!clear; tl "
 nnoremap <C-f> yaw:!clear; tl "
@@ -699,6 +709,8 @@ nnoremap <leader>m :update<Bar>silent!start %:p<CR>
 "=================================================================
 
 "追加该行到文件study
-nnoremap <leader>j :.w >> ~/study<CR>
-vnoremap <leader>j :w >> ~/study<CR>
+"nnoremap <leader>j :.w >> ~/study<CR>
+"vnoremap <leader>j :w >> ~/study<CR>
 
+" temp "
+nnoremap <leader>j k"ap"apO# NOTE:p

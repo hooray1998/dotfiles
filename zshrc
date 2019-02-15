@@ -109,12 +109,15 @@ alias jv='f=`cat .local/.last_vim `; cd ${f%/*}'
 alias fin='find ./ -name '
 alias tt='taskbook'
 alias fsize='du -h -d 1'
-alias note='cd /Users/iff/pySpree/PY_notes/ ; ls -tr|grep note'
 alias s='tl'
 alias helpbash='vim ~/.local/config/bash-handbook.md'
 alias h='tldr'
-alias todo='vim ~/.local/config/.todo.sh'
-alias words='vim ~/.local/config/.words'
+alias pp='ipython'
+
+# ===========================================================
+alias note='cd /Users/iff/pySpree/PY_notes/ ; ls -tr|grep note'
+alias todo='vim ~/.todo.md -u ~/.todo.vimrc' # 专属的vimrc启动
+alias words='vim ~/.words'
 
 # For Blog
 alias writeBlog='cd ~/Blog; ./.new-a-blog.sh'
@@ -128,3 +131,5 @@ alias aa='cd ~/love; open -a "/Applications/Google Chrome.app" index.html'
 # tl tldr toilet cheat thefuck lolcat bash-handbook tmux 
 # FileFormat jp2a
 
+
+cat ~/.todo.md
