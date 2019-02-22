@@ -1,15 +1,38 @@
 "=================================================================
 "		Vim-plug 插件管理       
 "=================================================================
-set nocompatible              " 去除VI一致性,必须要添加
+"set nocompatible              " 去除VI一致性,必须要添加
 filetype on
 
 call plug#begin('~/.vim/plugged')
-
+"======================================="
+"GTags
+"Plug 'ludovicchabant/vim-gutentags'
+"AsyncRun shell command
+Plug 'skywind3000/asyncrun.vim'
+"Async syntax check
+Plug 'w0rp/ale'
+"better highlight for cpp"
+Plug 'octol/vim-cpp-enhanced-highlight'
+"leaderF"
+Plug 'Yggdroot/LeaderF'
+"使用- 快速进入文件浏览器"
+Plug 'justinmk/vim-dirvish'
+"函数参数提醒"似乎会很卡
+"Plug 'Shougo/echodoc.vim'
+"======================================="
+"它新定义的文本对象主要有：
+"	i, 和 a, ：参数对象，写代码一半在修改，现在可以用 di, / ci, 一次性删除/改写当前参数
+"	ii 和 ai ：缩进对象，同一个缩进层次的代码，可以用 vii 选中，dii / cii 删除或改写
+"	if 和 af ：函数对象，可以用 vif / dif / cif 来选中/删除/改写函数的内容
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-syntax'
+Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
+Plug 'sgur/vim-textobj-parameter'
+"======================================="
 ""匹配的括号或标签同时修改"
 Plug 'tpope/vim-surround'  
-""find 可以递归查找文件"
-Plug 'tpope/vim-rails'     
 " 工程文件浏览
 Plug 'scrooloose/nerdtree'
 " 增加缩进指示线 "
@@ -24,14 +47,10 @@ Plug 'scrooloose/nerdcommenter'
 " 美化状态栏和标签页 "
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" 普通的python补全 "
-Plug 'rkulla/pydiction'
 " 写html利器
 Plug 'mattn/emmet-vim'
 " Pending tasks list
 Plug 'fisadev/FixedTaskList.vim'
-" Python and other languages code checker
-"Plug 'vim-syntastic/syntastic'
 
 " Markdown syntastic highlight
 Plug 'godlygeek/tabular'
@@ -41,9 +60,9 @@ Plug 'plasticboy/vim-markdown'
 " `sudo npm -g install instant-markdown-d`
 "Plug 'suan/vim-instant-markdown'
 
-"Plug 'airblade/vim-gitgutter'
-"Plug 'tpope/vim-fugitive'
-"Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
 
 "monokai theme
 Plug 'patstockwell/vim-monokai-tasty'
@@ -52,7 +71,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 
 "超强的自动补全
-"Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
+augroup load_ycm
+    autocmd!
+    autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
+augroup END
 "打字机音效
 "~~~~~~~~"Plug 'skywind3000/vim-keysound'
 
@@ -302,10 +325,17 @@ nnoremap <silent> <S-Tab> :bprevious<CR>
 "映射显示当前文件目录的快捷键"
 cnoremap <expr> %% getcmdtype( ) == ':' ? expand('%:h').'/' : '%%'
 
-"插入模式下上下左右
-inoremap <C-J> <Down>
-inoremap <C-K> <Up>
-inoremap <C-L> <Right>
+"插入&&命令模式下上下左右
+inoremap <C-h> <left>
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-l> <right>
+cnoremap <c-h> <left>
+cnoremap <c-j> <down>
+cnoremap <c-k> <up>
+cnoremap <c-l> <right>
+cnoremap <c-a> <Home>
+cnoremap <c-e> <End>
 
 "H,L移动到行首行尾
 map H ^
@@ -333,20 +363,30 @@ nnoremap <silent> <Leader>l :Lines<CR>
 "运行cpp  和 python, 先清屏
 
 nnoremap <leader>r :call RunCoding()<CR>
-func! RunCoding()
+nnoremap <leader>m :call MakeCoding()<CR>
+func! MakeCoding()
     if &filetype == 'cpp'
-		exec "!clear; ~/.local/config/.runcpp.sh %"
+		exec ":AsyncRun g++ -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
+	elseif &filetype == 'c'
+		exec ":AsyncRun gcc -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
+	else
+    endif
+endfunc 
+func! RunCoding()
+    if &filetype == 'cpp'||&filetype == 'c'
+		exec ":AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
+	"elseif 
 	elseif &filetype == 'python'
 		" 分行写会输入多次确认 "
 		exec "!clear; echo '========================Runing==================';python %"
 	elseif &filetype == 'sh'
-		exec "!./%"
+		exec "!chmod +x %;./%"
 	elseif &filetype == 'html'
 		exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
     endif
-
 endfunc 
 
+nnoremap <silent> <F5> <cr>
 "比较文件  
 nnoremap <C-F4> :vert diffsplit 
 "C,C++的调试
@@ -386,45 +426,6 @@ map <F7> <leader>ci <CR>
 
 "<!--括号引号补全代码{{{-->
 " 括号引号补全
-inoremap ( ()<Esc>i
-inoremap [ []<Esc>i
-inoremap { {<CR>}<Esc>O
-inoremap ) <c-r>=ClosePair(')')<CR>
-inoremap ] <c-r>=ClosePair(']')<CR>
-inoremap } <c-r>=CloseBracket()<CR>
-inoremap " <c-r>=QuoteDelim('"')<CR>
-inoremap ' <c-r>=QuoteDelim("'")<CR>
-
-function ClosePair(char)
-if getline('.')[col('.') - 1] == a:char
-	return "\<Right>"
-else
-	return a:char
-endif
-endf
-
-function CloseBracket()
-if match(getline(line('.') + 1), '\s*}') < 0
-	return "\<CR>}"
-else
-	return "\<Esc>j0f}a"
-endif
-endf
-
-function QuoteDelim(char)
-let line = getline('.')
-let col = col('.')
-if line[col - 2] == "\\"
-	"Inserting a quoted quotation mark into the string
-	return a:char
-elseif line[col - 1] == a:char
-	"Escaping out of the string
-	return "\<Right>"
-else
-	"Starting a string
-	return a:char.a:char."\<Esc>i"
-endif
-endf
 "<!--}}}-->
 
 "<!--html标签自动补全{{{-->
@@ -473,16 +474,40 @@ endfunction
 nnoremap <leader>]  :call JumpToCSS()<CR>
 
 
-"YouCompleteMe
-let g:ycm_complete_in_comments = 0 "注释中补全
+"new ycm"
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_min_num_identifier_candidate_chars = 2
+"let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = '<c-z>'
+set completeopt=menu,menuone
+ 
+noremap <c-z> <NOP>
+ 
+let g:ycm_semantic_triggers =  {
+            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+            \ 'cs,lua,javascript': ['re!\w{2}'],
+            \ }
+"YouCompleteMe for Ubuntu
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:syntastic_ignore_files=[".*\.py$"]
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_server_python_interpreter='/usr/local/bin/python3'
-let g:ycm_global_ycm_extra_conf='/Users/iff/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+"YouCompleteMe for mac
+"let g:ycm_complete_in_comments = 0 "注释中补全
+"let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_collect_identifiers_from_comments_and_strings = 1
+"let g:syntastic_ignore_files=[".*\.py$"]
+"let g:ycm_seed_identifiers_with_syntax = 1
+"let g:ycm_complete_in_comments = 1
+"let g:ycm_confirm_extra_conf = 0
+"let g:ycm_server_python_interpreter='/usr/local/bin/python3'
+"let g:ycm_global_ycm_extra_conf='/Users/iff/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
 
 let Tlist_Auto_Highlight_Tag=1  
 let Tlist_Auto_Open=1  
@@ -510,12 +535,33 @@ set autoindent
 
 "tagbar
 ""F9触发，设置宽度为30
-let g:tagbar_width = 25
-nmap <F9> :TagbarToggle<CR>
+"let g:tagbar_width = 25
+"nmap <F9> :TagbarToggle<CR>
 "开启自动预览(随着光标在标签上的移动，顶部会出现一个实时的预览窗口)
-let g:tagbar_autopreview = 1
+"let g:tagbar_autopreview = 1
 ""关闭排序,即按标签本身在文件中的位置排序
-let g:tagbar_sort = 0
+"let g:tagbar_sort = 0
+"
+"tagbar 替代品leaderF, 相关功能和fzf类似
+nnoremap <F9> :LeaderfFunction!<CR>
+"let g:Lf_ShortcutF = '<c-p>'
+"let g:Lf_ShortcutB = '<m-n>'
+"noremap <c-n> :LeaderfMru<cr>
+"noremap <m-p> :LeaderfFunction!<cr>
+"noremap <m-n> :LeaderfBuffer<cr>
+"noremap <m-m> :LeaderfTag<cr>
+"let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
+
+"let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+"let g:Lf_WorkingDirectoryMode = 'Ac'
+"let g:Lf_WindowHeight = 0.30
+"let g:Lf_CacheDirectory = expand('~/.vim/cache')
+"let g:Lf_ShowRelativePath = 0
+"let g:Lf_HideHelp = 1
+"let g:Lf_StlColorscheme = 'powerline'
+"let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+
+
 
 "airline options
 
@@ -523,14 +569,15 @@ if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
 
-" old vim-powerline symbols
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''   "''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
 
 let g:airline_powerline_fonts=1
 set laststatus=2 "1为关闭底部状态栏 2为开启"
@@ -585,80 +632,6 @@ nnoremap <leader>p Iprint($a)^j
 nnoremap <leader>P Iprint("$a")^j
 
 
-"===================python-mode===================
-"开启警告
-let g:pymode_warnings = 0
-"保存文件时自动删除无用空格
-let g:pymode_trim_whitespaces = 1
-let g:pymode_options = 1
-"显示允许的最大长度的列
-let g:pymode_options_colorcolumn = 1
-"设置QuickFix窗口的最大，最小高度
-let g:pymode_quickfix_minheight = 3
-let g:pymode_quickfix_maxheight = 10
-"使用python3
-let g:pymode_python = 'python3'
-"使用PEP8风格的缩进
-let g:pymode_indent = 1
-"取消代码折叠
-let g:pymode_folding = 0
-"开启python-mode定义的移动方式
-let g:pymode_motion = 1
-"启用python-mode内置的python文档，使用K进行查找
-let g:pymode_doc = 1
-let g:pymode_doc_bind = 'K'
-"自动检测并启用virtualenv
-let g:pymode_virtualenv = 1
-"不使用python-mode运行python代码
-let g:pymode_run = 0
-"let g:pymode_run_bind = '<Leader>r'
-"不使用python-mode设置断点
-let g:pymode_breakpoint = 0
-"let g:pymode_breakpoint_bind = '<leader>b'
-"启用python语法检查
-let g:pymode_lint = 1
-"修改后保存时进行检查
-let g:pymode_lint_on_write = 1
-"编辑时进行检查
-let g:pymode_lint_on_fly = 0
-let g:pymode_lint_checkers = ['pyflakes', 'pep8']
-"发现错误时不自动打开QuickFix窗口
-let g:pymode_lint_cwindow = 0
-"侧边栏不显示python-mode相关的标志
-let g:pymode_lint_signs = 0
-"let g:pymode_lint_todo_symbol = 'WW'
-"let g:pymode_lint_comment_symbol = 'CC'
-"let g:pymode_lint_visual_symbol = 'RR'
-"let g:pymode_lint_error_symbol = 'EE'
-"let g:pymode_lint_info_symbol = 'II'
-"let g:pymode_lint_pyflakes_symbol = 'FF'
-"启用重构
-let g:pymode_rope = 1
-"不在父目录下查找.ropeproject，能提升响应速度
-let g:pymode_rope_lookup_project = 0
-"光标下单词查阅文档
-let g:pymode_rope_show_doc_bind = '<C-c>d'
-"项目修改后重新生成缓存
-let g:pymode_rope_regenerate_on_write = 1
-"开启补全，并设置<C-Tab>为默认快捷键
-let g:pymode_rope_completion = 0
-let g:pymode_rope_complete_on_dot = 1
-let g:pymode_rope_completion_bind = '<C-Tab>'
-"<C-c>g跳转到定义处，同时新建竖直窗口打开
-let g:pymode_rope_goto_definition_bind = '<C-c>g'
-let g:pymode_rope_goto_definition_cmd = 'vnew'
-"重命名光标下的函数，方法，变量及类名
-let g:pymode_rope_rename_bind = '<C-c>rr'
-"重命名光标下的模块或包
-let g:pymode_rope_rename_module_bind = '<C-c>r1r'
-"开启python所有的语法高亮
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-"高亮缩进错误
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-"高亮空格错误
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-
 
 
 " Signify ------------------------------
@@ -667,8 +640,8 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 " UPDATE it to reflect your preferences, it will speed up opening files
 let g:signify_vcs_list = [ 'git', 'hg' ]
 " mappings to jump to changed blocks
-nmap <leader>sn <plug>(signify-next-hunk)
-nmap <leader>sp <plug>(signify-prev-hunk)
+nmap <leader>d <plug>(signify-next-hunk)
+nmap <leader>D <plug>(signify-prev-hunk)
 " nicer colors
 highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
 highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
@@ -685,25 +658,14 @@ func FileFormat()
 	endif
 endfunc 
 
-" Highlight ================================= "
-command! HighLight :call HighLight()
-nnoremap <C-H> :call HighLight()<CR>
-func  HighLight() 
-	if &filetype == 'python' 
-		exec "!pygmentize -f html -o % %"
-	endif
-	. normal ggdstVGd
-endfunc 
-
 " 可是模式下f键翻译选中区域
 vnoremap f y:!clear; tl "
 nnoremap <C-f> yaw:!clear; tl "
 inoremap <C-f> yaw:!clear; tl "
 
 " markdown "
-let g:table_mode_corner="|"
-
-nnoremap <leader>m :update<Bar>silent!start %:p<CR>
+"let g:table_mode_corner="|"
+"nnoremap <leader>m :update<Bar>silent!start %:p<CR>
 "=================================================================
 "	other
 "=================================================================
@@ -712,5 +674,76 @@ nnoremap <leader>m :update<Bar>silent!start %:p<CR>
 "nnoremap <leader>j :.w >> ~/study<CR>
 "vnoremap <leader>j :w >> ~/study<CR>
 
-" temp "
-nnoremap <leader>j k"ap"apO# NOTE:p
+
+"=================================================================
+"	new
+"=================================================================
+"ctags
+set tags=./.tags;,.tags
+" for gutentags"
+" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+ 
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+ 
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+ 
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+"for asyncrun"
+" 自动打开 quickfix window ，高度为 6
+let g:asyncrun_open = 6
+
+" 任务结束时候响铃提醒
+let g:asyncrun_bell = 1
+
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+
+
+"for the left of vim-signify
+set signcolumn=yes
+
+"for cpp highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+
+"newtw"
+let NERDTreeHijackNetrw=1
+
+"for echodoc.vim"  使用<C-y>
+set noshowmode
+
+
+"for ale
+"let g:ale_linters_explicit = 1
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚡'
+let g:ale_set_highlights = 0
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '%code: %%s'
+let g:ale_lint_on_text_changed = 'never'
+let g:airline#extensions#ale#enabled = 1
+ 
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+nnoremap <leader>S <Plug>(ale_previous_wrap)
+nnoremap <leader>s <Plug>(ale_next_wrap)
+
+"for ale format"
+"autocmd FileType python noremap <buffer> <F5> :ALEFix<CR>
+"let g:ale_fixers = { 'python': ['add_blank_lines_for_python_control_statements','autopep8','isort','yapf','remove_trailing_lines','trim_wh' }

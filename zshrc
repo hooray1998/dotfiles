@@ -1,6 +1,6 @@
 source /etc/profile # 更新环境变量
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles # 替换 Homebrew Bottles源
-. /Users/iff/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
+#. ~/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
 source ~/.local/config/z.sh # 自动路径跳转
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh # fzf 快速查找文件
 eval $(thefuck --alias) # for thefuck
@@ -15,19 +15,20 @@ alias someFunction='vi ~/.local/config/shellFunction.sh'
 # ===========================================================
 # proxy 终端下翻墙, 访问github更快
 fanqiang(){
-	export http_proxy=http://127.0.0.1:1087
-	export https_proxy=$http_proxy
+	#export http_proxy=http://127.0.0.1:1080
+	#export https_proxy=$http_proxy
+	export all_proxy="socks5://127.0.0.1:1080"	
 }
 
 # ===========================================================
 # zsh
-export ZSH="/Users/iff/.oh-my-zsh"
+export ZSH="/home/itt/.oh-my-zsh"
 #RPROMPT="%/" #右提示符
 ZSH_THEME="robbyrussell" 
 plugins=( git ) 
 source $ZSH/oh-my-zsh.sh 
 
-export DEFAULT_USER="iff"
+export DEFAULT_USER="itt"
 
 # ===========================================================
 # 开关机别名设置
@@ -47,7 +48,7 @@ source ~/.local/config/.record_last_vimfile_sh #记录上一个编辑的文件
 
 #===========================================================
 source ~/.local/config/.fast_tar_untar_sh #快速压缩解压
-#source /home/itt/Coding/QtCoding/.auto_package/autoPackage.sh #qt快速打包
+source /home/itt/Coding/QtCoding/.auto_package/autoPackage.sh #qt快速打包
 
 # ===========================================================
 # 编辑配置
@@ -56,7 +57,7 @@ alias vimrc_ycm='vim  ~/.local/config/.vimrc_ycm'
 # Vim 切换
 alias null='cp ~/.local/config/.vimrc_null ~/.vimrc; echo "vim快捷版"'
 alias ycm='cp ~/.local/config/.vimrc_ycm ~/.vimrc; echo "vim完整版"'
-cp ~/.local/config/.vimrc_null ~/.vimrc # 默认启用vim快捷版
+ycm  # 默认启用vim快捷版
 
 # ===========================================================
 # Git常用命令: git gaa cm ggpush ggpull
@@ -65,7 +66,7 @@ alias grlg='git reflog'
 alias grst='git reset --hard ' 
 alias ignore='vim .gitignore'
 cm(){
-	if [ `pwd` = "/Users/iff/.local/config" ]
+	if [ `pwd` = "/home/itt/.local/config" ]
 	then
 		echo '拷贝相关文件'
 		cp ~/.gitconfig ./gitconfig
@@ -83,6 +84,7 @@ gmerge_dev(){
 
 # ===========================================================
 # install app
+alias aa='sudo apt install'
 alias ba='brew install'
 alias na='npm install'
 alias pa='pip install'
@@ -104,6 +106,7 @@ alias mv='mv -i'
 #alias study='vim ~/study.sh'
 alias study='vim ~/.local/config/bash.sh'
 alias e='cd /media/Document'
+alias ml='cd /media/Document/ML/; ls -1'
 alias jpt='jupyter notebook'
 alias jv='f=`cat .local/.last_vim `; cd ${f%/*}'
 alias fin='find ./ -name '
@@ -115,8 +118,7 @@ alias h='tldr'
 alias pp='ipython'
 
 # ===========================================================
-alias note='cd /Users/iff/pySpree/PY_notes/ ; ls -tr|grep note'
-alias todo='vim ~/.todo.md -u ~/.todo.vimrc' # 专属的vimrc启动
+alias note='cd /home/itt/pySpree/PY_notes/ ; ls -tr|grep note'
 alias words='vim ~/.words'
 
 # For Blog
@@ -124,12 +126,30 @@ alias writeBlog='cd ~/Blog; ./.new-a-blog.sh'
 alias edit='~/blog/.edit-this-blog.sh'
 alias bb='cd ~/Blog; open -a "/Applications/Google Chrome.app" index.html'
 alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt.coding.me/blog/index'
-alias aa='cd ~/love; open -a "/Applications/Google Chrome.app" index.html'
+#alias aa='cd ~/love; open -a "/Applications/Google Chrome.app" index.html'
 
 # ===========================================================
 # other tool:
 # tl tldr toilet cheat thefuck lolcat bash-handbook tmux 
 # FileFormat jp2a
+# thefuck 
+#	命令拼写错误
+#	命令输错
+#	权限不够
+#
+# fortune espeak
+# pv
+#以进度条的方式显示命令行的执行进度。
+#tail -f file
+#能够监控文件的变化，实时输出到标准输出
 
 
-cat ~/.todo.md
+#alias todo='vim ~/.todo-vim/*.Todo -u ~/.todo-vim/.todo.vimrc' # 专属的vimrc启动
+#alias todo2='vim ~/testUpdate/*.Todo -u ~/.todo-vim/.todo.vimrc' # 专属的vimrc启动
+#cat ~/.todo-vim/*.Todo
+#source $HOME/.todo-vim/todo.sh
+
+# git clone --recursive https://github.com/davidhalter/jedi-vim.git ~/.vim/plugged/jedi-vim 
+# 运行着ss， 输入fanqiang就解决了
+#alias 回退='grst'
+source /home/itt/.todo/bin/todo.sh

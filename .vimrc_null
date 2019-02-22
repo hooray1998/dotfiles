@@ -6,6 +6,9 @@ filetype on
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'w0rp/ale'
+" 异步执行"
+Plug 'skywind3000/Asyncrun.vim'
 ""匹配的括号或标签同时修改"
 Plug 'tpope/vim-surround'  
 ""find 可以递归查找文件"
@@ -26,6 +29,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " 普通的python补全 "
 Plug 'rkulla/pydiction'
+" jedi 补全"
+Plug 'ervandew/supertab'
+"Plug 'davidhalter/jedi-vim'
 " 写html利器
 Plug 'mattn/emmet-vim'
 " Pending tasks list
@@ -473,16 +479,24 @@ endfunction
 nnoremap <leader>]  :call JumpToCSS()<CR>
 
 
-"YouCompleteMe
-let g:ycm_complete_in_comments = 0 "注释中补全
+"YouCompleteMe for Ubuntu
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:syntastic_ignore_files=[".*\.py$"]
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_server_python_interpreter='/usr/local/bin/python3'
-let g:ycm_global_ycm_extra_conf='/Users/iff/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+"YouCompleteMe for mac
+"let g:ycm_complete_in_comments = 0 "注释中补全
+"let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_collect_identifiers_from_comments_and_strings = 1
+"let g:syntastic_ignore_files=[".*\.py$"]
+"let g:ycm_seed_identifiers_with_syntax = 1
+"let g:ycm_complete_in_comments = 1
+"let g:ycm_confirm_extra_conf = 0
+"let g:ycm_server_python_interpreter='/usr/local/bin/python3'
+"let g:ycm_global_ycm_extra_conf='/Users/iff/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
 
 let Tlist_Auto_Highlight_Tag=1  
 let Tlist_Auto_Open=1  
@@ -523,14 +537,15 @@ if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
 
-" old vim-powerline symbols
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''   "''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
 
 let g:airline_powerline_fonts=1
 set laststatus=2 "1为关闭底部状态栏 2为开启"
