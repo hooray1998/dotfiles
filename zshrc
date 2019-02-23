@@ -57,7 +57,7 @@ alias vimrc_ycm='vim  ~/.local/config/.vimrc_ycm'
 # Vim 切换
 alias null='cp ~/.local/config/.vimrc_null ~/.vimrc; echo "vim快捷版"'
 alias ycm='cp ~/.local/config/.vimrc_ycm ~/.vimrc; echo "vim完整版"'
-ycm  # 默认启用vim快捷版
+ycm  # 默认启用完整版
 
 # ===========================================================
 # Git常用命令: git gaa cm ggpush ggpull
@@ -151,5 +151,6 @@ alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt
 
 # git clone --recursive https://github.com/davidhalter/jedi-vim.git ~/.vim/plugged/jedi-vim 
 # 运行着ss， 输入fanqiang就解决了
+# clone github 时使用国内的也挺快
 #alias 回退='grst'
 source /home/itt/.todo/bin/todo.sh

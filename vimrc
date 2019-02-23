@@ -1,12 +1,12 @@
 "=================================================================
 "		Vim-plug 插件管理       
 "=================================================================
-"set nocompatible              " 去除VI一致性,必须要添加
 filetype on
 
 call plug#begin('~/.vim/plugged')
 "======================================="
 "GTags
+"多用c-w ] 代替c-]
 "Plug 'ludovicchabant/vim-gutentags'
 "AsyncRun shell command
 Plug 'skywind3000/asyncrun.vim'
@@ -56,9 +56,9 @@ Plug 'fisadev/FixedTaskList.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 " Markdown realtime preview
-" Before you want to use it, please run
 " `sudo npm -g install instant-markdown-d`
-"Plug 'suan/vim-instant-markdown'
+" Use :InstantMarkdownPreview  open the windows, using vpn will make it invalid
+Plug 'suan/vim-instant-markdown'
 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -69,15 +69,15 @@ Plug 'patstockwell/vim-monokai-tasty'
 "模糊搜索fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  } 
 Plug 'junegunn/fzf.vim'
-
 "超强的自动补全
 Plug 'Valloric/YouCompleteMe'
 augroup load_ycm
+	"延时加载"
     autocmd!
     autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
 augroup END
 "打字机音效
-"~~~~~~~~"Plug 'skywind3000/vim-keysound'
+"Plug 'skywind3000/vim-keysound'
 
 call plug#end()
 "==================================================================
@@ -378,11 +378,13 @@ func! RunCoding()
 	"elseif 
 	elseif &filetype == 'python'
 		" 分行写会输入多次确认 "
-		exec "!clear; echo '========================Runing==================';python %"
+		exec "AsyncRun clear; echo '========================Runing==================';python %"
 	elseif &filetype == 'sh'
-		exec "!chmod +x %;./%"
+		exec ":AsyncRun chmod +x %;./%"
 	elseif &filetype == 'html'
 		exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
+	elseif expand('%:e') == 'awk'
+		exec "AsyncRun awk -f % ".expand('%:r').".data"
     endif
 endfunc 
 
@@ -660,10 +662,13 @@ endfunc
 
 " 可是模式下f键翻译选中区域
 vnoremap f y:!clear; tl "
-nnoremap <C-f> yaw:!clear; tl "
-inoremap <C-f> yaw:!clear; tl "
+vnoremap f y:AsyncRun tl "\|awk -f $HOME/.local/config/simplify.awk 
+nnoremap <C-f> yaw:AsyncRun tl "\|awk -f $HOME/.local/config/simplify.awk 
+inoremap <C-f> yaw:AsyncRun tl "\|awk -f $HOME/.local/config/simplify.awk 
 
 " markdown "
+let g:instant_markdown_autostart = 0
+
 "let g:table_mode_corner="|"
 "nnoremap <leader>m :update<Bar>silent!start %:p<CR>
 "=================================================================
@@ -698,7 +703,7 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 "for asyncrun"
 " 自动打开 quickfix window ，高度为 6
-let g:asyncrun_open = 6
+let g:asyncrun_open = 10
 
 " 任务结束时候响铃提醒
 let g:asyncrun_bell = 1
