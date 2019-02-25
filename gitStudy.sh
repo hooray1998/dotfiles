@@ -33,7 +33,8 @@ git reset --hard versionNumber
 
 git checkout -- filename # turn to be the version of in "git add" or in "git commit"
 
-git remote add origin https: # github.com/hooray1998/linuxConfig.git
+ssh-keygen -t rsa -C "hooray1998@foxmail.com"
+git remote add origin  # git@github.com:hooray1998/linuxConfig.git
 git push -u origin master
 
 git push origin master  #  push git from to github
@@ -54,3 +55,40 @@ git branch -d <name>   # del this branch
 git log --graph   # watch    the graph of merge
 
 git merge  --no-ff -m "说出你想说的话"  develop    #  merge by no-fast-forward    --> benefit to watch when we merge a branch.
+
+git stash    # save the current workspace uncomplish
+git stash list   # show the list of you stash before
+git stash apply  ~   # recover the workspace 
+git satsh pop    ~   #  recover and delete
+git branch -D <name>  # delete a branch unmerged
+
+git tag <name>   #new a tag;  init version is HEAH
+git tag -a <tagname> -m  "balabala..."
+git tag     # show the tag list
+git tag -d <tagname> # delete a tag
+git push origin <tagname> # push a tag to remote
+git push origin --tags   # push all tags to remote
+git push origin :refs/tags/<tagname> # delete a tag in remote
+
+#ignore Some files
+https:#github.com/github/gitignore
+
+
+#DIY   your Git
+git config --global color.ui true
+
+#shortCut
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+
+#others
+git config --global alias.unstage 'reset HEAD
+eg: git unstage test.py   =>   git reset HEAD test.py
+git config --global alias.last 'log -1'
+eg: git last              =>   git log -1
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+git lg                    =>  perfect log
+
+
