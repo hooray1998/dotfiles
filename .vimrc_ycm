@@ -1,7 +1,6 @@
 "=================================================================
 "		Vim-plug 插件管理       
 "=================================================================
-filetype on
 
 call plug#begin('~/.vim/plugged')
 "======================================="
@@ -77,7 +76,7 @@ augroup load_ycm
     autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
 augroup END
 "打字机音效
-"Plug 'skywind3000/vim-keysound'
+Plug 'skywind3000/vim-keysound'
 
 call plug#end()
 "==================================================================
@@ -382,9 +381,12 @@ func! RunCoding()
 	elseif &filetype == 'sh'
 		exec ":AsyncRun chmod +x %;./%"
 	elseif &filetype == 'html'
-		exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
+		"exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
+		exec "AsyncRun google-chrome %"
 	elseif expand('%:e') == 'awk'
 		exec "AsyncRun awk -f % ".expand('%:r').".data"
+	else
+		exec ":e %"
     endif
 endfunc 
 
@@ -588,11 +590,10 @@ set ambiwidth=double "防止特殊符号无法正常显示
 let g:airline#extensions#tabline#enabled=1 "顶部tab显示
 "let g:airline_theme='bubblegum'  "murmur配色也不错
 "
-"nmap <tab> gt   "会导致C-i回退不可用"
 
 
 "设置打字机音效
-let g:keysound_enable = 0
+let g:keysound_enable = 1
 "设置默认音效主题，可以选择：default, typewriter, mario, bubble, sword
 let g:keysound_py_version = 3
 let g:keysound_volume = 1000
@@ -661,10 +662,9 @@ func FileFormat()
 endfunc 
 
 " 可是模式下f键翻译选中区域
-vnoremap f y:!clear; tl "
-vnoremap f y:AsyncRun tl "\|awk -f $HOME/.local/config/simplify.awk 
-nnoremap <C-f> yaw:AsyncRun tl "\|awk -f $HOME/.local/config/simplify.awk 
-inoremap <C-f> yaw:AsyncRun tl "\|awk -f $HOME/.local/config/simplify.awk 
+vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 
 " markdown "
 let g:instant_markdown_autostart = 0
@@ -752,3 +752,11 @@ nnoremap <leader>s <Plug>(ale_next_wrap)
 "for ale format"
 "autocmd FileType python noremap <buffer> <F5> :ALEFix<CR>
 "let g:ale_fixers = { 'python': ['add_blank_lines_for_python_control_statements','autopep8','isort','yapf','remove_trailing_lines','trim_wh' }
+nnoremap <F4> :call SwitchHeaderOrSource()<CR>
+function SwitchHeaderOrSource()
+	if expand("%:e") == "cpp"
+		exec ":e ".expand("%:t:r").expand(".h")
+	else
+		exec ":e ".expand("%:t:r").expand(".cpp")
+	endif
+endfunc

@@ -1,0 +1,13 @@
+[user]
+	email = hooray1998@foxmail.com
+	name = hooray
+[color]
+	ui = true
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	st = status
+	co = checkout
+	ci = commit
+	br = branch
+[core]
+	quotepath = false

@@ -4,6 +4,24 @@
 # Version: 44, Last Modified: 2018/10/17 03:15 qiang
 # https://github.com/skywind3000/awesome-cheatsheets
 ##############################################################################
+
+VimScript
+%:p     - File name of current buffer with full path
+%:t     - File name of current buffer without path
+%:p:h   - File path of current buffer without file name
+%:e     - File extension of current buffer
+%:t:r   - File name of current buffer without path and extension
+%       - File name relativize to current directory
+%:h:.   - File path relativize to current directory
+<cwd>   - Current directory
+<cword> - Current word under cursor
+<cfile> - Current file name under cursor
+<root>  - Project root directory
+
+Vim使用技巧
+abc<C-o>a"haahh"<C-o>a<C-a>
+
+
 echo !$  上条命令的最后一个参数
 echo !^   第一个参数
 echo !!    命令的全部
