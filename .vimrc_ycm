@@ -362,7 +362,7 @@ nnoremap <silent> <Leader>l :Lines<CR>
 "运行cpp  和 python, 先清屏
 
 nnoremap <leader>r :call RunCoding()<CR>
-nnoremap <leader>m :call MakeCoding()<CR>
+"nnoremap <leader>m :call MakeCoding()<CR>
 func! MakeCoding()
     if &filetype == 'cpp'
 		exec ":AsyncRun g++ -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
@@ -372,17 +372,16 @@ func! MakeCoding()
     endif
 endfunc 
 func! RunCoding()
+	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
-		exec ":AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
-	"elseif 
+		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o ./run% %;echo '<<===>>  Runing  <<===>>';./run%"
 	elseif &filetype == 'python'
-		" 分行写会输入多次确认 "
-		exec "AsyncRun clear; echo '========================Runing==================';python %"
+		exec ":!clear; echo '<<===>>  Runing  <<===>>';python %"
 	elseif &filetype == 'sh'
-		exec ":AsyncRun chmod +x %;./%"
+		exec ":!chmod +x %;./%"
 	elseif &filetype == 'html'
 		"exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
-		exec "AsyncRun google-chrome %"
+		exec "google-chrome %"
 	elseif expand('%:e') == 'awk'
 		exec "AsyncRun awk -f % ".expand('%:r').".data"
 	else
@@ -732,8 +731,6 @@ set noshowmode
 
 "for ale
 "let g:ale_linters_explicit = 1
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚡'
 let g:ale_set_highlights = 0
 let g:ale_completion_delay = 500
 let g:ale_echo_delay = 20
@@ -748,6 +745,10 @@ let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 nnoremap <leader>S <Plug>(ale_previous_wrap)
 nnoremap <leader>s <Plug>(ale_next_wrap)
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '.'
 
 "for ale format"
 "autocmd FileType python noremap <buffer> <F5> :ALEFix<CR>
@@ -758,5 +759,13 @@ function SwitchHeaderOrSource()
 		exec ":e ".expand("%:t:r").expand(".h")
 	else
 		exec ":e ".expand("%:t:r").expand(".cpp")
+	endif
+endfunc
+nnoremap <Enter> :call EnterFile()<CR>
+function EnterFile()
+	if expand("%:e")=='list'
+		.normal gf
+	else
+		.normal j
 	endif
 endfunc

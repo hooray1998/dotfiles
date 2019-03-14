@@ -1,7 +1,14 @@
 source /etc/profile # 更新环境变量
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles # 替换 Homebrew Bottles源
 #. ~/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
-#source ~/.local/config/z.sh # 自动路径跳转
+source ~/.local/config/z.sh # 自动路径跳转
+#eval "$(lua $HOME/.local/config/z.lua --init zsh enhanced once echo)"
+#alias zz='z -i'
+#alias zc='z -c'
+#alias zf='z -I'
+#alias zb='z -b'
+#alias zh='z -I -t .'
+#alias zzc='zz -c'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh # fzf 快速查找文件
 #eval $(thefuck --alias) # for thefuck
 
@@ -17,7 +24,7 @@ alias someFunction='vi ~/.local/config/shellFunction.sh'
 fanqiang(){
 	#export http_proxy=http://127.0.0.1:1080
 	#export https_proxy=$http_proxy
-	export all_proxy="socks5://127.0.0.1:1080"	
+	export all_proxy="socks5://127.0.0.1:1082"	
 }
 
 # ===========================================================
@@ -154,3 +161,4 @@ alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt
 # clone github 时使用国内的也挺快
 #alias 回退='grst'
 source /home/itt/.todo/bin/todo.sh
+alias list='vim ./*.list'
