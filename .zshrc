@@ -1,7 +1,7 @@
 source /etc/profile # 更新环境变量
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles # 替换 Homebrew Bottles源
 #. ~/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
-source ~/.local/config/z.sh # 自动路径跳转
+#source ~/.local/config/z.sh # 自动路径跳转
 #eval "$(lua $HOME/.local/config/z.lua --init zsh enhanced once echo)"
 #alias zz='z -i'
 #alias zc='z -c'
@@ -125,7 +125,7 @@ alias h='tldr'
 alias pp='ipython'
 
 # ===========================================================
-alias note='cd /home/itt/pySpree/PY_notes/ ; ls -tr|grep note'
+#alias note='cd /home/itt/pySpree/PY_notes/ ; ls -tr|grep note'
 alias words='vim ~/.words'
 
 # For Blog
@@ -135,6 +135,14 @@ alias bb='cd ~/Blog; open -a "/Applications/Google Chrome.app" index.html'
 alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt.coding.me/blog/index'
 #alias aa='cd ~/love; open -a "/Applications/Google Chrome.app" index.html'
 
+# ===========================================================
+# For todo && note
+source /home/itt/.todo/bin/todo.sh
+alias list='vim ./*.list'
+alias md='vim ~/我的坚果云/Notes'
+alias note='vim `cat ~/Notes/.lastedit`'
+alias jnote='cd ~/我的坚果云/Notes; tree ./'
+alias tim-er='/home/itt/Coding/QtRelease/send_to_tim.app/send_to_tim.sh &'
 # ===========================================================
 # other tool:
 # tl tldr toilet cheat thefuck lolcat bash-handbook tmux 
@@ -160,5 +168,3 @@ alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt
 # 运行着ss， 输入fanqiang就解决了
 # clone github 时使用国内的也挺快
 #alias 回退='grst'
-source /home/itt/.todo/bin/todo.sh
-alias list='vim ./*.list'

@@ -362,6 +362,15 @@ nnoremap <silent> <Leader>l :Lines<CR>
 "运行cpp  和 python, 先清屏
 
 nnoremap <leader>r :call RunCoding()<CR>
+nnoremap <leader>R :call AsyncRunCoding()<CR>
+"Markdown 中直接允许python
+vnoremap r :w !python<CR>
+vnoremap R :w $HOME/.temp<CR>:call RunPython()<CR>
+
+func RunPython()
+	exec ":!python $HOME/.temp"
+endfunc
+
 "nnoremap <leader>m :call MakeCoding()<CR>
 func! MakeCoding()
     if &filetype == 'cpp'
@@ -384,6 +393,25 @@ func! RunCoding()
 		exec "google-chrome %"
 	elseif expand('%:e') == 'awk'
 		exec "AsyncRun awk -f % ".expand('%:r').".data"
+	elseif expand('%:e') == 'md'
+		exec ":InstantMarkdownPreview"
+	else
+		exec ":e %"
+    endif
+endfunc 
+func! AsyncRunCoding()
+	exec ":w"
+	if &filetype == 'python'
+		exec ":AsyncRun python %"
+	elseif &filetype == 'sh'
+		exec ":!chmod +x %;./%"
+	elseif &filetype == 'html'
+		"exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
+		exec "google-chrome %"
+	elseif expand('%:e') == 'awk'
+		exec "AsyncRun awk -f % ".expand('%:r').".data"
+	elseif expand('%:e') == 'md'
+		exec ":InstantMarkdownPreview"
 	else
 		exec ":e %"
     endif
@@ -405,11 +433,14 @@ endfunc
 map <F8> :NERDTreeToggle<CR>
 let NERDTreeChDirMode=1
 "显示书签"
-let NERDTreeShowBookmarks=1
+let NERDTreeShowBookmarks=0
 "设置忽略文件类型"
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 "窗口大小"
 let NERDTreeWinSize=25
+"快捷切换文件夹
+nnoremap <C-n> /▸<CR>
+nnoremap <C-p> ?▸<CR>
 
 
 "缩进指示线"
@@ -660,24 +691,15 @@ func FileFormat()
 	endif
 endfunc 
 
-" 可是模式下f键翻译选中区域
+"=================================================================
+" 所有模式下f键翻译选中区域
+"=================================================================
 vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 
 " markdown "
 let g:instant_markdown_autostart = 0
-
-"let g:table_mode_corner="|"
-"nnoremap <leader>m :update<Bar>silent!start %:p<CR>
-"=================================================================
-"	other
-"=================================================================
-
-"追加该行到文件study
-"nnoremap <leader>j :.w >> ~/study<CR>
-"vnoremap <leader>j :w >> ~/study<CR>
-
 
 "=================================================================
 "	new
@@ -733,7 +755,7 @@ set noshowmode
 "let g:ale_linters_explicit = 1
 let g:ale_set_highlights = 0
 let g:ale_completion_delay = 500
-let g:ale_echo_delay = 20
+let g:ale_echo_delay = 500
 let g:ale_lint_delay = 500
 let g:ale_echo_msg_format = '%code: %%s'
 let g:ale_lint_on_text_changed = 'never'
@@ -753,6 +775,8 @@ let g:ale_sign_warning = '.'
 "for ale format"
 "autocmd FileType python noremap <buffer> <F5> :ALEFix<CR>
 "let g:ale_fixers = { 'python': ['add_blank_lines_for_python_control_statements','autopep8','isort','yapf','remove_trailing_lines','trim_wh' }
+
+"切换头/源文件
 nnoremap <F4> :call SwitchHeaderOrSource()<CR>
 function SwitchHeaderOrSource()
 	if expand("%:e") == "cpp"
@@ -761,11 +785,20 @@ function SwitchHeaderOrSource()
 		exec ":e ".expand("%:t:r").expand(".cpp")
 	endif
 endfunc
+"在list文件中快捷进入文件
 nnoremap <Enter> :call EnterFile()<CR>
 function EnterFile()
 	if expand("%:e")=='list'
-		.normal gf
+		.normal $gf
+	elseif expand("%:e")=='md'
+		.normal ?```VNkojr
 	else
 		.normal j
 	endif
 endfunc
+
+
+"=================================================================
+"	记录上一次的markdown笔记的目录
+"=================================================================
+autocmd BufEnter *.md call writefile([expand("%:p")],expand("$HOME/Notes/.lastedit"))
