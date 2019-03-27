@@ -129,7 +129,7 @@ alias pp='ipython'
 alias words='vim ~/.words'
 
 # For Blog
-alias writeBlog='cd ~/Blog; ./.new-a-blog.sh'
+alias writeBlog='cd ~/blog; ./.new-a-blog.sh'
 alias edit='~/blog/.edit-this-blog.sh'
 alias bb='cd ~/Blog; open -a "/Applications/Google Chrome.app" index.html'
 alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt.coding.me/blog/index'
@@ -140,8 +140,25 @@ alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt
 source /home/itt/.todo/bin/todo.sh
 alias list='vim ./*.list'
 alias md='vim ~/我的坚果云/Notes'
-alias note='vim `cat ~/Notes/.lastedit`'
-alias jnote='cd ~/我的坚果云/Notes; tree ./'
+
+function note(){
+cd ~/Notes
+if [ -n "$*"  ]; then
+	#while [ -n "$*"  ]; do
+		case $* in
+		.*) shift && vim . ;;
+		a*) shift && cd algorithm; vim . ;;
+		n*) shift && vim ;break ;;
+		p*) shift && cd projectSummary; vim . ;;
+		j*) shift && tree -L 2 ./ ;;
+		 *) shift ;;
+		esac
+	#done
+else
+	vim `cat ~/.last-edit-note`
+fi
+}
+
 alias tim-er='/home/itt/Coding/QtRelease/send_to_tim.app/send_to_tim.sh &'
 # ===========================================================
 # other tool:

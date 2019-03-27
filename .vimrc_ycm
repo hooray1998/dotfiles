@@ -2,6 +2,8 @@
 "		Vim-plug 插件管理       
 "=================================================================
 
+inoremap <Tab> .ma>>`ala<BS>
+inoremap <S-Tab> ma<<`ai
 call plug#begin('~/.vim/plugged')
 "======================================="
 "GTags
@@ -72,8 +74,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'Valloric/YouCompleteMe'
 augroup load_ycm
 	"延时加载"
-    autocmd!
-    autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
+	autocmd!
+	autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
 augroup END
 "打字机音效
 Plug 'skywind3000/vim-keysound'
@@ -101,6 +103,55 @@ set termencoding=utf-8
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936
 set fileencoding=utf-8
+
+"识别Alt
+function! Terminal_MetaMode(mode)
+    set ttimeout
+    if $TMUX != ''
+        set ttimeoutlen=30
+    elseif &ttimeoutlen > 80 || &ttimeoutlen <= 0
+        set ttimeoutlen=80
+    endif
+    if has('nvim') || has('gui_running')
+        return
+    endif
+    function! s:metacode(mode, key)
+        if a:mode == 0
+            exec "set <M-".a:key.">=\e".a:key
+        else
+            exec "set <M-".a:key.">=\e]{0}".a:key."~"
+        endif
+    endfunc
+    for i in range(10)
+        call s:metacode(a:mode, nr2char(char2nr('0') + i))
+    endfor
+    for i in range(26)
+        call s:metacode(a:mode, nr2char(char2nr('a') + i))
+        call s:metacode(a:mode, nr2char(char2nr('A') + i))
+    endfor
+    if a:mode != 0
+        for c in [',', '.', '/', ';', '[', ']', '{', '}']
+            call s:metacode(a:mode, c)
+        endfor
+        for c in ['?', ':', '-', '_']
+            call s:metacode(a:mode, c)
+        endfor
+    else
+        for c in [',', '.', '/', ';', '{', '}']
+            call s:metacode(a:mode, c)
+        endfor
+        for c in ['?', ':', '-', '_']
+            call s:metacode(a:mode, c)
+        endfor
+    endif
+endfunc
+ 
+call Terminal_MetaMode(0)
+"noremap <ESC>x :echo "ALT-X pressed"<cr>  "没有设置超时，容易误操作"
+noremap <M-x> :echo "ALT-X pressed"<cr>
+exec "set <M-x>=\ex"
+"超时时间
+set ttimeout ttimeoutlen=50
 
 "==================================================================
 "  新文件标题
@@ -325,6 +376,7 @@ nnoremap <silent> <S-Tab> :bprevious<CR>
 cnoremap <expr> %% getcmdtype( ) == ':' ? expand('%:h').'/' : '%%'
 
 "插入&&命令模式下上下左右
+"需要设置终端，Del发送Esc序列，Backspace发送ASCII Del
 inoremap <C-h> <left>
 inoremap <C-j> <down>
 inoremap <C-k> <up>
@@ -390,7 +442,7 @@ func! RunCoding()
 		exec ":!chmod +x %;./%"
 	elseif &filetype == 'html'
 		"exec "!open -a \"\/Applications\/Google\ Chrome.app\" %"
-		exec "google-chrome %"
+		exec ":!google-chrome %"
 	elseif expand('%:e') == 'awk'
 		exec "AsyncRun awk -f % ".expand('%:r').".data"
 	elseif expand('%:e') == 'md'
@@ -619,6 +671,9 @@ set t_Co=256     "终端开启256色支持"
 set ambiwidth=double "防止特殊符号无法正常显示
 let g:airline#extensions#tabline#enabled=1 "顶部tab显示
 "let g:airline_theme='bubblegum'  "murmur配色也不错
+let g:airline_section_y = ''
+let g:airline_section_error = ''
+let g:airline_section_warning = ''
 "
 
 
@@ -654,7 +709,7 @@ let g:lightline = { 'colorscheme': 'monokai_tasty', }
 let g:airline_theme='monokai_tasty'
 
 " tasklist.vim  任务列表插件 <leader>t
-let g:tlTokenList = ["FIXME",  "TODO", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
+let g:tlTokenList = ["FIXME",  "TODO",  "###", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
 "如果设置为1，则任务插件下次打开时会恢复到上次关闭时的位置. 默认是找到离光标当前行最近的标示符，可以如下更改:
 let g:tlRememberPosition = 1
 
@@ -801,4 +856,16 @@ endfunc
 "=================================================================
 "	记录上一次的markdown笔记的目录
 "=================================================================
-autocmd BufEnter *.md call writefile([expand("%:p")],expand("$HOME/Notes/.lastedit"))
+autocmd BufEnter * call RecordLastNote()
+func RecordLastNote()
+	if match(expand("%:p"),'Notes') > -1
+		call writefile([expand("%:p")],expand("$HOME/.last-edit-note"))
+	endif
+endfunc
+
+" 可是模式输入C-l增加行号
+vnoremap <C-l> :call AddListNumber()<CR>
+function AddListNumber()
+	let lnum = getpos('.')[1] + 1 - getpos("'<")[1]
+	. normal I=lnum. 
+endfunc
