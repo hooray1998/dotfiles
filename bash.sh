@@ -4,6 +4,17 @@
 # Version: 44, Last Modified: 2018/10/17 03:15 qiang
 # https://github.com/skywind3000/awesome-cheatsheets
 ##############################################################################
+c++
+- stringsteam(强大)
+- to_string
+
+c
+- strtok() #分割字符串
+- itoa(c++11)
+- atoi(c++11)
+- sscanf()
+- sprintf()
+
 # 使用通配符批量创建 5 个文件:
 $ touch file{1..5}.txt
 ALT+f               # 向前（右边）移动一个单词

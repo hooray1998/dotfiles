@@ -2,10 +2,10 @@
 "		Vim-plug 插件管理       
 "=================================================================
 
-inoremap <Tab> .ma>>`ala<BS>
-inoremap <S-Tab> ma<<`ai
 call plug#begin('~/.vim/plugged')
 "======================================="
+"打字机音效
+"Plug 'skywind3000/vim-keysound'
 "GTags
 "多用c-w ] 代替c-]
 "Plug 'ludovicchabant/vim-gutentags'
@@ -16,16 +16,15 @@ Plug 'w0rp/ale'
 "better highlight for cpp"
 Plug 'octol/vim-cpp-enhanced-highlight'
 "leaderF"
-Plug 'Yggdroot/LeaderF'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 "使用- 快速进入文件浏览器"
 Plug 'justinmk/vim-dirvish'
 "函数参数提醒"似乎会很卡
 "Plug 'Shougo/echodoc.vim'
 "======================================="
-"它新定义的文本对象主要有：
-"	i, 和 a, ：参数对象，写代码一半在修改，现在可以用 di, / ci, 一次性删除/改写当前参数
-"	ii 和 ai ：缩进对象，同一个缩进层次的代码，可以用 vii 选中，dii / cii 删除或改写
-"	if 和 af ：函数对象，可以用 vif / dif / cif 来选中/删除/改写函数的内容
+"	i, 和 a, ：参数对象 eg.   vi,  ci,  di,
+"	ii 和 ai ：缩进对象 eg.   vii  cii  dii
+"	if 和 af ：函数对象 eg.   vif  cif  dif
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
@@ -36,15 +35,13 @@ Plug 'sgur/vim-textobj-parameter'
 Plug 'tpope/vim-surround'  
 " 工程文件浏览
 Plug 'scrooloose/nerdtree'
-" 增加缩进指示线 "
-Plug 'Yggdroot/indentLine'
+" 增加缩进指示线 "会影响markdown的显示效果，很多语法都给隐藏了
+"Plug 'Yggdroot/indentLine'
 " 括号补全 "
 Plug 'jiangmiao/auto-pairs'
 Plug 'tell-k/vim-autopep8'
 " 快速代码注释
 Plug 'scrooloose/nerdcommenter'
-" tagbar, 显示函数 以及 变量情况
-"Plug 'majutsushi/tagbar'
 " 美化状态栏和标签页 "
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -77,8 +74,6 @@ augroup load_ycm
 	autocmd!
 	autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
 augroup END
-"打字机音效
-Plug 'skywind3000/vim-keysound'
 
 call plug#end()
 "==================================================================
@@ -166,18 +161,23 @@ func Settitle()
         call append(line(".")+6, "") 
 	elseif &filetype == 'python' 
 	else
-		call setline(1, "/*************************************************************************") 
-		call append(line("."), "    > File Name: ".expand("%")) 
-		call append(line(".")+1, "    > Author:hooray") 
-		call append(line(".")+2, "    > Mail:hoorayitt@gmail.com ") 
-		call append(line(".")+3, "    > Created Time: ".strftime("%c")) 
-		call append(line(".")+4, " ************************************************************************/") 
+		call setline(1, "/*=========================================================") 
+		call append(line("."), "> File Name: ".expand("%")) 
+		call append(line(".")+1, "> Author:hooray") 
+		call append(line(".")+2, "> Mail:hoorayitt@gmail.com ") 
+		call append(line(".")+3, "> Created Time: ".strftime("%c")) 
+		call append(line(".")+4, "> =======================================================*/") 
 		call append(line(".")+5, "")
     endif
     if &filetype == 'cpp'
-        call append(line(".")+6, "#include<iostream>")
+        call append(line(".")+6, "#include<bits/stdc++.h>")
         call append(line(".")+7, "using namespace std;")
         call append(line(".")+8, "")
+        call append(line(".")+9, "int main(){")
+        call append(line(".")+10, "")
+        call append(line(".")+11, "\treturn 0;")
+        call append(line(".")+12, "}")
+		. normal 11G
     endif
     if &filetype == 'c'
         call append(line(".")+6, "#include<stdio.h>")
@@ -189,7 +189,7 @@ func Settitle()
 		. normal G
     endif
     "新建文件后，自动定位到文件末尾
-    autocmd BufNewFile * normal G
+    "autocmd BufNewFile * normal G
 endfunc 
 
 
@@ -207,17 +207,8 @@ func SetComment()
         call append(line(".")-1, "\#    describe:  ") 
         call append(line(".")-1, "\#===============================================================") 
         call append(line(".")-1, "") 
-
-		"找到函数名
-		". normal /def<CR>
-		". normal wyaw
 		. normal kkk$
-
-    "autocmd BufNewFile * normal kkA
-    "else 
 	endif
-    "新建文件后，自动定位到文件末尾
-    "autocmd BufNewFile * normal G
 endfunc 
 
 
@@ -381,6 +372,8 @@ inoremap <C-h> <left>
 inoremap <C-j> <down>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
+inoremap <c-a> <Home>
+inoremap <c-e> <End>
 cnoremap <c-h> <left>
 cnoremap <c-j> <down>
 cnoremap <c-k> <up>
@@ -403,6 +396,8 @@ nnoremap <leader>e :exit<CR>
 nnoremap <C-A> ggVG"+y<CR>
 "nnoremap <leader>v :r !pbpaste<CR>
 "vnoremap <leader>c :w !pbcopy<CR><CR>
+nnoremap <leader>v "+p
+vnoremap <leader>y "+y
 "打开文件管理器
 nnoremap <C-t> :tabnew .<CR>5j
 nnoremap <leader>, gT
@@ -415,13 +410,7 @@ nnoremap <silent> <Leader>l :Lines<CR>
 
 nnoremap <leader>r :call RunCoding()<CR>
 nnoremap <leader>R :call AsyncRunCoding()<CR>
-"Markdown 中直接允许python
-vnoremap r :w !python<CR>
-vnoremap R :w $HOME/.temp<CR>:call RunPython()<CR>
 
-func RunPython()
-	exec ":!python $HOME/.temp"
-endfunc
 
 "nnoremap <leader>m :call MakeCoding()<CR>
 func! MakeCoding()
@@ -435,7 +424,7 @@ endfunc
 func! RunCoding()
 	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
-		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o ./run% %;echo '<<===>>  Runing  <<===>>';./run%"
+		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r %;echo '<<===>>  Runing  <<===>>'; /tmp/run%:t:r"
 	elseif &filetype == 'python'
 		exec ":!clear; echo '<<===>>  Runing  <<===>>';python %"
 	elseif &filetype == 'sh'
@@ -490,10 +479,6 @@ let NERDTreeShowBookmarks=0
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 "窗口大小"
 let NERDTreeWinSize=25
-"快捷切换文件夹
-nnoremap <C-n> /▸<CR>
-nnoremap <C-p> ?▸<CR>
-
 
 "缩进指示线"
 "let g:indentLine_char='┆'
@@ -506,14 +491,10 @@ let g:autopep8_disable_show_diff=1
 map <F7> <leader>ci <CR>
 
 
-"问题：怎样在vim中实现花括号引号自动补全，包括html标签？
-
 "解决办法：只要把下面两段代码粘贴到~/.vimrc中，就可以实现括号超强补全
-
 "<!--括号引号补全代码{{{-->
 " 括号引号补全
 "<!--}}}-->
-
 "<!--html标签自动补全{{{-->
 " html自动补全
 "autocmd BufNewFile *  setlocal filetype=html
@@ -532,15 +513,6 @@ map <F7> <leader>ci <CR>
 "endfunction
 "inoremap > <ESC>:call InsertHtmlTag()<CR>a<CR><Esc>O
 "<!--}}}-->
-
-"之所以这里的括号补全代码中的函数实现反匹配
-"当打入(输入内容)，再按)系统会自动检查前面是否已经有匹配的括号
-"如果有就不再键入)，而是直接跳出
-
-"或许你得加：
-set autoindent
-set cindent
-
 
 
 "跳转至其css
@@ -619,17 +591,9 @@ autocmd FileType c set omnifunc=ccomplete#Complete
 let g:pydiction_location='~/.vim/bundle/pydiction/complete-dict'  
 set autoindent
 
-"tagbar
-""F9触发，设置宽度为30
-"let g:tagbar_width = 25
-"nmap <F9> :TagbarToggle<CR>
-"开启自动预览(随着光标在标签上的移动，顶部会出现一个实时的预览窗口)
-"let g:tagbar_autopreview = 1
-""关闭排序,即按标签本身在文件中的位置排序
-"let g:tagbar_sort = 0
-"
 "tagbar 替代品leaderF, 相关功能和fzf类似
 nnoremap <F9> :LeaderfFunction!<CR>
+nnoremap <C-k> :LeaderfFunction!<CR>
 "let g:Lf_ShortcutF = '<c-p>'
 "let g:Lf_ShortcutB = '<m-n>'
 "noremap <c-n> :LeaderfMru<cr>
@@ -640,17 +604,14 @@ nnoremap <F9> :LeaderfFunction!<CR>
 
 "let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
 "let g:Lf_WorkingDirectoryMode = 'Ac'
-"let g:Lf_WindowHeight = 0.30
+let g:Lf_WindowHeight = 0.30
 "let g:Lf_CacheDirectory = expand('~/.vim/cache')
 "let g:Lf_ShowRelativePath = 0
 "let g:Lf_HideHelp = 1
 "let g:Lf_StlColorscheme = 'powerline'
 "let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
-
-
 "airline options
-
 if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
@@ -658,7 +619,7 @@ endif
 " powerline symbols
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''   "''
+let g:airline_right_sep = ''   "''显示有问题
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
@@ -674,8 +635,6 @@ let g:airline#extensions#tabline#enabled=1 "顶部tab显示
 let g:airline_section_y = ''
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
-"
-
 
 "设置打字机音效
 let g:keysound_enable = 1
@@ -754,6 +713,8 @@ nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f 
 inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 
 " markdown "
+let g:markdown_enable_conceal = 0
+let g:markdown_enable_insert_mode_mappings = 0
 let g:instant_markdown_autostart = 0
 
 "=================================================================
@@ -846,7 +807,16 @@ function EnterFile()
 	if expand("%:e")=='list'
 		.normal $gf
 	elseif expand("%:e")=='md'
-		.normal ?```VNkojr
+		.normal mb?```"ayy
+		let loc_cpp=match(@a,"cpp")
+		let loc_python=match(@a,"python")
+		if loc_cpp>-1
+			.normal VNkoj:w /tmp/tmp.cpp
+			exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r /tmp/tmp.cpp;rm /tmp/tmp.cpp;echo '<<===>>  Runing  <<===>>'; /tmp/run%:t:r"
+		elseif loc_python>-1
+			.normal VNkoj:w !python
+		endif
+		.normal `b
 	else
 		.normal j
 	endif
@@ -868,4 +838,8 @@ vnoremap <C-l> :call AddListNumber()<CR>
 function AddListNumber()
 	let lnum = getpos('.')[1] + 1 - getpos("'<")[1]
 	. normal I=lnum. 
+endfunc
+vnoremap <C-i> :call AddListFlag()<CR>
+function AddListFlag()
+	. normal ^i- 
 endfunc

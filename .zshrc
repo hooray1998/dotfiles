@@ -24,7 +24,7 @@ alias someFunction='vi ~/.local/config/shellFunction.sh'
 fanqiang(){
 	#export http_proxy=http://127.0.0.1:1080
 	#export https_proxy=$http_proxy
-	export all_proxy="socks5://127.0.0.1:1082"	
+	export all_proxy="socks5://127.0.0.1:1081"	
 }
 
 # ===========================================================
@@ -112,6 +112,8 @@ alias mv='mv -i'
 # ===========================================================
 #alias study='vim ~/study.sh'
 alias study='vim ~/.local/config/bash.sh'
+alias studyShell2='vim ~/.local/config/bash-handbook.md'
+alias studyCppSTL='vim /home/itt/Coding/CppCoding/csp/golden.cpp'
 alias e='cd /media/Document'
 alias ml='cd ML; ls -1'
 alias jpt='jupyter notebook'
@@ -120,7 +122,6 @@ alias fin='find ./ -name '
 alias tt='taskbook'
 alias fsize='du -h -d 1'
 alias s='$HOME/.local/config/search_and_record.sh'
-alias helpbash='vim ~/.local/config/bash-handbook.md'
 alias h='tldr'
 alias pp='ipython'
 
@@ -139,23 +140,23 @@ alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt
 # For todo && note
 source /home/itt/.todo/bin/todo.sh
 alias list='vim ./*.list'
-alias md='vim ~/我的坚果云/Notes'
+alias md='vim ~/MyNutStore/Notes'
 
 function note(){
-cd ~/Notes
+last=`cat ~/.last-edit-note`
 if [ -n "$*"  ]; then
 	#while [ -n "$*"  ]; do
 		case $* in
-		.*) shift && vim . ;;
-		a*) shift && cd algorithm; vim . ;;
-		n*) shift && vim ;break ;;
-		p*) shift && cd projectSummary; vim . ;;
-		j*) shift && tree -L 2 ./ ;;
+		.*) shift && vim ~/MyNutStore/Notes ;;
+		a*) shift && vim ~/MyNutStore/Notes/algorithm ;;
+		n*) shift && vim ;;
+		p*) shift && vim ~/MyNutStore/Notes/projectSummary ;;
+		j*) shift && cd ${last%/*} ;vim `cat ~/.last-edit-note` ;;
 		 *) shift ;;
 		esac
 	#done
 else
-	vim `cat ~/.last-edit-note`
+	vim $last
 fi
 }
 
