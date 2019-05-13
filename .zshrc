@@ -2,6 +2,7 @@ source /etc/profile # 更新环境变量
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles # 替换 Homebrew Bottles源
 #. ~/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
 #source ~/.local/config/z.sh # 自动路径跳转
+
 #eval "$(lua $HOME/.local/config/z.lua --init zsh enhanced once echo)"
 #alias zz='z -i'
 #alias zc='z -c'
@@ -48,10 +49,10 @@ alias qx='shutdown -c'
 
 # ===========================================================
 # 编译运行C++, shell文件
-last2="init"
-source ~/.local/config/.runcpp_sh #运行cpp
-source ~/.local/config/.runsh_sh #运行cpp
-source ~/.local/config/.record_last_vimfile_sh #记录上一个编辑的文件
+# last2="init"
+# source ~/.local/config/.runcpp_sh #运行cpp
+# source ~/.local/config/.runsh_sh #运行cpp
+# source ~/.local/config/.record_last_vimfile_sh #记录上一个编辑的文件
 
 #===========================================================
 source ~/.local/config/.fast_tar_untar_sh #快速压缩解压
@@ -117,9 +118,8 @@ alias studyCppSTL='vim /home/itt/Coding/CppCoding/csp/golden.cpp'
 alias e='cd /media/Document'
 alias ml='cd ML; ls -1'
 alias jpt='jupyter notebook'
-alias jv='f=`cat .local/.last_vim `; cd ${f%/*}'
 alias fin='find ./ -name '
-alias tt='taskbook'
+alias tt='dosbox /home/itt/DOSBox/tt.exe  &'
 alias fsize='du -h -d 1'
 alias s='$HOME/.local/config/search_and_record.sh'
 alias h='tldr'
@@ -150,8 +150,7 @@ if [ -n "$*"  ]; then
 		.*) shift && vim ~/MyNutStore/Notes ;;
 		a*) shift && vim ~/MyNutStore/Notes/algorithm ;;
 		n*) shift && vim ;;
-		p*) shift && vim ~/MyNutStore/Notes/projectSummary ;;
-		j*) shift && cd ${last%/*} ;vim `cat ~/.last-edit-note` ;;
+		j*) shift && cd ${last%/*} ;;
 		 *) shift ;;
 		esac
 	#done
@@ -186,3 +185,14 @@ alias tim-er='/home/itt/Coding/QtRelease/send_to_tim.app/send_to_tim.sh &'
 # 运行着ss， 输入fanqiang就解决了
 # clone github 时使用国内的也挺快
 #alias 回退='grst'
+alias jk='cd /home/itt/Coding/QtCoding/TestXlsx/'
+alias j='cd /home/itt/Coding/QtCoding/ComeOnBoy/'
+alias jj='/home/itt/Coding/QtCoding/sendData/TcpClient &'
+
+alias vimm='vim `cat $HOME/.last-vim-list/last-md`'
+alias vimc='vim `cat $HOME/.last-vim-list/last-cpp`'
+alias vimp='vim `cat $HOME/.last-vim-list/last-py`'
+
+alias jm='f=`cat $HOME/.last-vim-list/last-md`; cd ${f%/*}'
+alias jc='f=`cat $HOME/.last-vim-list/last-cpp`; cd ${f%/*}'
+alias jp='f=`cat $HOME/.last-vim-list/last-py`; cd ${f%/*}'

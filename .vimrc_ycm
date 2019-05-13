@@ -1,3 +1,5 @@
+
+
 "=================================================================
 "		Vim-plug 插件管理       
 "=================================================================
@@ -76,14 +78,19 @@ augroup load_ycm
 augroup END
 
 call plug#end()
-"==================================================================
+"===============================================================
+"    NOTE:  显示相关  
+"===============================================================
+" 设置配色方案
+set background=dark
+"let g:vim_monokai_tasty_italic = 1 "加上这句后 注释会有底色，很丑"
+colorscheme vim-monokai-tasty
+let g:lightline = { 'colorscheme': 'monokai_tasty', }
+let g:airline_theme='monokai_tasty'
 
 syntax on
 set nu
 set shiftwidth=4
-"==================================================================
-" 显示相关  
-"==================================================================
 set go=             " 不要图形按钮  
 set guifont=Monaco:h16   " 设置字体  
 autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
@@ -99,121 +106,9 @@ set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936
 set fileencoding=utf-8
 
-"识别Alt
-function! Terminal_MetaMode(mode)
-    set ttimeout
-    if $TMUX != ''
-        set ttimeoutlen=30
-    elseif &ttimeoutlen > 80 || &ttimeoutlen <= 0
-        set ttimeoutlen=80
-    endif
-    if has('nvim') || has('gui_running')
-        return
-    endif
-    function! s:metacode(mode, key)
-        if a:mode == 0
-            exec "set <M-".a:key.">=\e".a:key
-        else
-            exec "set <M-".a:key.">=\e]{0}".a:key."~"
-        endif
-    endfunc
-    for i in range(10)
-        call s:metacode(a:mode, nr2char(char2nr('0') + i))
-    endfor
-    for i in range(26)
-        call s:metacode(a:mode, nr2char(char2nr('a') + i))
-        call s:metacode(a:mode, nr2char(char2nr('A') + i))
-    endfor
-    if a:mode != 0
-        for c in [',', '.', '/', ';', '[', ']', '{', '}']
-            call s:metacode(a:mode, c)
-        endfor
-        for c in ['?', ':', '-', '_']
-            call s:metacode(a:mode, c)
-        endfor
-    else
-        for c in [',', '.', '/', ';', '{', '}']
-            call s:metacode(a:mode, c)
-        endfor
-        for c in ['?', ':', '-', '_']
-            call s:metacode(a:mode, c)
-        endfor
-    endif
-endfunc
- 
-call Terminal_MetaMode(0)
-"noremap <ESC>x :echo "ALT-X pressed"<cr>  "没有设置超时，容易误操作"
-noremap <M-x> :echo "ALT-X pressed"<cr>
-exec "set <M-x>=\ex"
-"超时时间
-set ttimeout ttimeoutlen=50
 
 "==================================================================
-"  新文件标题
-"==================================================================
-"新建.c,.h,.sh,.java文件，自动插入文件头 
-autocmd BufNewFile *.cpp,*.[ch],*.py,*.sh,*.java exec ":call Settitle()" 
-""定义函数Settitle，自动插入文件头 
-func Settitle() 
-    "如果文件类型为.sh文件 
-    if &filetype == 'sh' 
-        call setline(1,"\#!/bin/bash") 
-        call append(line(".")+6, "") 
-	elseif &filetype == 'python' 
-	else
-		call setline(1, "/*=========================================================") 
-		call append(line("."), "> File Name: ".expand("%")) 
-		call append(line(".")+1, "> Author:hooray") 
-		call append(line(".")+2, "> Mail:hoorayitt@gmail.com ") 
-		call append(line(".")+3, "> Created Time: ".strftime("%c")) 
-		call append(line(".")+4, "> =======================================================*/") 
-		call append(line(".")+5, "")
-    endif
-    if &filetype == 'cpp'
-        call append(line(".")+6, "#include<bits/stdc++.h>")
-        call append(line(".")+7, "using namespace std;")
-        call append(line(".")+8, "")
-        call append(line(".")+9, "int main(){")
-        call append(line(".")+10, "")
-        call append(line(".")+11, "\treturn 0;")
-        call append(line(".")+12, "}")
-		. normal 11G
-    endif
-    if &filetype == 'c'
-        call append(line(".")+6, "#include<stdio.h>")
-        call append(line(".")+7, "  ")
-    endif
-    if &filetype == 'python'
-		call setline(1,"# -*- coding:utf-8 -*-") 
-		call append(line("."), "".expand("")) 
-		. normal G
-    endif
-    "新建文件后，自动定位到文件末尾
-    "autocmd BufNewFile * normal G
-endfunc 
-
-
-"==================================================================="
-"	函数注释
-"==================================================================="
-nnoremap <F1> :call SetComment()<CR>
-""定义函数Settitle，自动插入文件头 
-func SetComment() 
-    "如果文件类型为.sh文件 
-	if &filetype == 'python' 
-        call append(line(".")-1, "") 
-        call append(line(".")-1, "\#===============================================================") 
-        "call append(line(".")-1, "\#   func_name:") 
-        call append(line(".")-1, "\#    describe:  ") 
-        call append(line(".")-1, "\#===============================================================") 
-        call append(line(".")-1, "") 
-		. normal kkk$
-	endif
-endfunc 
-
-
-"==================================================================
-"	实用设置
+"	  NOTE: 实用设置
 "==================================================================
 
 " 设置当文件被改动时自动载入
@@ -314,105 +209,170 @@ au BufRead,BufNewFile *  setfiletype txt
 filetype plugin indent on 
 "打开文件类型检测, 加了这句才可以用智能补全
 set completeopt=longest,menu
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CTags的设定  
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let Tlist_Sort_Type = "name"    " 按照名称排序  
-let Tlist_Use_Right_Window = 1  " 在右侧显示窗口  
-let Tlist_Compart_Format = 1    " 压缩方式  
-let Tlist_Exist_OnlyWindow = 1  " 如果只有一个buffer，kill窗口也kill掉buffer  
-let Tlist_File_Fold_Auto_Close = 0  " 不要关闭其他文件的tags  
-let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树  
-autocmd FileType java set tags+=D:\tools\java\tags  
-"autocmd FileType h,cpp,cc,c set tags+=D:\tools\cpp\tags  
-let Tlist_Show_One_File=1            "不同时显示多个文件的tag，只显示当前文件的
-"设置tags  
-set tags=tags  
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"其他东东
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"默认打开Taglist 
-let Tlist_Auto_Open=1 
-"""""""""""""""""""""""""""""" 
-" Tag list (ctags) 
-"""""""""""""""""""""""""""""""" 
-let Tlist_Ctags_Cmd = '/usr/bin/ctags' 
-let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件的 
-let Tlist_Exit_OnlyWindow = 1 "如果taglist窗口是最后一个窗口，则退出vim 
-let Tlist_Use_Right_Window = 1 "在右侧窗口中显示taglist窗口
-" minibufexpl插件的一般设置
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1   
+"===============================================================
+"    NOTE:  识别Alt
+"===============================================================
+function! Terminal_MetaMode(mode)
+    set ttimeout
+    if $TMUX != ''
+        set ttimeoutlen=30
+    elseif &ttimeoutlen > 80 || &ttimeoutlen <= 0
+        set ttimeoutlen=80
+    endif
+    if has('nvim') || has('gui_running')
+        return
+    endif
+    function! s:metacode(mode, key)
+        if a:mode == 0
+            exec "set <M-".a:key.">=\e".a:key
+        else
+            exec "set <M-".a:key.">=\e]{0}".a:key."~"
+        endif
+    endfunc
+    for i in range(10)
+        call s:metacode(a:mode, nr2char(char2nr('0') + i))
+    endfor
+    for i in range(26)
+        call s:metacode(a:mode, nr2char(char2nr('a') + i))
+        call s:metacode(a:mode, nr2char(char2nr('A') + i))
+    endfor
+    if a:mode != 0
+        for c in [',', '.', '/', ';', '[', ']', '{', '}']
+            call s:metacode(a:mode, c)
+        endfor
+        for c in ['?', ':', '-', '_']
+            call s:metacode(a:mode, c)
+        endfor
+    else
+        for c in [',', '.', '/', ';', '{', '}']
+            call s:metacode(a:mode, c)
+        endfor
+        for c in ['?', ':', '-', '_']
+            call s:metacode(a:mode, c)
+        endfor
+    endif
+endfunc
+ 
+call Terminal_MetaMode(0)
+"noremap <ESC>x :echo "ALT-X pressed"<cr>  "没有设置超时，容易误操作"
+"noremap <M-x> :echo "ALT-X pressed"<cr>
+exec "set <M-x>=\ex"
+exec "set <M-j>=\ej"
+exec "set <M-k>=\ek"
+exec "set <M-s>=\es"
+exec "set <M-d>=\ed"
+exec "set <M-p>=\ep"
+"超时时间
+set ttimeout ttimeoutlen=50
+
+"===============================================================
+"    NOTE:  新文件标题
+"===============================================================
+autocmd BufNewFile *.cpp,*.[ch],*.py,*.sh,*.java exec ":call Settitle()" 
+""定义函数Settitle，自动插入文件头 
+func Settitle() 
+    "如果文件类型为.sh文件 
+    if &filetype == 'sh' 
+        call setline(1,"\#!/bin/bash") 
+        call append(line(".")+6, "") 
+	elseif &filetype == 'python' 
+	else
+		call setline(1, "/*=========================================================") 
+		call append(line("."), "> File Name: ".expand("%")) 
+		call append(line(".")+1, "> Author:hooray") 
+		call append(line(".")+2, "> Mail:hoorayitt@gmail.com ") 
+		call append(line(".")+3, "> Created Time: ".strftime("%c")) 
+		call append(line(".")+4, "> =======================================================*/") 
+		call append(line(".")+5, "")
+    endif
+    if &filetype == 'cpp'
+        call append(line(".")+6, "#include<bits/stdc++.h>")
+        call append(line(".")+7, "using namespace std;")
+        call append(line(".")+8, "")
+        call append(line(".")+9, "int main(){")
+        call append(line(".")+10, "")
+        call append(line(".")+11, "\treturn 0;")
+        call append(line(".")+12, "}")
+		. normal 11G
+    endif
+    if &filetype == 'c'
+        call append(line(".")+6, "#include<stdio.h>")
+        call append(line(".")+7, "")
+		. normal G
+    endif
+    if &filetype == 'python'
+		call setline(1,"# -*- coding:utf-8 -*-") 
+		call append(line("."), "".expand("")) 
+		. normal G
+    endif
+    "新建文件后，自动定位到文件末尾
+    "autocmd BufNewFile * normal G
+endfunc 
+
+"==================================================================="
+"	NOTE:  函数说明
+"==================================================================="
+func SetComment() 
+    "如果文件类型为.sh文件 
+	if &filetype == 'python' 
+        call append(line(".")-1, "") 
+        call append(line(".")-1, "\#===============================================================") 
+		call append(line(".")-1, "\#   func_name:") 
+        call append(line(".")-1, "\#    describe:  ") 
+        call append(line(".")-1, "\#===============================================================") 
+        call append(line(".")-1, "") 
+		. normal kkk$
+	else
+        call append(line(".")-1, "\"===============================================================") 
+		call append(line(".")-1, "\"    NOTE:  ") 
+        call append(line(".")-1, "\"===============================================================") 
+		. normal kk$
+	endif
+endfunc 
+
+"===============================================================
+"    NOTE:  自定义函数
+"===============================================================
+
+""""""""""""""""""""""
+"Quickly Run
+""""""""""""""""""""""
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'java'
+		exec "!javac %"
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		exec "!time python %"
+	elseif &filetype == 'html'
+		exec "!firefox % &"
+	elseif &filetype == 'go'
+		exec "!go build %<"
+		exec "!time go run %"
+	elseif &filetype == 'mkd'
+		exec "!~/.vim/markdown.pl % > %.html &"
+		exec "!firefox %.html &"
+	endif
+endfunc
 
 
-"=================================================================
-"键盘命令
-"=================================================================
+function! s:VSetSearch()
+let temp = @s
+norm! gv"sy
+let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+let @s = temp
+endfunction
 
-"设置<leader>为空格键
-let mapleader="\<Space>"
-
-"重映射"
-cnoremap <C-p> <Up>
-cnoremap <C-n> <Down>
-
-"快速遍历缓冲区"
-nnoremap <silent> <Tab> :bnext<CR>
-nnoremap <silent> <S-Tab> :bprevious<CR>
-
-"映射显示当前文件目录的快捷键"
-cnoremap <expr> %% getcmdtype( ) == ':' ? expand('%:h').'/' : '%%'
-
-"插入&&命令模式下上下左右
-"需要设置终端，Del发送Esc序列，Backspace发送ASCII Del
-inoremap <C-h> <left>
-inoremap <C-j> <down>
-inoremap <C-k> <up>
-inoremap <C-l> <right>
-inoremap <c-a> <Home>
-inoremap <c-e> <End>
-cnoremap <c-h> <left>
-cnoremap <c-j> <down>
-cnoremap <c-k> <up>
-cnoremap <c-l> <right>
-cnoremap <c-a> <Home>
-cnoremap <c-e> <End>
-
-"H,L移动到行首行尾
-map H ^
-map L $
-"可视模式下移动到行尾
-vnoremap L $h
-
-"保存文件
-nnoremap <leader>w :w<CR>
-nnoremap <leader>W :w !sudo tee % > /dev/null <CR>
-nnoremap <leader>i :bd %<CR><CR>
-nnoremap <leader>e :exit<CR>
-"快捷复制粘贴至系统
-nnoremap <C-A> ggVG"+y<CR>
-"nnoremap <leader>v :r !pbpaste<CR>
-"vnoremap <leader>c :w !pbcopy<CR><CR>
-nnoremap <leader>v "+p
-vnoremap <leader>y "+y
-"打开文件管理器
-nnoremap <C-t> :tabnew .<CR>5j
-nnoremap <leader>, gT
-nnoremap <leader>. gt
-nnoremap <leader>f :Files ~<CR>
-nnoremap <silent> <Leader>b :Buffers<CR>
-nnoremap <silent> <Leader>l :Lines<CR>
-
-"运行cpp  和 python, 先清屏
-
-nnoremap <leader>r :call RunCoding()<CR>
-nnoremap <leader>R :call AsyncRunCoding()<CR>
-
-
-"nnoremap <leader>m :call MakeCoding()<CR>
 func! MakeCoding()
     if &filetype == 'cpp'
 		exec ":AsyncRun g++ -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
@@ -424,9 +384,9 @@ endfunc
 func! RunCoding()
 	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
-		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r %;echo '<<===>>  Runing  <<===>>'; /tmp/run%:t:r"
+		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r %;echo '<<===>>  Runing  <<===>>';time /tmp/run%:t:r"
 	elseif &filetype == 'python'
-		exec ":!clear; echo '<<===>>  Runing  <<===>>';python %"
+		exec ":!clear; echo '<<===>>  Runing  <<===>>';time python %"
 	elseif &filetype == 'sh'
 		exec ":!chmod +x %;./%"
 	elseif &filetype == 'html'
@@ -458,20 +418,16 @@ func! AsyncRunCoding()
     endif
 endfunc 
 
-nnoremap <silent> <F5> <cr>
-"比较文件  
-nnoremap <C-F4> :vert diffsplit 
-"C,C++的调试
-nnoremap <C-F5> :call Rungdb()<CR>
 func! Rungdb()
     exec "w"
     exec "!g++ % -g -o %<"
     exec "!gdb ./%<"
 endfunc
 
+"===============================================================
+"    NOTE:  Tree indentLine autopep8 mapleader
+"===============================================================
 
-"F8开启和关闭树"
-map <F8> :NERDTreeToggle<CR>
 let NERDTreeChDirMode=1
 "显示书签"
 let NERDTreeShowBookmarks=0
@@ -487,15 +443,12 @@ let NERDTreeWinSize=25
 "autopep8设置"
 let g:autopep8_disable_show_diff=1
 
-"let mapleader=','
-map <F7> <leader>ci <CR>
 
-
+"===============================================================
+"    NOTE:  HTML补全， CSS跳转
+"===============================================================
 "解决办法：只要把下面两段代码粘贴到~/.vimrc中，就可以实现括号超强补全
 "<!--括号引号补全代码{{{-->
-" 括号引号补全
-"<!--}}}-->
-"<!--html标签自动补全{{{-->
 " html自动补全
 "autocmd BufNewFile *  setlocal filetype=html
 "function! InsertHtmlTag()
@@ -509,11 +462,10 @@ map <F7> <leader>ci <CR>
 	"normal! p
 	"normal! a>
 "endif
-":call cursor(save_cursor[1], save_cursor[2], save_cursor[3])
+"call cursor(save_cursor[1], save_cursor[2], save_cursor[3])
 "endfunction
 "inoremap > <ESC>:call InsertHtmlTag()<CR>a<CR><Esc>O
 "<!--}}}-->
-
 
 "跳转至其css
 function! JumpToCSS()
@@ -529,10 +481,29 @@ endif
 endif
 endfunction
 
-nnoremap <leader>]  :call JumpToCSS()<CR>
+
+"===============================================================
+"    NOTE:  CTags and GTags
+"===============================================================
+"ctags
+set tags=./.tags;,.tags
+" for gutentags"
+" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 
-"new ycm"
+"===============================================================
+"    NOTE:  YouCompleteMe
+"===============================================================
 let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_server_log_level = 'info'
@@ -588,12 +559,10 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete  
 
 
-let g:pydiction_location='~/.vim/bundle/pydiction/complete-dict'  
-set autoindent
-
+"===============================================================
+"    NOTE:  LeaderF
+"===============================================================
 "tagbar 替代品leaderF, 相关功能和fzf类似
-nnoremap <F9> :LeaderfFunction!<CR>
-nnoremap <C-k> :LeaderfFunction!<CR>
 "let g:Lf_ShortcutF = '<c-p>'
 "let g:Lf_ShortcutB = '<m-n>'
 "noremap <c-n> :LeaderfMru<cr>
@@ -611,13 +580,15 @@ let g:Lf_WindowHeight = 0.30
 "let g:Lf_StlColorscheme = 'powerline'
 "let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
-"airline options
+"===============================================================
+"    NOTE:  Airline Options
+"===============================================================
 if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
 
 " powerline symbols
-let g:airline_left_sep = ''
+let g:airline_left_sep = ''   "''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''   "''显示有问题
 let g:airline_right_alt_sep = ''
@@ -636,59 +607,26 @@ let g:airline_section_y = ''
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 
-"设置打字机音效
+"===============================================================
+"    NOTE:  打字机
+"===============================================================
 let g:keysound_enable = 1
-"设置默认音效主题，可以选择：default, typewriter, mario, bubble, sword
 let g:keysound_py_version = 3
 let g:keysound_volume = 1000
 let g:keysound_theme = 'typewriter'
-
-"C-l 清除高亮
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
-
-
-" 重定义*, 使其那能够搜索选中文本
-xnoremap * : <C-u> call <SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>
-xnoremap # : <C-u> call <SID>VSetSearch()<CR>?<C-R>=@/<CR><CR>
-
-function! s:VSetSearch()
-let temp = @s
-norm! gv"sy
-let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
-let @s = temp
-endfunction
+"设置默认音效主题，可以选择：default, typewriter, mario, bubble, sword
 
 
 
-" 设置配色方案
-set background=dark
-"let g:vim_monokai_tasty_italic = 1 "加上这句后 注释会有底色，很丑"
-colorscheme vim-monokai-tasty
-let g:lightline = { 'colorscheme': 'monokai_tasty', }
-let g:airline_theme='monokai_tasty'
-
-" tasklist.vim  任务列表插件 <leader>t
-let g:tlTokenList = ["FIXME",  "TODO",  "###", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
-"如果设置为1，则任务插件下次打开时会恢复到上次关闭时的位置. 默认是找到离光标当前行最近的标示符，可以如下更改:
-let g:tlRememberPosition = 1
-
-"======================================================="
-"	For Python
-"======================================================="
-nnoremap <leader>p Iprint($a)^j
-nnoremap <leader>P Iprint("$a")^j
-
-
-
-
-" Signify ------------------------------
-
+"===============================================================
+"    NOTE:  Signify
+"===============================================================
 " this first setting decides in which order try to guess your current vcs
 " UPDATE it to reflect your preferences, it will speed up opening files
 let g:signify_vcs_list = [ 'git', 'hg' ]
 " mappings to jump to changed blocks
-nmap <leader>d <plug>(signify-next-hunk)
-nmap <leader>D <plug>(signify-prev-hunk)
+"nmap <Space>d <plug>(signify-next-hunk)
+"nmap <Space>D <plug>(signify-prev-hunk)
 " nicer colors
 highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
 highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
@@ -697,58 +635,43 @@ highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
 highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
-" FileFormat ================================= "
-command! Format :call FileFormat()
-func FileFormat() 
-	if &filetype == 'python' 
-		exec "!python ~/.local/config/FormatPython.py %"
-	endif
-endfunc 
-
-"=================================================================
-" 所有模式下f键翻译选中区域
-"=================================================================
-vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-
-" markdown "
-let g:markdown_enable_conceal = 0
-let g:markdown_enable_insert_mode_mappings = 0
-let g:instant_markdown_autostart = 0
-
-"=================================================================
-"	new
-"=================================================================
-"ctags
-set tags=./.tags;,.tags
-" for gutentags"
-" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+"===============================================================
+"    NOTE:  ALE
+"===============================================================
+"for ale
+"let g:ale_linters_explicit = 1
+let g:ale_set_highlights = 0
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 500
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '%code: %%s'
+let g:ale_lint_on_text_changed = 'never'
+let g:airline#extensions#ale#enabled = 1
  
-" 所生成的数据文件的名称
-let g:gutentags_ctags_tagfile = '.tags'
- 
-" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
- 
-" 配置 ctags 的参数
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '.'
 
+"for ale format"
+"autocmd FileType python noremap <buffer> <F5> :ALEFix<CR>
+"let g:ale_fixers = { 'python': ['add_blank_lines_for_python_control_statements','autopep8','isort','yapf','remove_trailing_lines','trim_wh' }
+
+
+
+"===============================================================
+"    NOTE:  AsyncRun cpp-highlight newtw echodoc
+"===============================================================
 "for asyncrun"
 " 自动打开 quickfix window ，高度为 6
 let g:asyncrun_open = 10
 
 " 任务结束时候响铃提醒
 let g:asyncrun_bell = 1
-
-" 设置 F10 打开/关闭 Quickfix 窗口
-nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
-
-
 
 "for the left of vim-signify
 set signcolumn=yes
@@ -767,41 +690,10 @@ let NERDTreeHijackNetrw=1
 set noshowmode
 
 
-"for ale
-"let g:ale_linters_explicit = 1
-let g:ale_set_highlights = 0
-let g:ale_completion_delay = 500
-let g:ale_echo_delay = 500
-let g:ale_lint_delay = 500
-let g:ale_echo_msg_format = '%code: %%s'
-let g:ale_lint_on_text_changed = 'never'
-let g:airline#extensions#ale#enabled = 1
- 
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
-let g:ale_c_cppcheck_options = ''
-let g:ale_cpp_cppcheck_options = ''
-nnoremap <leader>S <Plug>(ale_previous_wrap)
-nnoremap <leader>s <Plug>(ale_next_wrap)
-highlight clear ALEErrorSign
-highlight clear ALEWarningSign
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '.'
-
-"for ale format"
-"autocmd FileType python noremap <buffer> <F5> :ALEFix<CR>
-"let g:ale_fixers = { 'python': ['add_blank_lines_for_python_control_statements','autopep8','isort','yapf','remove_trailing_lines','trim_wh' }
-
-"切换头/源文件
-nnoremap <F4> :call SwitchHeaderOrSource()<CR>
-function SwitchHeaderOrSource()
-	if expand("%:e") == "cpp"
-		exec ":e ".expand("%:t:r").expand(".h")
-	else
-		exec ":e ".expand("%:t:r").expand(".cpp")
-	endif
-endfunc
-"在list文件中快捷进入文件
+"===============================================================
+"    NOTE:  For Notes
+"===============================================================
+" 集成Enter，list快速进入文件，markdown快速运行代码
 nnoremap <Enter> :call EnterFile()<CR>
 function EnterFile()
 	if expand("%:e")=='list'
@@ -822,16 +714,14 @@ function EnterFile()
 	endif
 endfunc
 
+"===============================================================
+"    NOTE:  For Markdown
+"===============================================================
 
-"=================================================================
-"	记录上一次的markdown笔记的目录
-"=================================================================
-autocmd BufEnter * call RecordLastNote()
-func RecordLastNote()
-	if match(expand("%:p"),'Notes') > -1
-		call writefile([expand("%:p")],expand("$HOME/.last-edit-note"))
-	endif
-endfunc
+" markdown "
+let g:markdown_enable_conceal = 0
+let g:markdown_enable_insert_mode_mappings = 0
+let g:instant_markdown_autostart = 0
 
 " 可是模式输入C-l增加行号
 vnoremap <C-l> :call AddListNumber()<CR>
@@ -839,7 +729,155 @@ function AddListNumber()
 	let lnum = getpos('.')[1] + 1 - getpos("'<")[1]
 	. normal I=lnum. 
 endfunc
-vnoremap <C-i> :call AddListFlag()<CR>
+vnoremap <C-k> :call AddListFlag()<CR>
 function AddListFlag()
 	. normal ^i- 
 endfunc
+vnoremap <C-c> omaoo```'aO```
+nnoremap # :call SetTitle()<CR>
+function SetTitle()
+	.normal "yyy
+	if match(@y,"#")>-1
+		.normal I#
+	else
+		.normal I# 
+	endif
+endfunc
+
+
+"======================================================="
+"	 NOTE:  For Python
+"======================================================="
+nnoremap <Space>p Iprint($a)^j
+nnoremap <Space>P Iprint("$a")^j
+
+command! Format :call FileFormat()
+func FileFormat() 
+	if &filetype == 'python' 
+		exec "!python ~/.local/config/FormatPython.py %"
+	endif
+endfunc 
+
+"=================================================================
+"    NOTE:  所有模式下f键翻译选中区域
+"=================================================================
+vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+
+
+let g:tlTokenList = ["FIXME",  "TODO",  "###", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
+let g:tlRememberPosition = 1  "下次打开时会恢复到上次关闭时的位置
+"===============================================================
+"    NOTE:  常用键盘快捷键
+"===============================================================
+
+"设置<Space>为空格键
+"let mapleader="\<Space>"
+
+"快速遍历缓冲区"
+noremap <silent> <Tab> :bn<CR>
+noremap <silent> <S-Tab> :bp<CR>
+
+"映射显示当前文件目录的快捷键"
+cnoremap <expr> %% getcmdtype( ) == ':' ? expand('%:h').'/' : '%%'
+
+"插入&&命令模式下上下左右
+"需要设置终端，Del发送Esc序列，Backspace发送ASCII Del
+inoremap <C-h> <left>
+"inoremap <C-j> <C-n>
+"inoremap <C-k> <C-p>
+inoremap <C-l> <right>
+inoremap <c-a> <Home>
+inoremap <c-e> <End>
+cnoremap <c-h> <left>
+cnoremap <c-j> <down>
+cnoremap <c-k> <up>
+cnoremap <c-l> <right>
+cnoremap <c-a> <Home>
+cnoremap <c-e> <End>
+
+"H,L移动到行首行尾
+map H ^
+map L $
+"可视模式下移动到行尾
+vnoremap L $h
+
+"保存文件
+nnoremap <Space>w :w<CR>
+nnoremap <Space>W :w !sudo tee % > /dev/null <CR>
+nnoremap <Space>i :bd %<CR><CR>
+nnoremap <Space>e :exit<CR>
+"快捷复制粘贴至系统
+nnoremap <C-A> ggVG"+y<CR>
+"nnoremap <Space>v :r !pbpaste<CR>
+"vnoremap <Space>c :w !pbcopy<CR><CR>
+nnoremap <Space>v "+p
+vnoremap <Space>y "+y
+"打开文件管理器
+nnoremap <C-t> :tabnew .<CR>5j
+nnoremap <Space>, gT
+nnoremap <Space>. gt
+nnoremap <Space>f :Files ~<CR>
+nnoremap <silent> <Space>b :Buffers<CR>
+nnoremap <silent> <Space>l :Lines<CR>
+
+"运行cpp  和 python, 先清屏
+nnoremap <Space>r :call RunCoding()<CR>
+nnoremap <Space>R :call AsyncRunCoding()<CR>
+
+"C-l 清除高亮
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
+" 重定义*, 使其那能够搜索选中文本
+xnoremap * : <C-u> call <SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>
+xnoremap # : <C-u> call <SID>VSetSearch()<CR>?<C-R>=@/<CR><CR>
+
+"比较文件  
+nnoremap <C-F4> :vert diffsplit 
+
+"C,C++的调试
+nnoremap <C-F5> :call Rungdb()<CR>
+
+"F8开启和关闭树"
+map <F8> :NERDTreeToggle<CR>
+nnoremap <Space>]  :call JumpToCSS()<CR>
+
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+"切换头/源文件
+noremap <M-x> :A<CR>
+"增加说明
+nnoremap <M-p> :call SetComment()<CR>
+
+"快速代码注释
+map <F7> <Space>ci <CR>  
+
+"查看函数定义
+nnoremap <F9> :LeaderfFunction!<CR>
+nnoremap <C-k> :LeaderfFunction!<CR>
+
+"快速跳转错误
+nmap <M-k> <Plug>(ale_previous_wrap)
+nmap <M-j> <Plug>(ale_next_wrap)
+"<Space>s触发/关闭语法检查
+nmap <M-s> :ALEToggle<CR>
+"<Space>d查看错误或警告的详细信息
+nmap <M-d> :ALEDetail<CR>
+
+"	记录上一次的markdown笔记的目录
+autocmd VimEnter  * call RecordPath()
+function RecordPath()
+	if match(expand("%:p"),'Notes') > -1
+		call writefile([expand("%:p")],expand("$HOME/.last-vim-list/last-note"))
+	endif
+	if match(expand("%:e"), 'md') > -1
+		call writefile([expand("%:p")],expand("$HOME/.last-vim-list/last-md"))
+	elseif match(expand("%:e"), 'py') > -1
+		call writefile([expand("%:p")],expand("$HOME/.last-vim-list/last-py"))
+	elseif match(expand("%:e"), 'cpp') > -1
+		call writefile([expand("%:p")],expand("$HOME/.last-vim-list/last-cpp"))
+	endif
+endfunc
+

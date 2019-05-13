@@ -10,6 +10,11 @@ c++
 
 c
 - strtok() #分割字符串
+		const char *seq = ",";
+		char *p = strtok(str,seq);
+        while(p){
+            p = strtok(NULL,seq);
+        }
 - itoa(c++11)
 - atoi(c++11)
 - sscanf()
