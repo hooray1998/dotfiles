@@ -143,7 +143,9 @@ alias list='vim ./*.list'
 alias md='vim ~/MyNutStore/Notes'
 
 function note(){
-last=`cat ~/.last-edit-note`
+
+
+last=`cat $HOME/.last-vim-list/last-note`
 if [ -n "$*"  ]; then
 	#while [ -n "$*"  ]; do
 		case $* in
@@ -193,6 +195,7 @@ alias vimm='vim `cat $HOME/.last-vim-list/last-md`'
 alias vimc='vim `cat $HOME/.last-vim-list/last-cpp`'
 alias vimp='vim `cat $HOME/.last-vim-list/last-py`'
 
+alias jn='f=`cat $HOME/.last-vim-list/last-note`; cd ${f%/*}'
 alias jm='f=`cat $HOME/.last-vim-list/last-md`; cd ${f%/*}'
 alias jc='f=`cat $HOME/.last-vim-list/last-cpp`; cd ${f%/*}'
 alias jp='f=`cat $HOME/.last-vim-list/last-py`; cd ${f%/*}'
