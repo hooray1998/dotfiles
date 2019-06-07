@@ -68,7 +68,7 @@ vnoremap <Space>y "+y
 nnoremap <C-t> :tabnew .<CR>5j
 nnoremap <Space>, gT
 nnoremap <Space>. gt
-nnoremap <Space>f :Files ~<CR>
+nnoremap <Space>f :Files ..<CR>
 nnoremap <silent> <Space>b :Buffers<CR>
 nnoremap <silent> <Space>l :Lines<CR>
 

@@ -45,11 +45,12 @@ endfunc
 call Terminal_MetaMode(0)
 "noremap <ESC>x :echo "ALT-X pressed"<cr>  "没有设置超时，容易误操作"
 "noremap <M-x> :echo "ALT-X pressed"<cr>
-exec "set <M-x>=\ex"
-exec "set <M-j>=\ej"
-exec "set <M-k>=\ek"
-exec "set <M-s>=\es"
-exec "set <M-d>=\ed"
-exec "set <M-p>=\ep"
+
+"exec "set <M-x>=\ex"
+"exec "set <M-j>=\ej"
+"exec "set <M-k>=\ek"
+"exec "set <M-s>=\es"
+"exec "set <M-d>=\ed"
+"exec "set <M-p>=\ep"
 "超时时间
 set ttimeout ttimeoutlen=50

@@ -5,8 +5,14 @@ call plug#begin('~/.vim/plugged')
 "GTags
 "多用c-w ] 代替c-]
 "Plug 'ludovicchabant/vim-gutentags'
+Plug 'liuchengxu/space-vim-theme'
+Plug 'joshdick/onedark.vim'
+Plug 'mhartington/oceanic-next'
+"Plug 'vim-pandoc/vim-pandoc'
+"Plug 'vim-pandoc/vim-pandoc-syntax'
 "AsyncRun shell command
 Plug 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/quickmenu.vim'
 "Async syntax check
 Plug 'w0rp/ale'
 "better highlight for cpp"
@@ -72,3 +78,4 @@ augroup load_ycm
 augroup END
 
 call plug#end()
+

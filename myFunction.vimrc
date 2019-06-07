@@ -1,14 +1,14 @@
 "===============================================================
 "    NOTE:  新文件标题
 "===============================================================
-autocmd BufNewFile *.cpp,*.[ch],*.py,*.sh,*.java exec ":call Settitle()" 
+autocmd BufNewFile *.md,*.cpp,*.[ch],*.py,*.sh,*.java exec ":call Settitle()" 
 ""定义函数Settitle，自动插入文件头 
 func Settitle() 
     "如果文件类型为.sh文件 
     if &filetype == 'sh' 
         call setline(1,"\#!/bin/bash") 
         call append(line(".")+6, "") 
-	elseif &filetype == 'python' 
+	elseif &filetype == 'python' || &filetype == 'markdown'
 	else
 		call setline(1, "/*=========================================================") 
 		call append(line("."), "> File Name: ".expand("%")) 
@@ -35,6 +35,11 @@ func Settitle()
     endif
     if &filetype == 'python'
 		call setline(1,"# -*- coding:utf-8 -*-") 
+		call append(line("."), "".expand("")) 
+		. normal G
+    endif
+	if &filetype == 'markdown'
+		call setline(1, "# ".expand("%:t:r")) 
 		call append(line("."), "".expand("")) 
 		. normal G
     endif
@@ -82,6 +87,8 @@ func! CompileRunGcc()
 	elseif &filetype == 'java'
 		exec "!javac %"
 		exec "!time java %<"
+	elseif &filetype == 'javascript'
+		exec "!time node %"
 	elseif &filetype == 'sh'
 		:!time bash %
 	elseif &filetype == 'python'
@@ -105,20 +112,14 @@ let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
 let @s = temp
 endfunction
 
-func! MakeCoding()
-    if &filetype == 'cpp'
-		exec ":AsyncRun g++ -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
-	elseif &filetype == 'c'
-		exec ":AsyncRun gcc -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\""
-	else
-    endif
-endfunc 
 func! RunCoding()
 	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
 		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r %;echo '<<===>>  Runing  <<===>>';time /tmp/run%:t:r"
 	elseif &filetype == 'python'
 		exec ":!clear; echo '<<===>>  Runing  <<===>>';time python %"
+	elseif &filetype == 'javascript'
+		exec "!time node %"
 	elseif &filetype == 'sh'
 		exec ":!chmod +x %;./%"
 	elseif &filetype == 'html'
@@ -156,3 +157,14 @@ func! Rungdb()
     exec "!gdb ./%<"
 endfunc
 
+function  SearchFiles()
+	if expand("%:p") =~ "Notes"
+		exec ":Files ~/MyNutStore/Notes"
+	elseif expand("%:p") =~ "QtCoding"
+		exec ":Files ~/Coding/QtCoding"
+	elseif expand("%:p") =~ "PycharmProjects"
+		exec ":Files ~/PycharmProjects"
+	else
+		exec ":Files ."
+	endif
+endfunc

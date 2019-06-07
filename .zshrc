@@ -1,9 +1,14 @@
+alias vim=nvim
 source /etc/profile # 更新环境变量
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles # 替换 Homebrew Bottles源
+export PATH="$HOME/.cabal/bin:$PATH"
+
 #. ~/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
 #source ~/.local/config/z.sh # 自动路径跳转
 
-#eval "$(lua $HOME/.local/config/z.lua --init zsh enhanced once echo)"
+eval "$(lua $HOME/.local/config/z.lua --init zsh enhanced once echo)"
+alias zb='z -b'
+source $HOME/.local/config/m.sh
 #alias zz='z -i'
 #alias zc='z -c'
 #alias zf='z -I'
@@ -22,17 +27,20 @@ alias someFunction='vi ~/.local/config/shellFunction.sh'
 
 # ===========================================================
 # proxy 终端下翻墙, 访问github更快
-fanqiang(){
+#fanqiang(){
 	#export http_proxy=http://127.0.0.1:1080
 	#export https_proxy=$http_proxy
-	export all_proxy="socks5://127.0.0.1:1081"	
-}
+	#export all_proxy="socks5://127.0.0.1:1081"	
+#}
 
-# ===========================================================
+ #===========================================================
 # zsh
 export ZSH="/home/itt/.oh-my-zsh"
 #RPROMPT="%/" #右提示符
 ZSH_THEME="robbyrussell" 
+#ZSH_THEME="ys" 
+#ZSH_THEME="agnoster" 
+
 plugins=( git ) 
 source $ZSH/oh-my-zsh.sh 
 
@@ -47,17 +55,9 @@ alias c-='shutdown -r $1 '
 alias qx='shutdown -c'
 
 
-# ===========================================================
-# 编译运行C++, shell文件
-# last2="init"
-# source ~/.local/config/.runcpp_sh #运行cpp
-# source ~/.local/config/.runsh_sh #运行cpp
-# source ~/.local/config/.record_last_vimfile_sh #记录上一个编辑的文件
-
 #===========================================================
 source ~/.local/config/.fast_tar_untar_sh #快速压缩解压
 source /home/itt/Coding/QtCoding/.auto_package/autoPackage.sh #qt快速打包
-
 # ===========================================================
 # 编辑配置
 alias vimrc_null='vim  ~/.local/config/.vimrc_null'
@@ -66,27 +66,16 @@ alias vimrc_ycm='vim  ~/.local/config/.vimrc_ycm'
 alias null='cp ~/.local/config/.vimrc_null ~/.vimrc; echo "vim快捷版"'
 alias ycm='cp ~/.local/config/.vimrc_ycm ~/.vimrc; echo "vim完整版"'
 cp ~/.local/config/.vimrc_ycm ~/.vimrc # 默认启用完整版
-
 # ===========================================================
 # Git常用命令: git gaa cm ggpush ggpull
 alias gitstudy='vim $HOME/.local/config/gitStudy.sh'
+
 alias glg='git lg' 
 alias grlg='git reflog' 
 alias grst='git reset --hard ' 
 alias ignore='vim .gitignore'
-cm(){
-	if [ `pwd` = "/home/itt/.local/config" ]
-	then
-		echo '拷贝相关文件'
-		cp ~/.gitconfig ./
-		cp ~/.zshrc ./
-	fi
-	gaa
-	git commit -m "$*"
-}
-gmerge_dev(){
-	git merge --no-ff -m "$*" develop
-}
+cm(){ gaa; git commit -m "$*" }
+gmerge_dev(){ git merge --no-ff -m "$*" develop }
 
 
 
@@ -99,8 +88,8 @@ alias pa='pip install'
 
 # ===========================================================
 # 快速编辑文件
-alias zshrc='vim ~/.zshrc'
-alias vimrc='vim ~/.vimrc'
+alias zshrc='vim ~/.local/config/.zshrc'
+alias vimrc='vim ~/.config/nvim/init.vim'
 alias szsh='source ~/.zshrc'
 alias gh='vim ~/.vim/gitStudy.txt'
 
@@ -138,7 +127,7 @@ alias bbb='cd ~/Blog; open -a "/Applications/Google Chrome.app" http://hoorayitt
 
 # ===========================================================
 # For todo && note
-source /home/itt/.todo/bin/todo.sh
+source /home/itt/.todo/config/todo.sh
 alias list='vim ./*.list'
 alias md='vim ~/MyNutStore/Notes'
 
@@ -147,12 +136,11 @@ function note(){
 
 last=`cat $HOME/.last-vim-list/last-note`
 if [ -n "$*"  ]; then
-	#while [ -n "$*"  ]; do
 		case $* in
 		.*) shift && vim ~/MyNutStore/Notes ;;
 		a*) shift && vim ~/MyNutStore/Notes/algorithm ;;
-		n*) shift && vim ;;
-		j*) shift && cd ${last%/*} ;;
+		n*) shift && vim ~/MyNutStore/Notes/新建笔记.md;;
+		j*) shift && cd ${last%/*};find ~/MyNutStore/Notes  -mtime -3 -type f |grep md ;;
 		 *) shift ;;
 		esac
 	#done
@@ -187,7 +175,7 @@ alias tim-er='/home/itt/Coding/QtRelease/send_to_tim.app/send_to_tim.sh &'
 # 运行着ss， 输入fanqiang就解决了
 # clone github 时使用国内的也挺快
 #alias 回退='grst'
-alias jk='cd /home/itt/Coding/QtCoding/TestXlsx/'
+#alias jk='cd /home/itt/Coding/QtCoding/TestXlsx/'
 alias j='cd /home/itt/Coding/QtCoding/ComeOnBoy/'
 alias jj='/home/itt/Coding/QtCoding/sendData/TcpClient &'
 
@@ -199,3 +187,13 @@ alias jn='f=`cat $HOME/.last-vim-list/last-note`; cd ${f%/*}'
 alias jm='f=`cat $HOME/.last-vim-list/last-md`; cd ${f%/*}'
 alias jc='f=`cat $HOME/.last-vim-list/last-cpp`; cd ${f%/*}'
 alias jp='f=`cat $HOME/.last-vim-list/last-py`; cd ${f%/*}'
+
+# bc is basic calculation
+alias jk='mycli -h localhost -u root -p 123456'
+echo "正确指法按4（）-"
+
+alias fanqiang-TW="cp ~/MyNutStore/v2ray/TW.json ~/MyNutStore/v2ray/config.json; service v2ray restart; service v2ray status"
+alias fanqiang-JP="cp ~/MyNutStore/v2ray/JP.json ~/MyNutStore/v2ray/config.json; service v2ray restart; service v2ray status"
+alias fanqiang-HK="cp ~/MyNutStore/v2ray/HK.json ~/MyNutStore/v2ray/config.json; service v2ray restart; service v2ray status"
+
+#进入目录，然后 source activate myblogvenv 开启虚拟环境, source deactivate退出

@@ -31,13 +31,15 @@ $ rename 's/\.txt/\.c/' *.txt
 $ rename 'y/a-z/A-Z/' *.c
 
 VimScript
-%:p     - File name of current buffer with full path
-%:t     - File name of current buffer without path
-%:p:h   - File path of current buffer without file name
-%:e     - File extension of current buffer
-%:t:r   - File name of current buffer without path and extension
-%       - File name relativize to current directory
-%:h:.   - File path relativize to current directory
+path='/home/itt/.local/config/bash.sh'
+%<      - File name of current buffer with full path without extension(/home/itt/.local/config/bash)
+%:p     - File name of current buffer with full path (/home/itt/.local/config/bash.sh)
+%:t     - File name of current buffer without path(bash.sh)
+%:p:h   - File path of current buffer without file name(/home/itt/.local/config)
+%:e     - File extension of current buffer(sh)
+%:t:r   - File name of current buffer without path and extension(bash)
+%       - File name relativize to current directory(/home/itt/.local/config/bash.sh)
+%:h:.   - File path relativize to current directory(/home/itt/.local/config)
 <cwd>   - Current directory
 <cword> - Current word under cursor
 <cfile> - Current file name under cursor

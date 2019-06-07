@@ -1,6 +1,8 @@
 "===============================================================
 "    NOTE:  Tree indentLine autopep8 mapleader
 "===============================================================
+"隐藏dot-prefixed
+let g:dirvish_mode = ':silent keeppatterns g@\v/\.[^\/]+/?$@d -'
 
 let NERDTreeChDirMode=1
 "显示书签"
@@ -21,7 +23,7 @@ let g:autopep8_disable_show_diff=1
 "    NOTE:  CTags and GTags
 "===============================================================
 "ctags
-set tags=./.tags;,.tags
+set tags=./.tags;,tags
 " for gutentags"
 " gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']

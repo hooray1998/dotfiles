@@ -1,0 +1,489 @@
+"=================================================================
+"		Vim-plug 插件管理       
+"=================================================================
+call plug#begin('~/.vim/plugged')
+
+" 异步执行Shell的插件
+Plug 'skywind3000/asyncrun.vim'
+
+" 美化状态栏和标签页 不需要可以注释掉
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" 使dd删除更加强大, 必须使用
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
+
+" monokai theme" 一个主题,为了达到示例上的高亮彩色主题 "
+Plug 'patstockwell/vim-monokai-tasty'
+
+call plug#end()
+
+"==================================================================
+" 显示相关  
+"==================================================================
+"禁用闪烁和响铃
+set vb t_vb=
+"禁用搜索高亮
+set nohlsearch
+syntax on
+set nu
+set shiftwidth=4
+set go=             " 不要图形按钮  
+autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
+autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+set showcmd         " 输入的命令显示出来，看的清楚些  
+set laststatus=2    " 启动显示状态行(1),总是显示状态行(2)  
+
+"编码"
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936
+set fileencoding=utf-8
+
+"==================================================================
+"	实用设置
+"==================================================================
+
+set nocompatible              " 去除VI一致性,必须要添加
+
+"允许插件  
+"通过% 实现XML标签的跳转"
+set nocompatible
+runtime macros/matchit.vim
+set clipboard+=unnamed "共享剪贴板  
+set nobackup "从不备份  
+set autoread " 设置当文件被改动时自动载入
+set autowrite "自动保存
+set ruler					" 显示状态栏标尺"
+set cursorline              " 突出显示当前行
+set magic                   " 设置魔术
+set guioptions-=T           " 隐藏工具栏
+set guioptions-=m           " 隐藏菜单栏
+" 设置在状态行显示的信息
+set foldenable              " 开始折叠
+set foldcolumn=0
+set foldmethod=indent 
+set foldlevel=3 
+set foldlevelstart=99
+set completeopt=preview,menu "代码补全 
+set wildmode=full " 设定补全行为"
+
+set confirm " 在处理未保存或只读文件的时候，弹出确认
+set autoindent " 自动缩进
+set cindent
+set tabstop=4 " Tab键的宽度
+set softtabstop=4 " 统一缩进为4
+set shiftwidth=4
+set noexpandtab " 不要用空格代替制表符
+set smarttab " 在行和段开始处使用制表符
+set history=1000 " 历史记录数
+set noswapfile
+set ignorecase "搜索忽略大小写
+set smartcase " 如果有一个大写字母，则切换到大小写敏感查找
+set incsearch "搜索逐字符高亮
+set gdefault "行内替换
+set langmenu=zh_CN.UTF-8 "语言设置
+set helplang=cn
+set cmdheight=1 " 命令行（在状态行下）的高度，默认为1，这里是2
+set viminfo+=!  " 保存全局变量
+set iskeyword+=_,$,@,%,#,- " 带有如下符号的单词不要被换行分割
+set linespace=0 " 字符间插入的像素行数目
+set wildmenu " 增强模式中的命令行自动完成操作
+set backspace=2 " 使回格键（backspace）正常处理indent, eol, start等
+set whichwrap+=<,>,h,l " 允许backspace和光标键跨越行边界
+set mouse=a " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
+set selection=exclusive
+set selectmode=mouse,key
+set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
+set fillchars=vert:\ ,stl:\ ,stlnc:\			"在被分割的窗口间显示空白，便于阅读
+set showmatch " 高亮显示匹配的括号
+set matchtime=1 " 匹配括号高亮的时间（单位是十分之一秒）
+set scrolloff=3 " 光标移动到buffer的顶部和底部时保持3行距离
+set smartindent " 为C程序提供自动缩进
+filetype plugin indent on 
+
+"=================================================================
+"	airline options
+"=================================================================
+
+if !exists('g:airline_symbols')
+	let g:airline_symbols = {}
+endif
+
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = '' "''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+
+let g:airline_section_b = ''
+let g:airline_section_x = ''
+let g:airline_section_y = ''
+let g:airline_section_error = ''
+let g:airline_section_warning = ''
+"let g:airline_section_gutter  (readonly, csv)
+let g:airline_section_z = ''
+
+let g:airline_powerline_fonts=1
+
+set laststatus=2 "1为关闭底部状态栏 2为开启"
+set t_Co=256     "终端开启256色支持"
+set ambiwidth=double "防止特殊符号无法正常显示
+let g:airline#extensions#tabline#enabled=1 "顶部tab显示
+"let g:airline_theme='bubblegum'  "murmur配色也不错
+
+
+set background=dark " 设置配色方案
+"let g:vim_monokai_tasty_italic = 1 "加上这句后 注释会有底色，很丑"
+colorscheme vim-monokai-tasty
+let g:lightline = { 'colorscheme': 'monokai_tasty', }
+let g:airline_theme='monokai_tasty'
+
+"=================================================================
+" 自动显示隐藏同步时的quickfix窗口"
+augroup vimrc
+	autocmd User AsyncRunStart call asyncrun#quickfix_toggle(1, 1)
+augroup END
+
+" 可视模式下f键翻译选中区域
+vnoremap f y:!clear; tl "
+nnoremap <C-f> yaw:!clear; tl "
+inoremap <C-f> yaw:!clear; tl "
+"=================================================================
+"	快捷键映射相关函数
+"=================================================================
+
+func Settitle() 
+	call setline(1,"\$ ".expand("%:t:r").expand("-Todo"))
+	call append(line("."),"") 
+	call append(line(".")+1, "	@ First List") 
+    normal G$
+endfunc 
+func GitPush() 
+	" 上传到云端
+	let g:airline_section_c = '正在同步todo'
+	let secondtime=string(localtime())
+	let strtime=strftime("%Y %b %d %X")  " 1997 Apr 27 11:53:25
+	call writefile([secondtime,strtime],'./bin/.last_time_of_update')
+
+	call system("git add --all")
+	call system("git commit -m \"`whoami` @  `hostname` in `date +%y-%m-%d=%H:%M:%S`\"")
+	exec ":AsyncRun git push origin master"
+endfunc 
+func GitPull() 
+	" 获取云端最新版
+	exec ":cd %:h"
+	let g:airline_section_c = '正在同步todo...'
+	.normal 
+	exec ":AsyncStop"
+	exec ":AsyncRun git pull origin master"  
+	autocmd User AsyncRunStop call AtPullEnd()
+endfunc 
+func AtPullEnd()
+	"先初始化timelist
+	let g:timelist=[]
+	for line in readfile('./bin/.last_time_of_update', '', 2)
+		call add(g:timelist, line)
+	endfor
+
+	let secondtime=string(localtime())
+	let strtime=strftime("%Y %b %d %X")  " 1997 Apr 27 11:53:25
+	let diff = secondtime - g:timelist[0]
+	if(diff<60)
+		let diff_time = string(diff).'秒前'
+	elseif(diff<3600)
+		let diff_time = string(diff/60).'分钟前'
+	elseif(diff<86400)
+		let diff_time = string(diff/3600).'小时前'
+	elseif(diff<2592000)
+		let diff_time = string(diff/86400).'天前'
+	else
+		let diff_time = string(diff/2592000).'月前'
+	endif
+	let g:airline_section_c = '同步成功(上次同步:'.diff_time.')'
+	exec ":ccl"
+	exec ":e %"
+endfunc
+func CheckOrUncheck()
+	" 选中或取消选中
+	.normal "ayy
+	let loc_k=match(@a,"☐")
+	let loc_g=match(@a,"✔")
+	"同时选中子主题
+	if loc_k>-1
+		.normal 0f☐s✔j
+		.normal ""yy
+		let k=match(@","☐")
+		let g=match(@","✔")
+		while k>loc_k || g>loc_k
+			if k>loc_k
+				.normal 0f☐s✔j""yy
+			else
+				.normal j""yy
+			endif
+			let k=match(@","☐")
+			let g=match(@","✔")
+		endwhile
+		.normal `b
+	elseif loc_g>-1
+		.normal 0f✔s☐`b
+	else
+		.normal j
+	endif
+endfunc
+func NewLine()
+	if match(@r,"@")>-1
+		.normal >>I☐ l
+	elseif match(@r,"☐")>-1
+		.normal I☐ l
+	elseif match(@r,"✔")>-1
+		.normal I☐ l
+	endif
+endfunc
+func NewTodo()
+	let filename=input("请输入新todo文件名: ")
+	if match(filename,'.todo')>-1
+		exec ":edit ".expand(filename)
+	else
+		let filename=filename.'.todo'
+		exec ":edit ".expand(filename)
+	endif
+endfunc
+func RemoveAllChild()
+	if(getpos('.')[1]==getpos('$')[1])
+		.normal d1d
+	else
+		.normal ""yy
+		let k=match(@","☐")
+		let g=match(@","✔")
+		if k>-1 || g>-1
+			"判断是否有子主题
+			.normal j""yy
+			let kk=match(@","☐")
+			let gg=match(@","✔")
+			if kk>k&&kk>g || gg>k&&gg>g
+				"yes"
+				.normal viikokdk
+			else
+				.normal kd1dk
+			endif
+		else
+			.normal d1d
+		endif
+	endif
+endfunc
+"func ClearAllCheck()
+	".normal 
+"endfunc
+
+func Upgrade()
+	.normal "xyy
+	let loc_k=match(@x,"☐")
+	if loc_k > -1
+		" 父主题
+		if loc_k == 1 
+			if match(@x, "☐ ") > -1
+				.normal :.s/☐\s/☐\!/g
+			elseif match(@x, "☐!") > -1
+				.normal :.s/!/\^/g
+			elseif match(@x, "☐^") > -1
+				.normal :.s/\^/\%/g
+			elseif match(@x, "☐`") > -1
+				.normal :.s/\`/&/g
+			elseif match(@x, "☐&") > -1
+				.normal :.s/&/\#/g
+			elseif match(@x, "☐#") > -1
+				.normal :.s/\#/=/g
+			else
+				.normal ^
+			endif
+		" 子主题
+		elseif loc_k >1
+			if match(@x, "☐ ") > -1
+				.normal :.s/☐\s/☐\`/g
+			elseif match(@x, "☐!") > -1
+				.normal :.s/!/&/g
+			elseif match(@x, "☐^") > -1
+				.normal :.s/\^/\#/g
+			elseif match(@x, "☐%") > -1
+				.normal :.s/%/=/g
+			elseif match(@x, "☐`") > -1
+				.normal :.s/\`/\ /g
+			elseif match(@x, "☐&") > -1
+				.normal :.s/&/\!/g
+			elseif match(@x, "☐#") > -1
+				.normal :.s/\#/\^/g
+			elseif match(@x, "☐*") > -1
+				.normal :.s/=/%/g
+			else
+				.normal ^
+			endif
+		endif
+	endif
+endfunc
+
+func Demotion()
+	.normal "xyy
+	let loc_k=match(@x,"☐")
+	if loc_k > -1
+		" 父主题
+		if loc_k == 1 
+			if match(@x, "☐!") > -1
+				.normal :.s/\!/\ /g
+			elseif match(@x, "☐^") > -1
+				.normal :.s/\^/\!/g
+			elseif match(@x, "☐%") > -1
+				.normal :.s/%/\^/g
+			elseif match(@x, "☐&") > -1
+				.normal :.s/&/\`/g
+			elseif match(@x, "☐#") > -1
+				.normal :.s/\#/&/g
+			elseif match(@x, "☐=") > -1
+				.normal :.s/=/\#/g
+			else
+				.normal ^
+			endif
+		" 子主题
+		elseif loc_k >1
+			if match(@x, "☐ ") > -1
+				.normal :.s/☐\s/☐\`/g
+			elseif match(@x, "☐!") > -1
+				.normal :.s/!/&/g
+			elseif match(@x, "☐^") > -1
+				.normal :.s/\^/\#/g
+			elseif match(@x, "☐%") > -1
+				.normal :.s/%/=/g
+			elseif match(@x, "☐`") > -1
+				.normal :.s/\`/\ /g
+			elseif match(@x, "☐&") > -1
+				.normal :.s/&/\!/g
+			elseif match(@x, "☐#") > -1
+				.normal :.s/\#/\^/g
+			elseif match(@x, "☐*") > -1
+				.normal :.s/=/%/g
+			else
+				.normal ^
+			endif
+		endif
+	endif
+
+endfunc
+
+
+
+
+
+
+
+
+
+
+
+
+"=================================================================
+" Todo异步更新
+"=================================================================
+
+autocmd BufRead,BufNewFile *.todo,*.note set filetype=todo
+"每次启动Todo时都先最新版"
+autocmd VimEnter *.todo call GitPull()
+"保存文件时自动存储该版本"
+autocmd bufwritepost *.todo call GitPush() 
+"新建文件自动插入文件头 
+autocmd BufNewFile *.todo call Settitle()
+
+
+
+
+"=================================================================
+"	键盘命令
+"=================================================================
+
+"设置<leader>为空格键
+
+" 切换Buffer"
+nnoremap <Tab> :bn<CR>
+nnoremap tt :bn<CR>
+nnoremap <S-Tab> :bp<CR>
+" 删除当前Buffer"
+nnoremap <Space>x :bd %<CR><CR>
+
+"C-l 清除高亮
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
+"H,L移动到行首行尾
+map H ^
+map L $
+"可视模式下移动到行尾
+vnoremap L $h
+
+"保存文件  ======> 同时上传todo到云端
+nnoremap <Space>w :w<CR><CR>
+nnoremap <Space>e :wqall<CR>
+"快捷复制粘贴至系统
+nnoremap <C-A> ggVG"+y<CR>
+nnoremap <Space>a ggVG"+y<CR>
+
+"=================================================================
+"	for TODO 快捷键
+"=================================================================
+
+" normal 模式快捷键
+"=================================================================
+nnoremap <Enter> mb:call  CheckOrUncheck()<CR>j
+nnoremap * maA ★`a
+nnoremap # :call Upgrade()<CR>
+nnoremap <Space>s maA ★`a
+nnoremap <Backspace> :call Demotion()<CR>
+nnoremap o "ryyo.:call NewLine()<CR>a
+nnoremap O O☐ 
+nnoremap J /^\s*@/e<CR>
+nnoremap K ?^\s*@?e<CR>
+nnoremap <C-j> /^\s*@/e<CR>
+nnoremap <C-k> ?^\s*@?e<CR>
+nnoremap <Space>j /^\s*@/e<CR>
+nnoremap <Space>k ?^\s*@?e<CR>
+vnoremap J /^\s*@/e<CR>
+vnoremap K ?^\s*@?e<CR>
+nnoremap <C-n> :call NewTodo()<CR>
+nnoremap <Space>n :call NewTodo()<CR>
+nnoremap <C-z> u
+nnoremap U <C-r>
+nnoremap dd :call RemoveAllChild()<CR>
+nnoremap <Space>l :g/\v✔.*$/d<CR>
+
+
+" insert 模式快捷键
+"=================================================================
+
+" 回到正常模式
+inoremap jj 
+inoremap kk 
+inoremap jk 
+inoremap kj 
+inoremap ;; 
+inoremap 完毕 :w<CR>
+inoremap OK :w<CR>
+inoremap ok :w<CR>
+inoremap .. :w<CR>
+inoremap 。 :w<CR>
+nnoremap 。 :w<CR>
+nnoremap ， "ryyo.:call NewLine()<CR>a
+nnoremap … :call RemoveAllChild()<CR>
+nnoremap ！ maA ★`a
+nnoremap ？ :.s/ ★//g<CR>
+inoremap 结束 :w<CR>
+
+" 改变缩进Ctrl-d/Ctrl-t改变缩进
+inoremap <Tab> 
+inoremap <S-Tab> 
+inoremap pp .ma>>`ala
+inoremap qq ma<<`aa
+" 编辑下一行
+inoremap <Enter> "ryya.:call NewLine()<CR>a
