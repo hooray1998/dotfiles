@@ -1,10 +1,19 @@
 call plug#begin('~/.vim/plugged')
 "======================================="
+" Markdown syntastic highlight
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'mzlogin/vim-markdown-toc'
+
+
 "打字机音效
 "Plug 'skywind3000/vim-keysound'
 "GTags
 "多用c-w ] 代替c-]
 "Plug 'ludovicchabant/vim-gutentags'
+Plug 'vim-scripts/VimIM' 
 Plug 'liuchengxu/space-vim-theme'
 Plug 'joshdick/onedark.vim'
 Plug 'mhartington/oceanic-next'
@@ -52,13 +61,6 @@ Plug 'mattn/emmet-vim'
 " Pending tasks list
 Plug 'fisadev/FixedTaskList.vim'
 
-" Markdown syntastic highlight
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-" Markdown realtime preview
-" `sudo npm -g install instant-markdown-d`
-" Use :InstantMarkdownPreview  open the windows, using vpn will make it invalid
-Plug 'suan/vim-instant-markdown'
 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'

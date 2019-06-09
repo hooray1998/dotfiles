@@ -197,3 +197,4 @@ alias fanqiang-JP="cp ~/MyNutStore/v2ray/JP.json ~/MyNutStore/v2ray/config.json;
 alias fanqiang-HK="cp ~/MyNutStore/v2ray/HK.json ~/MyNutStore/v2ray/config.json; service v2ray restart; service v2ray status"
 
 #进入目录，然后 source activate myblogvenv 开启虚拟环境, source deactivate退出
+export NOTE="$HOME/MyNutStore/Notes"

@@ -128,7 +128,7 @@ func! RunCoding()
 	elseif expand('%:e') == 'awk'
 		exec "AsyncRun awk -f % ".expand('%:r').".data"
 	elseif expand('%:e') == 'md'
-		exec ":InstantMarkdownPreview"
+		exec ":MarkdownPreview"
 	else
 		exec ":e %"
     endif
