@@ -105,6 +105,9 @@ func! CompileRunGcc()
 endfunc
 
 
+" 重定义*, 使其那能够搜索选中文本
+xnoremap * : <C-u> call <SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>
+xnoremap # : <C-u> call <SID>VSetSearch()<CR>?<C-R>=@/<CR><CR>
 function! s:VSetSearch()
 let temp = @s
 norm! gv"sy
@@ -115,9 +118,9 @@ endfunction
 func! RunCoding()
 	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
-		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r %;echo '<<===>>  Runing  <<===>>';time /tmp/run%:t:r"
+		exec ":!g++ -o /tmp/run%:t:r %;time /tmp/run%:t:r"
 	elseif &filetype == 'python'
-		exec ":!clear; echo '<<===>>  Runing  <<===>>';time python %"
+		exec ":!time python %"
 	elseif &filetype == 'javascript'
 		exec "!time node %"
 	elseif &filetype == 'sh'
@@ -160,8 +163,8 @@ endfunc
 function  SearchFiles()
 	if expand("%:p") =~ "Notes"
 		exec ":Files ~/MyNutStore/Notes"
-	elseif expand("%:p") =~ "QtCoding"
-		exec ":Files ~/Coding/QtCoding"
+	"elseif expand("%:p") =~ "QtCoding"
+		"exec ":Files ~/Coding/QtCoding"
 	elseif expand("%:p") =~ "PycharmProjects"
 		exec ":Files ~/PycharmProjects"
 	else

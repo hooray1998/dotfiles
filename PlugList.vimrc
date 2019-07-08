@@ -1,5 +1,9 @@
 call plug#begin('~/.vim/plugged')
 "======================================="
+Plug 'amoffat/snake'
+Plug 'mileszs/ack.vim'
+Plug 'MattesGroeger/vim-bookmarks'
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 " Markdown syntastic highlight
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -7,14 +11,13 @@ Plug 'iamcco/markdown-preview.vim'
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'mzlogin/vim-markdown-toc'
 
+Plug 'iamcco/dict.vim'
 
 "打字机音效
 "Plug 'skywind3000/vim-keysound'
 "GTags
 "多用c-w ] 代替c-]
 "Plug 'ludovicchabant/vim-gutentags'
-Plug 'vim-scripts/VimIM' 
-Plug 'liuchengxu/space-vim-theme'
 Plug 'joshdick/onedark.vim'
 Plug 'mhartington/oceanic-next'
 "Plug 'vim-pandoc/vim-pandoc'
@@ -45,7 +48,7 @@ Plug 'sgur/vim-textobj-parameter'
 ""匹配的括号或标签同时修改"
 Plug 'tpope/vim-surround'  
 " 工程文件浏览
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 " 增加缩进指示线 "会影响markdown的显示效果，很多语法都给隐藏了
 "Plug 'Yggdroot/indentLine'
 " 括号补全 "
@@ -57,9 +60,9 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " 写html利器
-Plug 'mattn/emmet-vim'
+"Plug 'mattn/emmet-vim'
 " Pending tasks list
-Plug 'fisadev/FixedTaskList.vim'
+"Plug 'fisadev/FixedTaskList.vim'
 
 
 Plug 'airblade/vim-gitgutter'
@@ -81,3 +84,4 @@ augroup END
 
 call plug#end()
 
+set shell=/bin/sh

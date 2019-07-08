@@ -14,7 +14,7 @@
 " 更改折叠方式，全部只占一行
 let g:vim_markdown_folding_style_pythonic=1
 " 从二级标题开始折叠
-let g:vim_markdown_folding_level = 2
+let g:vim_markdown_folding_level = 9
 " Toc的quickfix窗口大小自动调整
 let g:vim_markdown_toc_autofit = 1
 "语法隐藏，设置阅读时语法隐藏，编辑时不隐藏
@@ -56,7 +56,7 @@ let g:mkdp_command_for_global = 0
 "    NOTE:  For Notes
 "===============================================================
 " 集成Enter，list快速进入文件，markdown快速运行代码
-nnoremap <C-r> :call EnterFile()<CR>
+nnoremap <M-r> :call EnterFile()<CR>
 function EnterFile()
 	if expand("%:e")=='md'
 		.normal mb?```"ayy
@@ -88,10 +88,7 @@ vnoremap <C-k> :call AddListFlag()<CR>
 function AddListFlag()
 	. normal ^i- 
 endfunc
-let g:language='javascript'
-vnoremap <C-c> omaoo```'aO:call setline('.', "```".g:language)<CR>
-"vnoremap <C-c> :call execute("omaoo```'aO```".g:language."")
-nnoremap # :call SetTitle()<CR>
+
 function SetTitle()
 	.normal "yyy
 	if match(@y,"#")>-1
@@ -116,9 +113,9 @@ endfunc
 "=================================================================
 "    NOTE:  所有模式下f键翻译选中区域
 "=================================================================
-vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+"vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+"nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
+"inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 
 
 let g:tlTokenList = ["FIXME",  "TODO",  "##", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
@@ -139,3 +136,18 @@ function RecordPath()
 	endif
 endfunc
 
+autocmd BufEnter *.md call SetKeyMap()
+
+function SetKeyMap()
+	vnoremap <C-c>s omaoo```'aO:call setline('.', "```"."sql")<CR>
+	vnoremap <C-c>b omaoo```'aO:call setline('.', "```"."sh")<CR>
+	vnoremap <C-c>c omaoo```'aO:call setline('.', "```"."cpp")<CR>
+	vnoremap <C-c>p omaoo```'aO:call setline('.', "```"."python")<CR>
+	vnoremap <C-c>j omaoo```'aO:call setline('.', "```"."javascript")<CR>
+	vnoremap <C-c>h omaoo```'aO:call setline('.', "```"."html")<CR>
+
+	nnoremap # :call SetTitle()<CR>
+	vnoremap <C-k> :call AddListFlag()<CR>
+
+	nnoremap <C-b> I**<ESC>A**<ESC>
+endfunc

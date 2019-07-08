@@ -1,8 +1,9 @@
-alias vim=nvim
+alias vim='/home/itt/SoftWare/nvim.appimage'
 source /etc/profile # 更新环境变量
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles # 替换 Homebrew Bottles源
 export PATH="$HOME/.cabal/bin:$PATH"
 
+source /home/itt/.local/config/prompt_256.sh
 #. ~/anaconda3/etc/profile.d/conda.sh # 可以使用conda命令
 #source ~/.local/config/z.sh # 自动路径跳转
 
@@ -16,7 +17,32 @@ source $HOME/.local/config/m.sh
 #alias zh='z -I -t .'
 #alias zzc='zz -c'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh # fzf 快速查找文件
-#eval $(thefuck --alias) # for thefuck
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# ===========================================================
+# Git常用命令: git gaa cm ggpush ggpull
+alias gitstudy='vim $HOME/.local/config/gitStudy.sh'
+
+alias glg='git lg' 
+alias grlg='git reflog' 
+alias grst='git reset --hard ' 
+alias ignore='vim .gitignore'
+cm(){ git add --all; git commit -m "$*" }
+gmerge_dev(){ git merge --no-ff -m "$*" develop }
+
+
+alias gcm='git checkout master'
+alias gcd='git checkout develop'
+alias gaa='git add --all'
+alias gst='git status'
+alias gb='git branch|cat '
+alias gd='git diff'
+
+# for thefuck alias to fuck
+ eval $(thefuck --alias fk)
 
 # ===========================================================
 # someFunction:
@@ -24,6 +50,18 @@ source $HOME/.local/config/m.sh
 #	2. ff,   实时预览的fzf
 source ~/.local/config/shellFunction.sh
 alias someFunction='vi ~/.local/config/shellFunction.sh'
+
+alias rm='trash'
+alias rl='ll ~/.trash'
+alias l='ls -lah'
+alias la='ls -lAh'
+alias ll='ls -lh'
+alias ls='ls --color=tty'
+alias rclear='/bin/rm -rf ~/.trash/*'
+trash()
+{
+  mv $@ ~/.trash/
+}
 
 # ===========================================================
 # proxy 终端下翻墙, 访问github更快
@@ -37,22 +75,22 @@ alias someFunction='vi ~/.local/config/shellFunction.sh'
 # zsh
 export ZSH="/home/itt/.oh-my-zsh"
 #RPROMPT="%/" #右提示符
-ZSH_THEME="robbyrussell" 
+#ZSH_THEME="robbyrussell" 
 #ZSH_THEME="ys" 
 #ZSH_THEME="agnoster" 
+#plugins=( git ) 
 
-plugins=( git ) 
-source $ZSH/oh-my-zsh.sh 
+source $ZSH/oh-my-zsh.sh
 
 export DEFAULT_USER="itt"
 
 # ===========================================================
 # 开关机别名设置
-alias gg='shutdown -h now' 
+alias guanji='shutdown -h now' 
 alias cq='shutdown -r now' 
 alias g-='shutdown -h $1 ' 
 alias c-='shutdown -r $1 ' 
-alias qx='shutdown -c'
+alias quxiaoguanji='shutdown -c'
 
 
 #===========================================================
@@ -66,18 +104,6 @@ alias vimrc_ycm='vim  ~/.local/config/.vimrc_ycm'
 alias null='cp ~/.local/config/.vimrc_null ~/.vimrc; echo "vim快捷版"'
 alias ycm='cp ~/.local/config/.vimrc_ycm ~/.vimrc; echo "vim完整版"'
 cp ~/.local/config/.vimrc_ycm ~/.vimrc # 默认启用完整版
-# ===========================================================
-# Git常用命令: git gaa cm ggpush ggpull
-alias gitstudy='vim $HOME/.local/config/gitStudy.sh'
-
-alias glg='git lg' 
-alias grlg='git reflog' 
-alias grst='git reset --hard ' 
-alias ignore='vim .gitignore'
-cm(){ gaa; git commit -m "$*" }
-gmerge_dev(){ git merge --no-ff -m "$*" develop }
-
-
 
 # ===========================================================
 # install app
@@ -177,7 +203,7 @@ alias tim-er='/home/itt/Coding/QtRelease/send_to_tim.app/send_to_tim.sh &'
 #alias 回退='grst'
 #alias jk='cd /home/itt/Coding/QtCoding/TestXlsx/'
 alias j='cd /home/itt/Coding/QtCoding/ComeOnBoy/'
-alias jj='/home/itt/Coding/QtCoding/sendData/TcpClient &'
+#alias jj='/home/itt/Coding/QtCoding/sendData/TcpClient &'
 
 alias vimm='vim `cat $HOME/.last-vim-list/last-md`'
 alias vimc='vim `cat $HOME/.last-vim-list/last-cpp`'
@@ -190,7 +216,8 @@ alias jp='f=`cat $HOME/.last-vim-list/last-py`; cd ${f%/*}'
 
 # bc is basic calculation
 alias jk='mycli -h localhost -u root -p 123456'
-echo "正确指法按4（）-"
+echo "正确指法按456（）- =   使用右边的shift"
+echo "0-=熟练，不混淆"
 
 alias fanqiang-TW="cp ~/MyNutStore/v2ray/TW.json ~/MyNutStore/v2ray/config.json; service v2ray restart; service v2ray status"
 alias fanqiang-JP="cp ~/MyNutStore/v2ray/JP.json ~/MyNutStore/v2ray/config.json; service v2ray restart; service v2ray status"
@@ -198,3 +225,10 @@ alias fanqiang-HK="cp ~/MyNutStore/v2ray/HK.json ~/MyNutStore/v2ray/config.json;
 
 #进入目录，然后 source activate myblogvenv 开启虚拟环境, source deactivate退出
 export NOTE="$HOME/MyNutStore/Notes"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+#export PATH="/home/itt/SoftWare/qt5.9.3/5.9.3/gcc_64/include/QtCore:$PATH"
+#export PATH="/home/itt/SoftWare/qt5.9.3/5.9.3/gcc_64/include/QtGui:$PATH"
+
+
+alias word='vim /home/itt/.local/config/word.list'

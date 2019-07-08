@@ -39,17 +39,17 @@ function _fish_collapsed_pwd() {
 
 if [ -n "$BASH_VERSION" ]; then
     if [ "$UID" -eq 0 ]; then
-        export PS1='\u@\h \[\e[31m\]$(_fish_collapsed_pwd)\[\e[0m\]# '
+        export PS1="\u@\h \[\e[31m\]$(_fish_collapsed_pwd)\[\e[0m\]# "
     else
-        export PS1='\u@\h \[\e[32m\]$(_fish_collapsed_pwd)\[\e[0m\]> '
+        export PS1="\u@\h \[\e[32m\]$(_fish_collapsed_pwd)\[\e[0m\]> "
     fi
 else
     if [ $UID -eq 0 ]; then
-		#export PROMPT='%f%n@%m %F{1}$(_fish_collapsed_pwd)%f# '
+		#export PROMPT="%f%n@%m %F{1}$(_fish_collapsed_pwd)%f# "
 		export PROMPT='%f%n %F{1}$(_fish_collapsed_pwd)%f# '
     else
 		#export PROMPT='%f%n@%m %F{2}$(_fish_collapsed_pwd)%f> '
-		export PROMPT='%f%n@%m %F{2}$(_fish_collapsed_pwd)%f> '
+		export PROMPT="%f%n@%m %F{2}$(_fish_collapsed_pwd)%f> "
 		#a=`_fish_collapsed_pwd %f`
 		#export PROMPT='%f%n %F{2}$a =>'
     fi

@@ -125,11 +125,11 @@ let g:airline_symbols = {}
 endif
 
 " powerline symbols
-let g:airline_left_sep = ''   "''
+let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''   "''显示有问题
+let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
+let g:airline_symbols.branch = '⭠'
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
@@ -137,7 +137,6 @@ let g:airline_symbols.maxlinenr = ''
 let g:airline_powerline_fonts=1
 set laststatus=2 "1为关闭底部状态栏 2为开启"
 set t_Co=256     "终端开启256色支持"
-set ambiwidth=double "防止特殊符号无法正常显示
 let g:airline#extensions#tabline#enabled=1 "顶部tab显示
 "let g:airline_theme='bubblegum'  "murmur配色也不错
 let g:airline_section_y = ''
