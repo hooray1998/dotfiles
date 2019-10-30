@@ -18,7 +18,7 @@ let g:vim_markdown_folding_level = 9
 " Toc的quickfix窗口大小自动调整
 let g:vim_markdown_toc_autofit = 1
 "语法隐藏，设置阅读时语法隐藏，编辑时不隐藏
-"set conceallevel=2 
+set conceallevel=2 
 "设置代码块不隐藏
 "let g:vim_markdown_conceal_code_blocks = 0
 "设置不隐藏
@@ -56,20 +56,19 @@ let g:mkdp_command_for_global = 0
 "    NOTE:  For Notes
 "===============================================================
 " 集成Enter，list快速进入文件，markdown快速运行代码
-nnoremap <M-r> :call EnterFile()<CR>
 function EnterFile()
-	if expand("%:e")=='md'
-		.normal mb?```"ayy
-		if match(@a,"cpp")>-1
-			.normal VNkoj:w /tmp/tmp.cpp
-			exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r /tmp/tmp.cpp;rm /tmp/tmp.cpp;echo '<<===>>  Runing  <<===>>'; /tmp/run%:t:r"
-		elseif match(@a,"python")>-1
-			.normal VNkoj:w !python
-		elseif match(@a,"javascript")>-1  || match(@a,"JavaScript")>-1  
-			.normal VNkoj:w !nodejs
-		endif
-		.normal `b
+	.normal mb?```"ayy
+	if match(@a,"cpp")>-1
+		.normal VNkoj:w /tmp/tmp.cpp
+		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r /tmp/tmp.cpp;rm /tmp/tmp.cpp;echo '<<===>>  Runing  <<===>>'; /tmp/run%:t:r"
+	elseif match(@a,"python")>-1
+		.normal VNkoj:w !python
+	elseif match(@a,"perl")>-1
+		.normal VNkoj:w !perl
+	elseif match(@a,"javascript")>-1  || match(@a,"JavaScript")>-1  
+		.normal VNkoj:w !nodejs
 	endif
+	.normal `b
 endfunc
 
 "===============================================================
@@ -79,12 +78,10 @@ endfunc
 "command! InstantMarkdownStop :!killall nodejs<CR>
 
 " 可是模式输入C-l增加行号
-vnoremap <C-l> :call AddListNumber()<CR>
 function AddListNumber()
 	let lnum = getpos('.')[1] + 1 - getpos("'<")[1]
 	. normal I=lnum. 
 endfunc
-vnoremap <C-k> :call AddListFlag()<CR>
 function AddListFlag()
 	. normal ^i- 
 endfunc
@@ -97,25 +94,6 @@ function SetTitle()
 		.normal I# 
 	endif
 endfunc
-
-
-"======================================================="
-"	 NOTE:  For Python
-"======================================================="
-
-command! Format :call FileFormat()
-func FileFormat() 
-	if &filetype == 'python' 
-		exec "!python ~/.local/config/FormatPython.py %"
-	endif
-endfunc 
-
-"=================================================================
-"    NOTE:  所有模式下f键翻译选中区域
-"=================================================================
-"vnoremap f y:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-"nnoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
-"inoremap <C-f> yaw:AsyncRun $HOME/.local/config/search_and_record.sh "\|awk -f $HOME/.local/config/simplify.awk 
 
 
 let g:tlTokenList = ["FIXME",  "TODO",  "##", "QSTN", "HACK", "NOTE", "WARN", "MODIFY"]
@@ -136,18 +114,21 @@ function RecordPath()
 	endif
 endfunc
 
-autocmd BufEnter *.md call SetKeyMap()
+let g:CodeLanguage = "perl"
 
-function SetKeyMap()
-	vnoremap <C-c>s omaoo```'aO:call setline('.', "```"."sql")<CR>
-	vnoremap <C-c>b omaoo```'aO:call setline('.', "```"."sh")<CR>
-	vnoremap <C-c>c omaoo```'aO:call setline('.', "```"."cpp")<CR>
-	vnoremap <C-c>p omaoo```'aO:call setline('.', "```"."python")<CR>
-	vnoremap <C-c>j omaoo```'aO:call setline('.', "```"."javascript")<CR>
-	vnoremap <C-c>h omaoo```'aO:call setline('.', "```"."html")<CR>
-
-	nnoremap # :call SetTitle()<CR>
-	vnoremap <C-k> :call AddListFlag()<CR>
-
-	nnoremap <C-b> I**<ESC>A**<ESC>
-endfunc
+augroup pscbindings
+	autocmd! pscbindings
+	autocmd FileType markdown nnoremap <buffer> <enter> :call EnterFile()<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-l> :call AddListNumber()<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-k> :call AddListFlag()<CR>
+	autocmd FileType markdown vnoremap <buffer> c omaoo```'aO:call setline('.', "```".g:CodeLanguage)<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>s omaoo```'aO:call setline('.', "```"."sql")<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>b omaoo```'aO:call setline('.', "```"."sh")<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>c omaoo```'aO:call setline('.', "```"."cpp")<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>p omaoo```'aO:call setline('.', "```"."perl")<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>j omaoo```'aO:call setline('.', "```"."javascript")<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>h omaoo```'aO:call setline('.', "```"."html")<CR>
+	autocmd FileType markdown nnoremap <buffer> # :call SetTitle()<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-k> :call AddListFlag()<CR>
+	autocmd FileType markdown nnoremap <buffer> <C-b> I**<ESC>A**<ESC>
+augroup end

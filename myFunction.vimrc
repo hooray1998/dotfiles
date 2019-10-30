@@ -80,24 +80,24 @@ func! CompileRunGcc()
 	exec "w"
 	if &filetype == 'c'
 		exec "!g++ % -o %<"
-		exec "!time ./%<"
+		exec "!./%<"
 	elseif &filetype == 'cpp'
 		exec "!g++ % -o %<"
-		exec "!time ./%<"
+		exec "!./%<"
 	elseif &filetype == 'java'
 		exec "!javac %"
-		exec "!time java %<"
+		exec "!java %<"
 	elseif &filetype == 'javascript'
-		exec "!time node %"
+		exec "!node %"
 	elseif &filetype == 'sh'
-		:!time bash %
+		:!bash %
 	elseif &filetype == 'python'
-		exec "!time python %"
+		exec "!python %"
 	elseif &filetype == 'html'
 		exec "!firefox % &"
 	elseif &filetype == 'go'
 		exec "!go build %<"
-		exec "!time go run %"
+		exec "!go run %"
 	elseif &filetype == 'mkd'
 		exec "!~/.vim/markdown.pl % > %.html &"
 		exec "!firefox %.html &"
@@ -118,11 +118,13 @@ endfunction
 func! RunCoding()
 	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
-		exec ":!g++ -o /tmp/run%:t:r %;time /tmp/run%:t:r"
+		exec ":!g++ -o /tmp/run%:t:r %;/tmp/run%:t:r"
+	elseif &filetype == 'perl'
+		exec ":!perl %"
 	elseif &filetype == 'python'
-		exec ":!time python %"
+		exec ":!python %"
 	elseif &filetype == 'javascript'
-		exec "!time node %"
+		exec "!node %"
 	elseif &filetype == 'sh'
 		exec ":!chmod +x %;./%"
 	elseif &filetype == 'html'

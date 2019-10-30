@@ -6,7 +6,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 " Markdown syntastic highlight
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown' "注释掉syntax目录才能正确高亮
 Plug 'iamcco/markdown-preview.vim'
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'mzlogin/vim-markdown-toc'
