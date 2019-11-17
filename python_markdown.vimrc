@@ -63,6 +63,8 @@ function EnterFile()
 		exec ":!clear;echo '<<===>>  Making  <<===>>';g++ -o /tmp/run%:t:r /tmp/tmp.cpp;rm /tmp/tmp.cpp;echo '<<===>>  Runing  <<===>>'; /tmp/run%:t:r"
 	elseif match(@a,"python")>-1
 		.normal VNkoj:w !python
+	elseif match(@a,"lua")>-1
+		.normal VNkoj:w !echo '<<<======================================>>>'&&lua
 	elseif match(@a,"perl")>-1
 		.normal VNkoj:w !perl
 	elseif match(@a,"javascript")>-1  || match(@a,"JavaScript")>-1  
@@ -114,7 +116,7 @@ function RecordPath()
 	endif
 endfunc
 
-let g:CodeLanguage = "perl"
+let g:CodeLanguage = "lua"
 
 augroup pscbindings
 	autocmd! pscbindings
@@ -128,6 +130,7 @@ augroup pscbindings
 	autocmd FileType markdown vnoremap <buffer> <C-c>p omaoo```'aO:call setline('.', "```"."perl")<CR>
 	autocmd FileType markdown vnoremap <buffer> <C-c>j omaoo```'aO:call setline('.', "```"."javascript")<CR>
 	autocmd FileType markdown vnoremap <buffer> <C-c>h omaoo```'aO:call setline('.', "```"."html")<CR>
+	autocmd FileType markdown vnoremap <buffer> <C-c>l omaoo```'aO:call setline('.', "```"."lua")<CR>
 	autocmd FileType markdown nnoremap <buffer> # :call SetTitle()<CR>
 	autocmd FileType markdown vnoremap <buffer> <C-k> :call AddListFlag()<CR>
 	autocmd FileType markdown nnoremap <buffer> <C-b> I**<ESC>A**<ESC>
