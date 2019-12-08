@@ -216,3 +216,8 @@ nnoremap <M-/> :LeaderfFunction<CR>
 if filereadable(expand("~/.vim/plugged/snake/plugin/snake.vim"))
     source ~/.vim/plugged/snake/plugin/snake.vim
 endif
+
+let g:leetcode_china = 1
+let g:leetcode_solution_filetype = 'c'
+let g:leetcode_username = 'hoorayitt@gmail.com'
+let g:leetcode_password = 'Lji.guo4'

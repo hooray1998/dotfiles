@@ -3,6 +3,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'amoffat/snake'
 Plug 'mileszs/ack.vim'
 Plug 'MattesGroeger/vim-bookmarks'
+Plug 'ianding1/leetcode.vim'
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 " Markdown syntastic highlight
 Plug 'godlygeek/tabular'

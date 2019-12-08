@@ -118,7 +118,11 @@ endfunction
 func! RunCoding()
 	exec ":w"
     if &filetype == 'cpp'||&filetype == 'c'
-		exec ":!g++ -o /tmp/run%:t:r %;/tmp/run%:t:r"
+		if py3eval('leetcode.is_login()')
+			exec ":LeetCodeTest"
+		else
+			exec ":!g++ -o /tmp/run%:t:r %;/tmp/run%:t:r"
+		endif
 	elseif &filetype == 'perl'
 		exec ":!perl %"
 	elseif &filetype == 'python'
