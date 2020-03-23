@@ -7,6 +7,7 @@ source $HOME/.local/config/python_markdown.vimrc " Notes， Python, Markdown
 source $HOME/.local/config/web.vimrc " html， Css 
 
 
+set shell=/bin/sh
 "===============================================================
 "    NOTE:  常用键盘快捷键
 "===============================================================
@@ -221,3 +222,13 @@ let g:leetcode_china = 1
 let g:leetcode_solution_filetype = 'c'
 let g:leetcode_username = 'hoorayitt@gmail.com'
 let g:leetcode_password = 'Lji.guo4'
+
+nnoremap <Space>[ :bp<CR>
+nnoremap <Space>] :bp<CR>
+nnoremap <C-e> <C-u>
+
+autocmd BufEnter *.wxml exec ":set ft=xml"
+
+let g:python_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/home/itt/anaconda3/bin/python'
+

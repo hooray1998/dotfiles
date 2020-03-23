@@ -10,7 +10,7 @@ let g:airline_theme='monokai_tasty'
 
 syntax on
 set nu
-set shiftwidth=4
+set shiftwidth=2
 set go=             " 不要图形按钮  
 set guifont=Monaco:h16   " 设置字体  
 autocmd InsertLeave * se nocul  " 用浅色高亮当前行  

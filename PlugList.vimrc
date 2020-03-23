@@ -3,8 +3,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'amoffat/snake'
 Plug 'mileszs/ack.vim'
 Plug 'MattesGroeger/vim-bookmarks'
-Plug 'ianding1/leetcode.vim'
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+"Plug 'ianding1/leetcode.vim'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 " Markdown syntastic highlight
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown' "注释掉syntax目录才能正确高亮
@@ -67,7 +67,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 
 "monokai theme
@@ -76,12 +76,12 @@ Plug 'patstockwell/vim-monokai-tasty'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  } 
 Plug 'junegunn/fzf.vim'
 "超强的自动补全
-Plug 'Valloric/YouCompleteMe'
-augroup load_ycm
+"Plug 'Valloric/YouCompleteMe'
+"augroup load_ycm
 	"延时加载"
-	autocmd!
-	autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
-augroup END
+	"autocmd!
+	"autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
+"augroup END
 
 call plug#end()
 

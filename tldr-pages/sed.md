@@ -1,0 +1,37 @@
+# sed
+> Edit text in a scriptable manner
+- **Replace the first occurrence of a regular expression in each line of a file, and print the result:**
+sed 's/`regex`/`replace`/' `filename`
+- **Replace all occurrences of an extended regular expression in a file, and print the result:**
+sed -r 's/`regex`/`replace`/g' `filename`
+- **Replace all occurrences of a string in a file, overwriting the file (i.e. in-place):**
+sed -i 's/`find`/`replace`/g' `filename`
+- **Replace only on lines matching the line pattern:**
+sed '/`line_pattern`/s/`find`/`replace`/' `filename`
+- **Delete lines matching the line pattern:**
+sed '/`line_pattern`/d' `filename`
+- **Print only text between n-th line till the next empty line:**
+sed -n '`n`,/^\$/p' `filename`
+- **Apply multiple find-replace expressions to a file:**
+sed -e 's/`find`/`replace`/' -e 's/`find`/`replace`/' `filename`
+- **Replace separator / by any other character not used in the find or replace patterns, e.g., #:**
+sed 's#`find`#`replace`#' `filename`
+- **Print only the n-th line of a file:**
+sed '`n`q;d' `filename`
+- 每行行首添加字符
+sed 's/^/xxx/'  filename
+- 匹配的行cut掉并替换为新的字符串
+sed '/pattern/c\newline'  filename
+- 匹配的行cut掉并替换为新的字符串并追加行尾
+sed '/pattern/c\ `newline`\a`end`'  filename
+- 匹配的行cut掉并替换为新的字符串并追加新行
+sed '/pattern/c\ `newline`\n`another line`'  filename
+
+```python
+print("hello world")
+if True:
+    pass
+function()
+def goo():
+    continue
+```
