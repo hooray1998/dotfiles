@@ -17,7 +17,7 @@
 
 	-: Opens r2 with the malloc plugin that gives a 512 bytes memory area to play with (size can be changed); Similar to r2 malloc://512
 
------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------
 
 # Configuration properties
 	e: Returs configuration properties
@@ -48,7 +48,7 @@
 	# Use UTF-8 to show cool arrows that do not look like crap :)
 		e scr.utf8 = true
 
------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------
 
 # Basic Commands
 
@@ -88,8 +88,8 @@
 	
 	+-------------------------------------------------------------------
 	
-	is* prints symbolos
-	.is* interprets output and define the symbols in radare (normally they are already loaded if r2 was not invoked with -n)
+	is prints symbolos
+	.is interprets output and define the symbols in radare (normally they are already loaded if r2 was not invoked with -n)
 	
 	+-------------------------------------------------------------------
 	
@@ -157,7 +157,7 @@
 
 	wx ff @@10 20 30      Writes ff at offsets 10, 20 and 30
 	wx ff @@`?s  1 10 2`  Writes ff at offsets 1, 2 and 3
-	wx 90 @@ sym.*        Writes a nop on every symbol
+	wx 90 @@ sym.        Writes a nop on every symbol
 
 	+-------------------------------------------------------------------
 
@@ -319,7 +319,7 @@
 	wF file: Writes the content of the file at the current address or specified offset
 
 	wt file [sz]: Write to file (from current seek, blocksize or sz bytes)
-    		Eg: Dump ELF files with wt @@ hit0* (after searching for ELF headers: \x7fELF)
+    		Eg: Dump ELF files with wt @@ hit0 (after searching for ELF headers: \x7fELF)
 
 	woO 41424344 : get the index in the De Bruijn Pattern of the given word
 
@@ -459,7 +459,7 @@
     		0x0804c379 hit0_3 5589e583ec08e87cffffff
     		0x0804c3a2 hit0_4 5589e583ec18c70424302d
 
-		pi 5 @@hit* (Print 5 first instructions of every hit)
+		pi 5 @@hit (Print 5 first instructions of every hit)
 
 	+-------------------------------------------------------------------
 
@@ -479,7 +479,7 @@
     		We can define structures to be shown in the disassmbly
 
 	CC: List all comments or add a new comment in console mode
-    		C* Show all comments/metadata
+    		C Show all comments/metadata
     		CC <comment> add new comment
     		CC- remove comment
 
@@ -605,12 +605,12 @@
 
 		drr: Display in colors and words all the refs from registers or memory
 
-		dm: Shows memory map (* indicates current section)
+		dm: Shows memory map ( indicates current section)
     			[0xb776c110]> dm
     			sys 0x08048000 - 0x08062000 s r-x /usr/bin/ls
     			sys 0x08062000 - 0x08064000 s rw- /usr/bin/ls
     			sys 0xb776a000 - 0xb776b000 s r-x [vdso]
-    			sys 0xb776b000 * 0xb778b000 s r-x /usr/lib/ld-2.17.so
+    			sys 0xb776b000  0xb778b000 s r-x /usr/lib/ld-2.17.so
     			sys 0xb778b000 - 0xb778d000 s rw- /usr/lib/ld-2.17.so
     			sys 0xbfe5d000 - 0xbfe7e000 s rw- [stack]
 
@@ -789,14 +789,14 @@
 
 	Find all references to curr. address using linear esil emulation on all imports.
 		
-		/re$$@@ sym.imp.*
+		/re$$@@ sym.imp.
 
 # ESIL IL Representation
 
 	op 	esil
 	------------
 	mov 	=
-	mul 	*
+	mul 	
 	div 	/
 	and 	&
 	neg	!
@@ -869,7 +869,7 @@
 		DNS(aa=1L, qr=1L, an=DNSRR(rclass=32769, ttl=120, rrname='flashair.local.', rdata='192.168.0.1', type=1), ad=0L, nscount=0, qdcount=1, ns=None, tc=0L, rd=1L, arcount=0, ar=None, opcode=0L, ra=0L, cd=0L, z=0L, rcode=0L, id=0, ancount=1, qd=DNSQR(qclass=32769, qtype=255, qname='flashair.local.'))
 	
 	+ generate packets with scapy
-		>>> from scapy.all import *
+		>>> from scapy.all import 
 		>>> sr1(IP(dst="8.8.8.8")/UDP(dport=53)/DNS(rd=1,qd=DNSQR(qname="www.thepacketgeek.com")),verbose=0)
 
 # r2m2 -Miasm  Intermediate Representation Plugin
@@ -912,11 +912,11 @@
 	+ Dump 1M with at several hits
 
 		[0x00000000]> b 1M
-		[0x00000000]> wt @@ hit0*
+		[0x00000000]> wt @@ hit0
 
 	+ Automate it
 		
-		$ for a in dump.* ; do
+		$ for a in dump. ; do
 		sz=`rabin2 -Z $a`     # get RBin.filesize
 		r2 -wnqc"r $sz" $a  # resize file
 		done

@@ -4,7 +4,7 @@
 
 # Outline
 
-  Section heading                              *
+  Section heading                              
   New headline                                 ALT-return
   Move headline up or down                     ALT-up_arrow/down_arrow
   Adjust indent depth of headline              ALT-left_arrow/right_arrow
@@ -13,7 +13,7 @@
 
 # To-Do Lists
 
-  Mark list item as TODO                       ** TODO
+  Mark list item as TODO                        TODO
   Cycle through workflow                       SHIFT-left_arrow/right_arrow
   Show only outstanding TODO                   items CTRL-c CTRL-v
 
@@ -26,7 +26,7 @@
 
 # Styles
 
-  *bold*
+  bold
   /italic/
   _underlined_
   =code=
@@ -35,7 +35,7 @@
 
 # Heading
 
-  Header         -*- mode: org -*-
+  Header         -- mode: org --
 
 # .emacs
 

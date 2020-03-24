@@ -1,5 +1,5 @@
 As a contributor to open-source
--------------------------------
+#------------------------------
 
 # clone your own project
 $ git clone dotfiles
@@ -36,7 +36,7 @@ $ git pull-request
 
 
 As an open-source maintainer
-----------------------------
+#---------------------------
 
 # fetch from multiple trusted forks, even if they don't yet exist as remotes
 $ git fetch mislav,cehoffman

@@ -24,7 +24,7 @@ ALT+<number>, eg. ALT+1, ALT+2
 
 # To limit channel background noise (joins, parts, quits, etc.)
 /ignore #foo,#bar JOINS PARTS QUITS NICKS   # Quieten only channels `#foo`, `#bar`
-/ignore * JOINS PARTS QUITS NICKS           # Quieten all channels
+/ignore  JOINS PARTS QUITS NICKS           # Quieten all channels
 
 # To save the current Irssi session config into the configuration file
 /save

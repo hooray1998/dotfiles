@@ -82,6 +82,8 @@ map Cz push :zip<space>
 # map r push :rename<space>  # 已经内置
 map R push !vimv<enter>
 
+map gd cd ~/download
+
 cmd mark_jump ${{
 # fd有缓存机制,相当快
    # res="$(ls $MARKPATH)"
@@ -119,7 +121,7 @@ cmd open ${{
 }}
 
 # define a custom 'rename' command without prompt for overwrite
-cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+# cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
 
 # make sure trash folder exists
 # %mkdir -p ~/.trash

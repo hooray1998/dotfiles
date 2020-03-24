@@ -5,4 +5,4 @@ split file.txt -l 1000
 split file.txt -b 10M
 
 # To consolidate split files into a single file:
-cat x* > file.txt
+cat x > file.txt

@@ -108,3 +108,16 @@ ${1:ReturnType} ${2:FunctionName}(${3:param})
 }
 endsnippet
 # vim:ft=snippets:
+
+snippet hello "hello world" b
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char *argv[\])
+{
+	cout<<"hello world"<<endl;
+	${0}
+	return 0;
+}
+endsnippet

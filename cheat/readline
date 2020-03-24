@@ -42,7 +42,7 @@ Ctrl-l      Clear the screen, reprinting the current line at the top
 TAB         Auto-complete a name
 Alt-/       Auto-complete a name (without smart completion)
 Alt-?       List the possible completions of the preceeding text
-Alt-*       Insert all possible completions of the preceeding text
+Alt-       Insert all possible completions of the preceeding text
 
     Transpose
 Ctrl-t      Transpose/drag              char. before the cursor     ↷ over the character at the cursor

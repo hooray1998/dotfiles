@@ -231,4 +231,3 @@ autocmd BufEnter *.wxml exec ":set ft=xml"
 
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/home/itt/anaconda3/bin/python'
-

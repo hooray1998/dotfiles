@@ -6,17 +6,26 @@ alias la='ls -lAh'
 alias ll='ls -lh'
 alias ls='ls --color=tty'
 alias fsize='du -hd 1'
+
 alias rm='trash'
 export TRASH_DIR="$HOME/.trash"
 alias rl="ll $TRASH_DIR"
 alias rclear="/bin/rm -rf $TRASH_DIR/*"
+
 trash()
 {
     for f in $@;do
-        date_str=`date +%Y%m%d-%H:%M:%S`
-        mv $f $TRASH_DIR/${f}' Del:'${date_str}
+        case $f in
+            -*) ;;
+            *)
+                date_str=`date +%m%d-%H:%M:%S`
+                mv $f   "${f} Del:${date_str}"
+                mv "${f} Del:${date_str}" $TRASH_DIR/
+                ;;
+        esac
     done
 }
+
 
 #fzf 使用别名
 ff() { 
@@ -27,20 +36,17 @@ ff() {
 function ccat() {
     local style="monokai"
     if [ $# -eq 0 ]; then
-        pygmentize -P style=$style -P tabsize=4 -f terminal256 
--g
+        pygmentize -P style=$style -P tabsize=4 -f terminal256 -g
     else
         for NAME in $@; do
-            pygmentize -P style=$style -P tabsize=4 -f 
-terminal256 -g "$NAME"
+            pygmentize -P style=$style -P tabsize=4 -f terminal256 -g "$NAME"
         done
     fi
 }
 
 
-
 # 自动解压：判断文件后缀名并调用相应解压命令
-function q-extract() {
+function Extract() {
     if [ -f $1 ] ; then
         case $1 in
         *.tar.bz2)   tar -xvjf $1    ;;
@@ -59,11 +65,12 @@ function q-extract() {
         esac
     else
         echo "'$1' is not a valid file!"
+        echo "usage: Extract <foo.tar.gz>"
     fi
 }
 
 # 自动压缩：判断后缀名并调用相应压缩程序
-function q-compress() {
+function Compress() {
     if [ -n "$1" ] ; then
         FILE=$1
         case $FILE in
@@ -76,6 +83,6 @@ function q-compress() {
         *.rar) shift && rar $FILE $* ;;
         esac
     else
-        echo "usage: q-compress <foo.tar.gz> ./foo ./bar"
+        echo "usage: Compress <foo.tar.gz> ./foo ./bar"
     fi
 }

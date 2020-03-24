@@ -11,7 +11,7 @@ ls -lh
 ls -S
 
 # Display directories only
-ls -d */
+ls -d /
 
 # Display directories only, include hidden
-ls -d .*/ */
+ls -d ./ /

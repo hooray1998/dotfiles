@@ -432,4 +432,12 @@ while ($1)`!p nl(snip)`{
 }
 endsnippet
 
-# vim:ft=snippets:
+
+snippet hello "hello world" b
+public class ${1:hello} {
+	public static void main(String[\] args) {
+		System.out.println("hello world");
+	}
+	${0}
+}
+endsnippet

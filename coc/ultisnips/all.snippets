@@ -103,11 +103,23 @@ snippet todo "TODO comment" bw
 `!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `!v g:snips_author`}>} `!p snip.rv=get_comment_format()[2]`
 endsnippet
 
+snippet head "YYYY-MM-DD hh:mm" w
+`!p snip.rv=get_comment_format()[0]` ======================================================
+`!p snip.rv=get_comment_format()[0]` File Name: `!v expand("%:t")`
+`!p snip.rv=get_comment_format()[0]` Author: z50006490
+`!p snip.rv=get_comment_format()[0]` Mail:zhuyafei1@huawei.com
+`!p snip.rv=get_comment_format()[0]` Created Time: `!v strftime("%Y-%m-%d %H:%M")`
+`!p snip.rv=get_comment_format()[0]` Copyright `!v &enc[:2] == "utf" ? "©" : "(c)"` `!v strftime("%Y")` Huawei. All Rights Reserved.
+`!p snip.rv=get_comment_format()[0]` ======================================================
+${0}
+endsnippet
+
 ##########
 #  Misc  #
 ##########
 snippet uuid "Random UUID" w
 `!p if not snip.c: import uuid; snip.rv = str(uuid.uuid4())`
 endsnippet
+todo
 
 # vim:ft=snippets:

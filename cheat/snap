@@ -55,7 +55,7 @@ snap watch 123
 # To abort transaction 123:
 snap abort 123
 
-# To download the `foo` snap (and its assertions) *without* installing it:
+# To download the `foo` snap (and its assertions) without installing it:
 snap download foo
 
 # To install the locally-downloaded `foo` snap with assertions:

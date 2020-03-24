@@ -117,7 +117,7 @@ snippet head "File Header" b
 /******************************************************************************
 * File:             `!p snip.rv = fn`
 *
-* Author:           ${2}  
+* Author:           z50006490
 * Created:          `date +%m/%d/%y` 
 * Description:      ${4:${VISUAL}}
 *****************************************************************************/
@@ -147,3 +147,14 @@ ${1}($2){
 }
 endsnippet
 # vim:ft=snippets:
+
+snippet hello "hello world" b
+#include <stdio.h>
+
+int main(int argc, char *argv[\])
+{
+	printf("hello world");
+	${0}
+	return 0;
+}
+endsnippet

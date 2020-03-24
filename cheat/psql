@@ -11,13 +11,13 @@ psql -U postgres -h serverAddress -d dbName
 psql -U postgres -h serverAddress --list
 
 # Execute sql query and save output to file:
-psql -U postgres -d dbName -c 'select * from tableName;' -o fileName
+psql -U postgres -d dbName -c 'select  from tableName;' -o fileName
 
 # Execute query and get tabular html output:
-psql -U postgres -d dbName -H -c 'select * from tableName;'
+psql -U postgres -d dbName -H -c 'select  from tableName;'
 
 # Execute query and save resulting rows to csv file:
-psql -U postgres -d dbName -t -A -P fieldsep=',' -c 'select * from tableName;' -o fileName.csv
+psql -U postgres -d dbName -t -A -P fieldsep=',' -c 'select  from tableName;' -o fileName.csv
 
 # Read commands from file:
 psql -f fileName

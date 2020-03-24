@@ -1,5 +1,5 @@
 # To implement a for loop:
-for file in *;
+for file in ;
 do 
     echo $file found;
 done
@@ -10,7 +10,7 @@ in
     0) echo "zero found";;
     1) echo "one found";;
     2) echo "two found";;
-    3*) echo "something beginning with 3 found";;
+    3) echo "something beginning with 3 found";;
 esac
 
 # Turn on debugging:

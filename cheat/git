@@ -90,7 +90,7 @@ git log                                                 # Show all the commits
 git status                                              # Show the changes from last commit
 
 # Commit history of a set of files
-git log --pretty=email --patch-with-stat --reverse --full-index -- Admin\*.py > Sripts.patch
+git log --pretty=email --patch-with-stat --reverse --full-index -- Admin\.py > Sripts.patch
 
 # Import commits from another repo
 git --git-dir=../some_other_repo/.git format-patch -k -1 --stdout <commit SHA> | git am -3 -k

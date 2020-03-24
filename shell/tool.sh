@@ -4,10 +4,13 @@
 #以进度条的方式显示命令行的执行进度。
 #tail -f file
 #能够监控文件的变化，实时输出到标准输出
+export tldr_dir="$CONFIG/tldr-pages/"
+export cheat_dir="$CONFIG/cheat/"
 
 alias tt='dosbox /home/itt/DOSBox/tt.exe  &'
 alias s='$CONFIG/search_and_record.sh'
 alias word='vim $CONFIG/word.list'
+export test_dir="$HOME/.test"
 t(){
     test_dir=$HOME/.test
     if [ -n "$*"  ]; then
@@ -22,16 +25,4 @@ t(){
     else
         vim $test_dir
     fi
-}
-export tldr_dir="$CONFIG/tldr-pages/"
-hhedit(){
-    cmd_name=${1:-`ls -t $tldr_dir|sed 's/.md//g'|fzf --reverse --inline-info --height 60% --header='选择需要编辑的命令'`}
-    test -z $cmd_name && return
-    test -f ${tldr_dir}${cmd_name} && vim ${tldr_dir}${cmd_name} || vim ${tldr_dir}${cmd_name}.md
-}
-hh(){
-    cmd_name=${1:-`ls -t $tldr_dir|sed 's/.md//g'|fzf --reverse --inline-info --height 60% --header='选择需要查询的命令'`}
-    test -z $cmd_name && return
-    test -f $CONFIG/cheat/$cmd_name && cheat $cmd_name
-    test -f ${tldr_dir}${cmd_name} && vim ${tldr_dir}${cmd_name} || tldr -f ${tldr_dir}${cmd_name}.md
 }

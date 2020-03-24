@@ -1,5 +1,5 @@
 # Concatenate all pdf files into one:
-pdftk *.pdf cat output all.pdf
+pdftk .pdf cat output all.pdf
 
 # Concatenate specific pdf files into one:
 pdftk 1.pdf 2.pdf 3.pdf cat output 123.pdf

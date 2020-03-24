@@ -5,7 +5,7 @@ sudo lshw
 lsmod
 
 # List all modules available to the system
-find /lib/modules/$(uname -r) -type f -iname "*.ko"
+find /lib/modules/$(uname -r) -type f -iname ".ko"
 
 # Load a module into kernel
 modprobe modulename

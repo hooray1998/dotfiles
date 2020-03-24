@@ -1,8 +1,8 @@
 # WARNING:
 #   In order to avoid headaches when moving ZFS physical devices around,
-#   one will be much better served to reference devices by their *immutable*
-#   ID - as in /dev/disk/by-id/* - rather than their block device name -
-#   as in /dev/{sd,nvme}* - which is bound to change as per PCI enumeration
+#   one will be much better served to reference devices by their immutable
+#   ID - as in /dev/disk/by-id/ - rather than their block device name -
+#   as in /dev/{sd,nvme} - which is bound to change as per PCI enumeration
 #   order.
 # For the sake of briefness, we'll use the following variables:
 #   ${device}    device (/dev/disk/by-id/${device})
