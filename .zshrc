@@ -1,3 +1,16 @@
+# ======================================================
+# File Name: .zshrc
+# Author: z50006490
+# Mail:zhuyafei1@huawei.com
+# Created Time: 2020-03-26 15:44
+# Copyright © 2020 Huawei. All Rights Reserved.
+# ======================================================
+# 历史命令使用Ctrl-r
+# 复杂定制任务使用task
+# 命令查询使用tell
+# 原理总结使用note笔记存储
+# ======================================================
+
 export CONFIG=$HOME/.local/config
 export PATH=$CONFIG/niceBinary:$PATH
 export PATH=$HOME/anaconda3/bin:$PATH
@@ -11,6 +24,7 @@ export PATH=$HOME/.local/config/niceBinary:$PATH
 
 test -n "$ZSH_VERSION" &&
     source $HOME/.vim/niceVim/new.zsh # zsh增强功能
+
 source $CONFIG/shell/vim.sh           # vim
 source $CONFIG/shell/tool.sh          # 工具
 source $CONFIG/shell/filemanage.sh    # 文件管理

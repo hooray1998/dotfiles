@@ -12,17 +12,5 @@ alias s='$CONFIG/search_and_record.sh'
 alias word='vim $CONFIG/word.list'
 export test_dir="$HOME/.test"
 t(){
-    test_dir=$HOME/.test
-    if [ -n "$*"  ]; then
-        case $* in
-            py) vim $test_dir/*.py;;
-            c)  vim $test_dir/*.c;;
-            cpp)vim $test_dir/*.cpp;;
-            sh) vim $test_dir/*.sh;;
-            *)  vim test.$1;;
-        esac
-        #done
-    else
-        vim $test_dir
-    fi
+    vim $HOME/.test/*.$1;;
 }

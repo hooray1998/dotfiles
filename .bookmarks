@@ -1,3 +1,0 @@
-let l:bm_file_version = 1
-let l:bm_sessions = {'default': {'/home/itt/MyNutStore/Notes/perl/part1/main.md': [{'sign_idx': 9506, 'line_nr': 1194, 'content': ' '},],'/home/itt/Coding/QtCoding/ComeOnBoy/mainwindow.cpp': [{'sign_idx': 9504, 'line_nr': 1317, 'content': '    debugInitValue.readValueToWidget();', 'annotation': 'startJingdu'},{'sign_idx': 9506, 'line_nr': 812, 'content': '        debugs.append("range3：");', 'annotation': 'updateTable'},],'/home/itt/MyNutStore/Notes/perl/part1/main2.md': [{'sign_idx': 9500, 'line_nr': 584, 'content': ''},],'/home/itt/Coding/QtCoding/ComeOnBoy/alldata.cpp': [{'sign_idx': 9505, 'line_nr': 213, 'content': '    {', 'annotation': 'push_b'},],}}
-let l:bm_current_session = 'default'

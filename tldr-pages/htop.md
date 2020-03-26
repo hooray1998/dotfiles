@@ -2,10 +2,6 @@
 
 ## htop
 
-```python
-print("hello world")
-```
-
 **进程搜索 / 选择**
 
 按键  | 描述
@@ -27,7 +23,7 @@ t     | 树型显示进程
 :-    | :-
 e     | 进程的环境变量
 l     | 打开的文件 by lsof
-s     | 追踪系统调用
+s     | 追踪系统调用 **strace**
 a     | set cpu affinity
 F7    | 减小 nice 值
 F8    | 增加 nice 值

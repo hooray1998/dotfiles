@@ -55,6 +55,7 @@ set previewer ~/.config/lf/pv.sh
 #     set sortby time
 #     set info time
 # }}
+map sd :set dirfirst!
 
 # 模拟发送按键
 # map J push 10j
@@ -83,6 +84,7 @@ map Cz push :zip<space>
 map R push !vimv<enter>
 
 map gd cd ~/download
+map gc cd ~/.local/config
 
 cmd mark_jump ${{
 # fd有缓存机制,相当快
@@ -261,11 +263,16 @@ cmd zip ${{
 
 # The following options can be used to customize the behavior of lf:
 
-set hidden
 # set icons
+set hidden
 set dircounts
 set incsearch
 set smartcase
+set sortby 'time'
+set info time
+set color256
+set reverse
+set dirfirst!
 # anchorfind      boolean  (default on)
 # color256        boolean  (default off)
 # dircounts       boolean  (default off)

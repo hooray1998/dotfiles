@@ -1,0 +1,36 @@
+*.pyc
+*.swp
+*.tmp
+.coverage
+.DS_Store
+.local/
+
+# generated executables
+/trash-restore
+/trash-empty
+/trash-list
+/trash
+
+# other things
+/build/
+/command-test/sandbox/
+/command-test/test-volume.img
+/cover/
+/dist/
+/foo
+/env/
+/nose-*.egg/
+/sandbox/
+/scripts/
+/test-disk.img
+/test-disk.dmg
+/test-disk/
+/topdir/
+/trash_cli.egg-info/
+/XDG_DATA_HOME/
+/fake-vol
+/xdh/
+/MANIFEST
+/tags
+/.vagrant/
+/ssh-config

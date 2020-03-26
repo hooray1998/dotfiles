@@ -1,4 +1,3 @@
-
 alias glg='git lg'
 alias grlg='git reflog'
 alias grst='git reset --hard '
