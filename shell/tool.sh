@@ -8,9 +8,8 @@ export tldr_dir="$CONFIG/tldr-pages/"
 export cheat_dir="$CONFIG/cheat/"
 
 alias tt='dosbox /home/itt/DOSBox/tt.exe  &'
-alias s='$CONFIG/search_and_record.sh'
 alias word='vim $CONFIG/word.list'
 export test_dir="$HOME/.test"
 t(){
-    vim $HOME/.test/*.$1;;
+    vim $HOME/.test/*.$1
 }

@@ -10,3 +10,5 @@ tail -c `num` `file`
 tail -f `file`
 - **Keep reading file until Ctrl + C, even if the file is rotated:**
 tail -F `file`
+- 配合bat高亮
+tail -f /var/log/pacman.log | bat --paging=never -l log

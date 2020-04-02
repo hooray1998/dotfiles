@@ -1,0 +1,309 @@
+# interpreter for shell commands (needs to be POSIX compatible)
+set shell sh
+
+# set '-eu' options for shell commands
+# These options are used to have safer shell commands. Option '-e' is used to
+# exit on error and option '-u' is used to give error for unset variables.
+# Option '-f' disables pathname expansion which can be useful when $f, $fs, and
+# $fx variables contain names with '*' or '?' characters. However, this option
+# is used selectively within individual commands as it can be limiting at
+# times.
+set shellopts '-eu'
+
+# set internal field separator (IFS) to "\n" for shell commands
+# This is useful to automatically split file names in $fs and $fx properly
+# since default file separator used in these variables (i.e. 'filesep' option)
+# is newline. You need to consider the values of these options and create your
+# commands accordingly.
+set ifs "\n"
+
+# leave some space at the top and the bottom of the screen
+set scrolloff 10
+
+# preview enhance
+set previewer ~/.config/lf/pv.sh
+
+# The following variables are exported for shell commands:
+
+# $f   current file
+# $fs  selected file(s) separated with 'filesep'
+# $fx  current file or selected file(s) if any
+# $id  id number of the client
+# map e $$EDITOR $f
+# map i $$PAGER $f
+# map w $$SHELL
+# :  read (default)  builtin/custom command
+# $  shell           shell command
+# %  shell-pipe      shell command running with the ui
+# !  shell-wait      shell command waiting for key press
+# &  shell-async     shell command running asynchronously
+# **命令模式**
+# :set info size
+# $echo $PATH,直接执行,看不到输出
+# %shell-pipe,输出在下方,而不是后台
+# !shell-wait,执行命令后等待用户确认一下
+# &python -m SimpleHTTPServer .后台执行
+#
+#
+# map a # 删映射
+# map A :echoerr error in this
+# map <c-a> do sth.
+# map ab do sth.
+# map <f-1> 映射F1
+# map st :set sortby time; set info time
+# map st :{{
+#     set sortby time
+#     set info time
+# }}
+map sd :set dirfirst!
+
+# 模拟发送按键
+# map J push 10j
+cmd mkdir %mkdir -p "$(echo $* | tr ' ' '\ ')"
+map A push :mkdir<space>
+# use enter for shell commands
+map - updir
+map <enter> open
+map e open
+map <esc> quit
+# execute current file (must be executable)
+map x !chmod +x $f && $f
+map X $chmod +x $f && $f
+# bind '"\C-o":"lfcd\C-m"'
+# dedicated keys for file opener actions
+map o &mimeopen $f
+map O $mimeopen --ask $f
+
+map w
+map D trash
+map <delete> delete
+map E extract
+map Ct push :tar<space>
+map Cz push :zip<space>
+# map r push :rename<space>  # 已经内置
+map R push !vimv<enter>
+
+map gd cd ~/download
+map gc cd ~/.local/config
+
+cmd mark_jump ${{
+# fd有缓存机制,相当快
+   # res="$(ls $MARKPATH)"
+   # lf -remote "send $id echoerr \"$res\""
+   res="$(ls $MARKPATH| fzf --header='Jump to mark')"
+   dest="$(readlink $MARKPATH/$res 2> /dev/null)"
+   [ -d "$dest" ] &&  lf -remote "send $id cd \"$dest\""
+
+   # lf -remote "send $id echoerr \"$MARKPATH\""
+   # lf -remote "send $id echomsg [PATH]: \"$dest\""
+   # ~/.local/config/niceBinary/m.sh $res
+}}
+map <c-g> :mark_jump
+cmd fzf_jump ${{
+# fd有缓存机制,相当快
+   res="$(fd --hidden --follow --exclude '.git' --exclude 'extensions' --exclude 'node_modules' | fzf --header='Jump to location')"
+   if [ -f "$res" ]; then
+     cmd="select"
+   elif [ -d "$res" ]; then
+     cmd="cd"
+   fi
+lf -remote "send $id $cmd \"$res\""
+}}
+map <c-f> :fzf_jump
+# define a custom 'open' command
+# This command is called when current file is not a directory. You may want to
+# use either file extensions and/or mime types here. Below uses an editor for
+# text files and a file opener for the rest.
+cmd open ${{
+    case $(file --mime-type -b $f) in
+        text/*) vim $fx;;
+        *zip) vim $fx;;
+        *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
+    esac
+}}
+
+# define a custom 'rename' command without prompt for overwrite
+# cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+
+# make sure trash folder exists
+# %mkdir -p ~/.trash
+
+# move current file or selected files to trash folder
+# (also see 'man mv' for backup/overwrite options)
+cmd trash %set -f; mv $fx ~/.trash
+
+# define a custom 'delete' command
+# cmd delete ${{
+#     set -f
+#     printf "$fx\n"
+#     printf "delete?[y/n]"
+#     read ans
+#     [ $ans = "y" ] && rm -rf $fx
+# }}
+
+# use '<delete>' key for either 'trash' or 'delete' command
+# map <delete> trash
+
+# extract the current file with the right command
+# (xkcd link: https://xkcd.com/1168/)
+cmd extract ${{
+    set -f
+    case $f in
+        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
+        *.tar.gz|*.tgz) tar xzvf $f;;
+        *.tar.xz|*.txz) tar xJvf $f;;
+        *.zip) unzip $f;;
+        *.rar) unrar x $f;;
+        *.7z) 7z x $f;;
+    esac
+}}
+
+# compress current file or selected files with tar and gunzip
+cmd tar ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    tar czf $1.tar.gz $1
+    rm -rf $1
+}}
+
+# compress current file or selected files with zip
+cmd zip ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    zip -r $1.zip $1
+    rm -rf $1
+}}
+
+
+# Reference
+
+# The following commands are provided by lf with default keybindings:
+
+# up                       (default 'k' and '<up>')
+# half-up                  (default '<c-u>')
+# page-up                  (default '<c-b>' and '<pgup>')
+# down                     (default 'j' and '<down>')
+# half-down                (default '<c-d>')
+# page-down                (default '<c-f>' and '<pgdn>')
+# updir                    (default 'h' and '<left>')
+# open                     (default 'l' and '<right>')
+# quit                     (default 'q')
+# top                      (default 'gg' and '<home>')
+# bottom                   (default 'G' and '<end>')
+# toggle                   (default '<space>')
+# invert                   (default 'v')
+# unselect                 (default 'u')
+# copy                     (default 'y')
+# cut                      (default 'd')
+# paste                    (default 'p')
+# clear                    (default 'c')
+# redraw                   (default '<c-l>')
+# reload                   (default '<c-r>')
+# read                     (default ':')
+# rename                   (default 'r')
+# shell                    (default '$')
+# shell-pipe               (default '%')
+# shell-wait               (default '!')
+# shell-async              (default '&')
+# find                     (default 'f')
+# find-back                (default 'F')
+# find-next                (default ';')
+# find-prev                (default ',')
+# search                   (default '/')
+# search-back              (default '?')
+# search-next              (default 'n')
+# search-prev              (default 'N')
+# mark-save                (default 'm')
+# mark-load                (default "'")
+# mark-remove              (default `"`)
+
+# The following commands are provided by lf without default keybindings:
+
+# draw           draw the ui
+# load           load modified files and directories
+# sync           synchronize copied/cut files with server
+# echo           print arguments to the message line
+# echomsg        same as echo but logging
+# echoerr        same as echomsg but red color
+# cd             change working directory to the argument
+# select         change current file selection to the argument
+# glob-select    select files that match the given glob
+# glob-unselect  unselect files that match the given glob
+# source         read the configuration file in the argument
+# push           simulate key pushes given in the argument
+# delete         remove the current file or selected file(s)
+# The following command line commands are provided by lf with default keybindings:
+
+# cmd-escape               (default '<esc>')
+# cmd-complete             (default '<tab>')
+# cmd-enter                (default '<c-j>' and '<enter>')
+# cmd-history-next         (default '<c-n>')
+# cmd-history-prev         (default '<c-p>')
+# cmd-delete               (default '<c-d>' and '<delete>')
+# cmd-delete-back          (default '<bs>' and '<bs2>')
+# cmd-left                 (default '<c-b>' and '<left>')
+# cmd-right                (default '<c-f>' and '<right>')
+# cmd-home                 (default '<c-a>' and '<home>')
+# cmd-end                  (default '<c-e>' and '<end>')
+# cmd-delete-home          (default '<c-u>')
+# cmd-delete-end           (default '<c-k>')
+# cmd-delete-unix-word     (default '<c-w>')
+# cmd-yank                 (default '<c-y>')
+# cmd-transpose            (default '<c-t>')
+# cmd-interrupt            (default '<c-c>')
+# cmd-word                 (default '<a-f>')
+# cmd-word-back            (default '<a-b>')
+# cmd-capitalize-word      (default '<a-c>')
+# cmd-delete-word          (default '<a-d>')
+# cmd-uppercase-word       (default '<a-u>')
+# cmd-lowercase-word       (default '<a-l>')
+# cmd-transpose-word       (default '<a-t>')
+
+# The following options can be used to customize the behavior of lf:
+
+# set icons
+set hidden
+set dircounts
+set incsearch
+set smartcase
+set sortby 'time'
+set info time
+set color256
+set reverse
+set dirfirst!
+# anchorfind      boolean  (default on)
+# color256        boolean  (default off)
+# dircounts       boolean  (default off)
+# dirfirst        boolean  (default on)
+# drawbox         boolean  (default off)
+# globsearch      boolean  (default off)
+# icons           boolean  (default off)
+# hidden          boolean  (default off)
+# ignorecase      boolean  (default on)
+# ignoredia       boolean  (default off)
+# incsearch       boolean  (default off)
+# preview         boolean  (default on)
+# reverse         boolean  (default off)
+# smartcase       boolean  (default on)
+# smartdia        boolean  (default off)
+# wrapscan        boolean  (default on)
+# wrapscroll      boolean  (default off)
+# number          boolean  (default off)
+# relativenumber  boolean  (default off)
+# findlen         integer  (default 1) (zero to prompt until single match)
+# period          integer  (default 0) (zero to disable periodic loading)
+# scrolloff       integer  (default 0)
+# tabstop         integer  (default 8)
+# errorfmt        string   (default "\033[7;31;47m%s\033[0m")
+# filesep         string   (default "\n")
+# ifs             string   (default '') (not exported if empty)
+# previewer       string   (default '') (not filtered if empty)
+# promptfmt       string   (default "\033[32;1m%u@%h\033[0m:\033[34;1m%w/\033[0m\033[1m%f\033[0m")
+# shell           string   (default 'sh')
+# sortby          string   (default 'natural')
+# timefmt         string   (default 'Mon Jan _2 15:04:05 2006')
+# ratios          string   (default '1:2:3')
+# info            string   (default '')
+# shellopts       string   (default '')

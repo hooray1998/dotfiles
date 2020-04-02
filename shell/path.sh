@@ -11,17 +11,20 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 if [ -n "$BASH_VERSION" ];then
-    eval "$(lua $CONFIG/niceBinary/z.lua --init bash enhanced once echo)"
+    eval "$(lua $CONFIG/binary/bin/z.lua --init bash enhanced once echo)"
     [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 elif [ -n "$ZSH_VERSION" ];then
-    eval "$(lua $CONFIG/niceBinary/z.lua --init zsh enhanced once echo)"
+    eval "$(lua $CONFIG/binary/bin/z.lua --init zsh enhanced once echo)"
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
+unalias z 2> /dev/null
+z() {
+    [ $# -gt 0 ] && _zlua "$*" && return
+    cd "$(_zlua -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
 
 export MARKPATH=$HOME/.local/share/marks
-source $CONFIG/niceBinary/m.sh
-alias go_marks='mark=`ls $MARKPATH| fzf --header="Jump to mark"`&& test -n $mark && cd $(readlink $MARKPATH/$mark 2> /dev/null)'
-# alias go_marks='cd $(readlink $MARKPATH/`ls $MARKPATH| fzf --header="Jump to mark"` 2> /dev/null)'
+source $CONFIG/binary/bin/m.sh
 
 LFCD=~/.config/lf/lfcd.sh
 if [ -f "$LFCD" ]; then

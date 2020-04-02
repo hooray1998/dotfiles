@@ -1,0 +1,32 @@
+[user]
+	email = hooray1998@foxmail.com
+	name = hooray
+[color]
+	ui = true
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	st = status
+	co = checkout
+	ci = commit
+	br = branch
+	unstage = reset HEAD
+[core]
+	quotepath = false
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[diff]
+	tool = vimdiff
+[difftool]
+	trustExitCode = true
+	prompt = false
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse

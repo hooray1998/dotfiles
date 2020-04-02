@@ -1,0 +1,72 @@
+.\" Copyright (C) 2008 Steve Stalcup <vorian@ubuntu.com>
+.\"
+.\" This manual page is free software.  It is distributed under the
+.\" terms of the GNU General Public License as published by the Free
+.\" Software Foundation; either version 2 of the License, or (at your
+.\" option) any later version.
+.\"
+.\" This manual page is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this manual page; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
+.\" USA
+.\"
+.TH "TRASH-RESTORE" "1" 
+
+.SH "NAME"
+trash-restore \- Restore for Command line trash utility.
+
+.SH "SYNOPSIS"
+.B trash-restore
+
+.SH "DESCRIPTION"
+.PP
+Use for restore a trashed file or directory, in the original path.
+This command is a part of trash-cli package that provides a command 
+line interface trashcan utility compliant with the FreeDesktop.org 
+Trash Specification.
+It remembers the name, original path, deletion date, and permissions of
+each trashed file.
+
+.SH "EXAMPLES"
+.nf
+$ trash-restore
+0 2007-08-30 12:36:00 /home/andrea/foo
+1 2007-08-30 12:39:41 /home/andrea/bar
+2 2007-08-30 12:39:41 /home/andrea/bar2
+3 2007-08-30 12:39:41 /home/andrea/foo2
+4 2007-08-30 12:39:41 /home/andrea/foo
+What file to restore [0..4]: 4
+$ ls foo
+foo
+.fi
+
+.SH "BUGS"
+Report bugs to https://github.com/andreafrancia/trash-cli/issues or to
+andrea@andreafrancia.it
+
+.SH "IF YOU WANT SAY THANKS"
+Tweet (to @andreafrancia or #trash-cli) or donate 1, 2 or 5 euros using paypal:
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=93L6PYT4WBN5A
+
+.SH "CREDITS"
+Trash was written by Andrea Francia <andrea@andreafrancia.it>.
+The original version of trash-empty was contributed by Einar Orn Olason <eoo@hi.is>.
+The first version of manual pages was written by Steve Stalcup <vorian@ubuntu.com> 
+and was modified by Massimo Cavalleri <submax@tiscalinet.it>.
+
+.SH "SEE ALSO"
+trash-put(1),
+trash-list(1),
+trash-empty(1),
+trash-rm(1),
+and the FreeDesktop.org Trash Specification at 
+http://www.ramendik.ru/docs/trashspec.html.
+.br
+
+Both are released under the \s-1GNU\s0 General Public License,
+version 2 or later.

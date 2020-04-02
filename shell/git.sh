@@ -1,19 +1,22 @@
-alias glg='git lg'
+alias gst='git status'
+alias glg='glo'
+alias gdone='fzf-vim-diff'
 alias grlg='git reflog'
+
 alias grst='git reset --hard '
+alias gb='git branch|cat '
+
 alias ignore='vim .gitignore'
 alias gcm='git checkout master'
 alias gcd='git checkout develop'
-alias gaa='git add --all'
-alias gst='git status'
-alias gb='git branch|cat '
-alias gd=$CONFIG/niceBinary/diff.sh
-# ===========================================================
-# Git常用命令: git gaa cm ggpush ggpull
 
-cm(){
-    git add --all; git commit -m "$*"
-}
-gmerge_dev(){
-    git merge --no-ff -m "$*" develop
-}
+source $CONFIG/shell/forgit/forgit.plugin.zsh
+
+# ga     | git add
+# glo    | git log
+# gi     | .gitignore
+# gd     | git diff
+# grh    | git reset HEAD <file>
+# gcf    | git checkout <file>
+# gss    | git stash
+# gclean | git clean

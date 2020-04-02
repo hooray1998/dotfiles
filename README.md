@@ -1,4 +1,5 @@
 映射到~/.config目录下
+gitconfig => .gitconfig
 asynctask
 coc
 htop
@@ -22,3 +23,13 @@ tar xvf .tar
 cp -r * /usr/local
 ```
 
+需要的工具列表
+fzf
+rg
+fd
+tldr
+htop
+script
+gtags
+u-ctags
+diff.sh
