@@ -1,3 +1,4 @@
+alias gco='gcf'
 alias gst='git status'
 alias glg='glo'
 alias gdone='fzf-vim-diff'

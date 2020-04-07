@@ -42,5 +42,4 @@ source $CONFIG/shell/prompt.sh        # 命令提示符
 #——————————————————————————————————————————————————————————————————
 
 source $CONFIG/shell/keymap.zsh
-
 test -z "$TMUX" && (tmux attach || tmux new-session)

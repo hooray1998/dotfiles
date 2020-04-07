@@ -263,7 +263,7 @@ cmd zip ${{
 
 # The following options can be used to customize the behavior of lf:
 
-# set icons
+set icons
 set hidden
 set dircounts
 set incsearch
